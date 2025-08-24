@@ -2,18 +2,15 @@
 <app-spinner></app-spinner>
 } @else {
 
-
-
-<div style="background-color: var(--dark);">
-
-    <section id="welcome">
+<div class="body" style="margin-top: 10rem">
+    <!-- <section id="welcome">
         <div class="welcome-area">
             <div class="welcome">
                 <h1 class="font-pink">Hoş geldiniz</h1>
                 <p class="font-dark">Bu sitede filmler, diziler ve oyuncular hakkında bilgiler bulabilirsiniz</p>
             </div>
         </div>
-    </section>
+    </section> -->
 
     <!-- trending movies -->
     @if (trendingMovies) {
@@ -27,7 +24,7 @@
         <div class="container">
             <div class="title-section">
                 <i class="fa-solid fa-fire font-yellow"></i>
-                <h1 class="title font-white">
+                <h1 class="title font-turquose">
                     Trend Filmler
                 </h1>
             </div>
@@ -67,7 +64,7 @@
                     <span class="poster-cast-title font-white">
                         <i class="fa-solid fa-genderless font-yellow"></i>
                         <p class="vote-average ellipsis">
-                            {{ trendingMovie.genre_ids }}
+                            {{ trendingMovie.genre_names }}
                         </p>
                     </span>
                     <span class="poster-cast-title font-white">
@@ -95,7 +92,7 @@
         <div class="container">
             <div class="title-section">
                 <i class="fa-solid fa-fire font-yellow"></i>
-                <h1 class="title font-white">
+                <h1 class="title font-turquose">
                     Popüler Filmler
                 </h1>
             </div>
@@ -135,7 +132,7 @@
                     <span class="poster-cast-title font-white">
                         <i class="fa-solid fa-genderless font-yellow"></i>
                         <p class="vote-average ellipsis">
-                            {{ popularMovie.genre_ids }}
+                            {{ popularMovie.genre_names }}
                         </p>
                     </span>
                     <span class="poster-cast-title font-white">
@@ -163,7 +160,7 @@
         <div class="container">
             <div class="title-section">
                 <i class="fa-solid fa-fire font-yellow"></i>
-                <h1 class="title font-white">
+                <h1 class="title font-turquose">
                     Trend Diziler
                 </h1>
             </div>
@@ -203,7 +200,7 @@
                     <span class="poster-cast-title font-white">
                         <i class="fa-solid fa-genderless font-yellow"></i>
                         <p class="vote-average ellipsis">
-                            {{ trendingTvShow.genre_ids }}
+                            {{ trendingTvShow.genre_names }}
                         </p>
                     </span>
                     <span class="poster-cast-title font-white">
@@ -231,7 +228,7 @@
         <div class="container">
             <div class="title-section">
                 <i class="fa-solid fa-fire font-yellow"></i>
-                <h1 class="title font-white">
+                <h1 class="title font-turquose">
                     Popüler Diziler
                 </h1>
             </div>
@@ -271,7 +268,7 @@
                     <span class="poster-cast-title font-white">
                         <i class="fa-solid fa-genderless font-yellow"></i>
                         <p class="vote-average ellipsis">
-                            {{ popularTvshow.genre_ids }}
+                            {{ popularTvshow.genre_names }}
                         </p>
                     </span>
                     <span class="poster-cast-title font-white">

@@ -3,13 +3,16 @@
 
 
 :root {
-    --white: rgb(255, 255, 255);
+    --turquose: rgb(36, 137, 120);
+    --white: #cec7c7;
     --black: rbg(0, 0, 0);
     --gray: #45474B;
-    --dark: #212529;
+    --dark: #22262a;
     --yellow: #F4CE14;
     --pink: #E90074;
     --dark-pink: #D80032;
+    --dark-pink: #D80032;
+    --darker: #0b0e17;
     --soft-pink: #F78CA2;
     --blue: #009FBD;
     --light: #EADBC8;
@@ -46,6 +49,11 @@ a.disabled {
 
 .bg-dark {
     background-color: var(--dark);
+}
+
+
+.font-turquose {
+    color: var(--turquose);
 }
 
 .font-white {
@@ -142,6 +150,11 @@ a.disabled {
     display: flex;
     align-items: center;
     justify-content: center;
+    bottom: 5rem;
+
+    i {
+        font-size: 2rem;
+    }
 }
 
 .back-to-top:hover {
@@ -149,13 +162,8 @@ a.disabled {
     transition: all 0.2s ease-in-out;
 }
 
-.back-to-top i {
-    font-size: 2rem;
-}
-
-
 /* mobile */
-@media (max-width: 566px) {
+@media (max-width: 685px) {
 
     html {
         font-size: 70%;
@@ -165,15 +173,11 @@ a.disabled {
         width: 98%;
         margin: 0 1%;
     }
-
-    .back-to-top {
-        bottom: 45rem;
-    }
 }
 
 
 /* landscape */
-@media (min-width: 566px) and (max-width: 800px) {
+@media (min-width: 685px) and (max-width: 800px) {
 
     html {
         font-size: 75%;

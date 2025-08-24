@@ -1,7 +1,8 @@
 export interface TvShow {
     adult: boolean;
     backdrop_path: string;
-    genre_ids: string[];
+    genre_ids: number[];
+    genre_names: string[];
     id: number;
     origin_country: string[],
     original_language: string;
