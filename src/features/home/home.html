@@ -1,0 +1,300 @@
+@if (isLoading) {
+<app-spinner></app-spinner>
+} @else {
+
+
+
+<div style="background-color: var(--dark);">
+
+    <section id="welcome">
+        <div class="welcome-area">
+            <div class="welcome">
+                <h1 class="font-pink">Hoş geldiniz</h1>
+                <p class="font-dark">Bu sitede filmler, diziler ve oyuncular hakkında bilgiler bulabilirsiniz</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- trending movies -->
+    @if (trendingMovies) {
+    <section id="trendings" class="trendings">
+        <a (click)="getPreviousTrendingMovies()" class="change-card-poster-first">
+            <i class="fa-solid fa-chevron-left change-card-poster"></i>
+        </a>
+        <a (click)="getNextTrendingMovies()" class="change-card-poster-second">
+            <i class="fa-solid fa-chevron-right change-card-poster"></i>
+        </a>
+        <div class="container">
+            <div class="title-section">
+                <i class="fa-solid fa-fire font-yellow"></i>
+                <h1 class="title font-white">
+                    Trend Filmler
+                </h1>
+            </div>
+        </div>
+        @for(trendingMovie of trendingMovies.results; track trendingMovie.id; let i = $index) {
+        <div class="card left-card"
+            [class.lost]="trendingMoviesCurrentIndex <= (i - 1) || trendingMoviesCurrentIndex >= (i + 3)"
+            [class.to_right]="trendingMoviesCurrentIndex >= (i + 2)"
+            [class.to_middle]="trendingMoviesCurrentIndex === (i + 1)"
+            [class.active]="trendingMoviesCurrentIndex === (i + 1)" [class.to_left]="trendingMoviesCurrentIndex <= i">
+            <a href="/movies/{{ trendingMovie.id }}">
+                <div class="news-poster">
+                    <img src="{{ imageUrl }}{{ trendingMovie.poster_path }}" alt="{{ trendingMovie.title }}"
+                        class="news-poster-img">
+                </div>
+                <div class="news-informations">
+                    <h2 class="poster-title font-white">{{ trendingMovie.title }}</h2>
+                    <div class="poster-votes">
+                        <div class="poster-stars">
+                            <i class="fa-solid fa-star font-yellow"></i>
+                            <p class="vote-average font-yellow">
+                                {{ getFloor(trendingMovie.vote_average) }}/10
+                            </p>
+                        </div>
+                        <span class="poster-vote font-white">
+                            <i class="fa-solid fa-check-to-slot font-yellow"></i>
+                            <p class="vote-average">
+                                {{ trendingMovie.vote_count }} oy
+                            </p>
+                        </span>
+                    </div>
+                    <div class="poster-description">
+                        <p class="font-white ellipsis">
+                            {{ trendingMovie.overview }}
+                        </p>
+                    </div>
+                    <span class="poster-cast-title font-white">
+                        <i class="fa-solid fa-genderless font-yellow"></i>
+                        <p class="vote-average ellipsis">
+                            {{ trendingMovie.genre_ids }}
+                        </p>
+                    </span>
+                    <span class="poster-cast-title font-white">
+                        <i class="fa-solid fa-calendar-days font-yellow"></i>
+                        <p class="vote-average">
+                            {{ trendingMovie.release_date | date: 'd MMMM y' }}
+                        </p>
+                    </span>
+                </div>
+            </a>
+        </div>
+        }
+    </section>
+    }
+
+    <!-- popular movies -->
+    @if (popularMovies) {
+    <section id="populars" class="populars">
+        <a (click)="getPreviousPopularMovies()" class="change-card-poster-first">
+            <i class="fa-solid fa-chevron-left change-card-poster"></i>
+        </a>
+        <a (click)="getNextPopularMovies()" class="change-card-poster-second">
+            <i class="fa-solid fa-chevron-right change-card-poster"></i>
+        </a>
+        <div class="container">
+            <div class="title-section">
+                <i class="fa-solid fa-fire font-yellow"></i>
+                <h1 class="title font-white">
+                    Popüler Filmler
+                </h1>
+            </div>
+        </div>
+        @for(popularMovie of popularMovies.results; track popularMovie.id; let i = $index) {
+        <div class="card left-card"
+            [class.lost]="popularMoviesCurrentIndex <= (i - 1) || popularMoviesCurrentIndex >= (i + 3)"
+            [class.to_right]="popularMoviesCurrentIndex >= (i + 2)"
+            [class.to_middle]="popularMoviesCurrentIndex === (i + 1)"
+            [class.active]="popularMoviesCurrentIndex === (i + 1)" [class.to_left]="popularMoviesCurrentIndex <= i">
+            <a href="/movies/{{ popularMovie.id }}">
+                <div class="news-poster">
+                    <img src="{{ imageUrl }}{{ popularMovie.poster_path }}" alt="{{ popularMovie.title }}"
+                        class="news-poster-img">
+                </div>
+                <div class="news-informations">
+                    <h2 class="poster-title font-white">{{ popularMovie.title }}</h2>
+                    <div class="poster-votes">
+                        <div class="poster-stars">
+                            <i class="fa-solid fa-star font-yellow"></i>
+                            <p class="vote-average font-yellow">
+                                {{ getFloor(popularMovie.vote_average) }}/10
+                            </p>
+                        </div>
+                        <span class="poster-vote font-white">
+                            <i class="fa-solid fa-check-to-slot font-yellow"></i>
+                            <p class="vote-average">
+                                {{ popularMovie.vote_count }} oy
+                            </p>
+                        </span>
+                    </div>
+                    <div class="poster-description">
+                        <p class="font-white ellipsis">
+                            {{ popularMovie.overview }}
+                        </p>
+                    </div>
+                    <span class="poster-cast-title font-white">
+                        <i class="fa-solid fa-genderless font-yellow"></i>
+                        <p class="vote-average ellipsis">
+                            {{ popularMovie.genre_ids }}
+                        </p>
+                    </span>
+                    <span class="poster-cast-title font-white">
+                        <i class="fa-solid fa-calendar-days font-yellow"></i>
+                        <p class="vote-average">
+                            {{ popularMovie.release_date | date: 'd MMMM y' }}
+                        </p>
+                    </span>
+                </div>
+            </a>
+        </div>
+        }
+    </section>
+    }
+
+    <!-- trending tv shows -->
+    @if (trendingTvshows) {
+    <section id="trendings2" class="trendings2">
+        <a (click)="getPreviousTrendingTvshow()" class="change-card-poster-first">
+            <i class="fa-solid fa-chevron-left change-card-poster"></i>
+        </a>
+        <a (click)="getNextTrendingTvshow()" class="change-card-poster-second">
+            <i class="fa-solid fa-chevron-right change-card-poster"></i>
+        </a>
+        <div class="container">
+            <div class="title-section">
+                <i class="fa-solid fa-fire font-yellow"></i>
+                <h1 class="title font-white">
+                    Trend Diziler
+                </h1>
+            </div>
+        </div>
+        @for(trendingTvShow of trendingTvshows.results; track trendingTvShow.id; let i = $index) {
+        <div class="card left-card"
+            [class.lost]="trendingTvshowsCurrentIndex <= (i - 1) || trendingTvshowsCurrentIndex >= (i + 3)"
+            [class.to_right]="trendingTvshowsCurrentIndex >= (i + 2)"
+            [class.to_middle]="trendingTvshowsCurrentIndex === (i + 1)"
+            [class.active]="trendingTvshowsCurrentIndex === (i + 1)" [class.to_left]="trendingTvshowsCurrentIndex <= i">
+            <a href="/tv-shows/{{ trendingTvShow.id }}">
+                <div class="news-poster">
+                    <img src="{{ imageUrl }}{{ trendingTvShow.poster_path }}" alt="{{ trendingTvShow.name }}"
+                        class="news-poster-img">
+                </div>
+                <div class="news-informations">
+                    <h2 class="poster-title font-white">{{ trendingTvShow.name }}</h2>
+                    <div class="poster-votes">
+                        <div class="poster-stars">
+                            <i class="fa-solid fa-star font-yellow"></i>
+                            <p class="vote-average font-yellow">
+                                {{ getFloor(trendingTvShow.vote_average) }}/10
+                            </p>
+                        </div>
+                        <span class="poster-vote font-white">
+                            <i class="fa-solid fa-check-to-slot font-yellow"></i>
+                            <p class="vote-average">
+                                {{ trendingTvShow.vote_count }} oy
+                            </p>
+                        </span>
+                    </div>
+                    <div class="poster-description">
+                        <p class="font-white ellipsis">
+                            {{ trendingTvShow.overview }}
+                        </p>
+                    </div>
+                    <span class="poster-cast-title font-white">
+                        <i class="fa-solid fa-genderless font-yellow"></i>
+                        <p class="vote-average ellipsis">
+                            {{ trendingTvShow.genre_ids }}
+                        </p>
+                    </span>
+                    <span class="poster-cast-title font-white">
+                        <i class="fa-solid fa-calendar-days font-yellow"></i>
+                        <p class="vote-average">
+                            {{ trendingTvShow.first_air_date }}
+                        </p>
+                    </span>
+                </div>
+            </a>
+        </div>
+        }
+    </section>
+    }
+
+    <!-- popular tv shows -->
+    @if (popularTvshows) {
+    <section id="populars2" class="populars2">
+        <a (click)="getPreviousPopularTvshow()" class="change-card-poster-first">
+            <i class="fa-solid fa-chevron-left change-card-poster"></i>
+        </a>
+        <a (click)="getNextPopularTvshow()" class="change-card-poster-second">
+            <i class="fa-solid fa-chevron-right change-card-poster"></i>
+        </a>
+        <div class="container">
+            <div class="title-section">
+                <i class="fa-solid fa-fire font-yellow"></i>
+                <h1 class="title font-white">
+                    Popüler Diziler
+                </h1>
+            </div>
+        </div>
+        @for(popularTvshow of popularTvshows.results; track popularTvshow.id; let i = $index) {
+        <div class="card left-card"
+            [class.lost]="popularTvshowsCurrentIndex <= (i - 1) || popularTvshowsCurrentIndex >= (i + 3)"
+            [class.to_right]="popularTvshowsCurrentIndex >= (i + 2)"
+            [class.to_middle]="popularTvshowsCurrentIndex === (i + 1)"
+            [class.active]="popularTvshowsCurrentIndex === (i + 1)" [class.to_left]="popularTvshowsCurrentIndex <= i">
+            <a href="/tv-shows/{{ popularTvshow.id }}">
+                <div class="news-poster">
+                    <img src="{{ imageUrl }}{{ popularTvshow.poster_path }}" alt="{{ popularTvshow.name }}"
+                        class="news-poster-img">
+                </div>
+                <div class="news-informations">
+                    <h2 class="poster-title font-white">{{ popularTvshow.name }}</h2>
+                    <div class="poster-votes">
+                        <div class="poster-stars">
+                            <i class="fa-solid fa-star font-yellow"></i>
+                            <p class="vote-average font-yellow">
+                                {{ getFloor(popularTvshow.vote_average) }}/10
+                            </p>
+                        </div>
+                        <span class="poster-vote font-white">
+                            <i class="fa-solid fa-check-to-slot font-yellow"></i>
+                            <p class="vote-average">
+                                {{ popularTvshow.vote_count }} oy
+                            </p>
+                        </span>
+                    </div>
+                    <div class="poster-description">
+                        <p class="font-white ellipsis">
+                            {{ popularTvshow.overview }}
+                        </p>
+                    </div>
+                    <span class="poster-cast-title font-white">
+                        <i class="fa-solid fa-genderless font-yellow"></i>
+                        <p class="vote-average ellipsis">
+                            {{ popularTvshow.genre_ids }}
+                        </p>
+                    </span>
+                    <span class="poster-cast-title font-white">
+                        <i class="fa-solid fa-calendar-days font-yellow"></i>
+                        <p class="vote-average">
+                            {{ popularTvshow.first_air_date | date: 'd MMMM y' }}
+                        </p>
+                    </span>
+                </div>
+            </a>
+        </div>
+        }
+    </section>
+    }
+
+
+    <div class="back-to-top">
+        <a href="#welcome">
+            <i class="fa-solid fa-chevron-up font-white"></i>
+        </a>
+    </div>
+
+</div>
+
+
+}

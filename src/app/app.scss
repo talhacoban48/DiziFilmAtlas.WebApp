@@ -1,0 +1,10 @@
+.bg-dark {
+    background-color: var(--dark);
+}
+
+.wide-open {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    border: 1px solid var(--dark);
+}
