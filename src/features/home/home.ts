@@ -4,7 +4,8 @@ import { finalize, forkJoin, tap } from 'rxjs';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
 import { TvShow } from '../../core/interfaces/tv-shows.interface';
-import { HomeService } from '../../core/services/home.service';
+import { MoviesService } from '../../core/services/movies.service';
+import { TvShowsService } from '../../core/services/tvshows.service';
 import { environment } from '../../environments/environment';
 import { Spinner } from '../../shared/spinner/spinner';
 
@@ -29,32 +30,33 @@ export class Home {
   popularTvshows?: GenericResponse<TvShow[]> = undefined;
 
   constructor(
-    private homeService: HomeService,
+    private movieService: MoviesService,
+    private tvShowService: TvShowsService,
   ) {
 
     const observables = [
-      this.homeService.getTrendingMovies()
+      this.movieService.getTrendingMovies()
         .pipe(
           tap(res => {
             this.trendingMovies = res;
             this.trendingMoviesCurrentIndex = res.results.length;
           }),
         ),
-      this.homeService.getTrendingTvShows()
+      this.tvShowService.getTrendingTvShows()
         .pipe(
           tap(res => {
             this.trendingTvshows = res;
             this.trendingTvshowsCurrentIndex = res.results.length;
           }),
         ),
-      this.homeService.getPopularMovies()
+      this.movieService.getPopularMovies(1)
         .pipe(
           tap(res => {
             this.popularMovies = res;
             this.popularMoviesCurrentIndex = res.results.length;
           }),
         ),
-      this.homeService.getPopularTvShows()
+      this.tvShowService.getPopularTvShows(1)
         .pipe(
           tap(res => {
             res.results = res.results.slice(0, 18)
