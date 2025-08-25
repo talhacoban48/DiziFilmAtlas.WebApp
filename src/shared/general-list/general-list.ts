@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { ListChip, menuForCasts, menuForMovies, menuForTvShows } from '../../core/data/list-chips';
 import { roles } from '../../core/enums/roles.enum';
 import { Cast } from '../../core/interfaces/cast.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
@@ -27,26 +28,9 @@ export class GeneralList implements OnChanges {
 
   menu: { label: string, name: string }[] = [];
 
-  menuForMovies: { label: string, name: string }[] = [
-    { label: "nowplaying", name: "Vizyonda" },
-    { label: "popular", name: "Popüler" },
-    { label: "toprated", name: "En Yüksek Puan Alanlar" },
-    { label: "upcoming", name: "Yakında" },
-    { label: "discover", name: "Keşfet" },
-  ];
-
-  menuForTvShows: { label: string, name: string }[] = [
-    { label: "airingtoday", name: "Bugün Popüler" },
-    { label: "airing", name: "Popüler" },
-    { label: "toprated", name: "En Yüksek Puan Alanlar" },
-    { label: "upcoming", name: "Yakında" },
-    { label: "discover", name: "Keşfet" },
-  ];
-
-  menuForCasts: { label: string, name: string }[] = [
-    { label: "popular", name: "Popüler" },
-    { label: "trending", name: "Bu Haftanın Yükselenleri" }
-  ];
+  menuForMovies: ListChip[] = menuForMovies
+  menuForTvShows: ListChip[] = menuForTvShows
+  menuForCasts: ListChip[] = menuForCasts
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes["generalList"]?.currentValue) {
