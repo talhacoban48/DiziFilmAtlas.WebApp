@@ -1,0 +1,68 @@
+/* not found */
+
+#not-found {
+    background-image: url("/assets/img/error-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.not-found {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    padding-top: 5rem;
+}
+
+.not-found-four h1 {
+    font-size: 22rem;
+    font-weight: 100;
+}
+
+.page-not-found {
+    font-size: 3.5rem;
+    font-weight: 100;
+    padding-top: 3rem;
+}
+
+.logo-box {
+    position: absolute;
+    top: 1rem;
+}
+
+.logo {
+    width: 8rem;
+}
+
+.not-found-image-box img {
+    width: 30rem;
+}
+
+@media (max-width: 566px) {
+
+    .not-found-four h1 {
+        font-size: 12rem;
+        font-weight: 100;
+    }
+
+    .logo {
+        width: 5rem;
+    }
+
+    .not-found-image-box img {
+        width: 15rem;
+    }
+
+    .not-found {
+        gap: .5rem;
+    }
+
+}

@@ -4,7 +4,7 @@ import { finalize, map } from 'rxjs';
 import { CastsSearchUrlParams } from '../../core/enums/url-params.enum';
 import { Cast } from '../../core/interfaces/cast.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
-import { PeopleService } from '../../core/services/casts.service';
+import { CastService } from '../../core/services/casts.service';
 import { environment } from '../../environments/environment';
 import { GeneralList } from '../../shared/general-list/general-list';
 import { Spinner } from '../../shared/spinner/spinner';
@@ -23,7 +23,7 @@ export class Casts {
   page: number = 1;
 
   constructor(
-    private castService: PeopleService,
+    private castService: CastService,
     private route: ActivatedRoute,
   ) { }
 

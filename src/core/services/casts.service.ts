@@ -8,7 +8,7 @@ import { GenericResponse } from "../interfaces/generic-response.interface";
 @Injectable({
     providedIn: "root"
 })
-export class PeopleService {
+export class CastService {
 
     private basePath = environment.apiBasePath;
 
