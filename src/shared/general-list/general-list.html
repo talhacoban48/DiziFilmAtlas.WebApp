@@ -1,0 +1,117 @@
+<section class="general-list bg-dark">
+    <div class="container">
+        <div style="height: 5rem;"></div>
+        <div class="object-menu">
+            <ul class="object-kind">
+                @for (item of menu; track item.label; let i = $index) {
+                <li class="object-kind-item">
+                    @if(i == menu.length - 1 && kind != "casts") {
+                    <a [class.btnify]=" currentTitle==item.label" [class.btn-primary]="currentTitle==item.label"
+                        class="font-white" [routerLink]="`/${kind}/${item.label}`">
+                        <i class="fa-solid fa-glasses font-yellow"></i>
+                        {{item.name}}
+                    </a>
+                    } @else {
+                    <a [class.btnify]=" currentTitle==item.label" [class.btn-primary]="currentTitle==item.label"
+                        class="font-white" [routerLink]="`/${kind}/${item.label}/1`">
+                        <i class="fa-solid fa-glasses font-yellow"></i>
+                        {{item.name}}
+                    </a>
+                    }
+                </li>
+                }
+            </ul>
+        </div>
+        <div class="objects">
+            @for (data of generalList.results; track data.id; let i = $index) {
+            <div class="object">
+                <a [href]="`/${kind}/${data.id}`">
+                    <div class="object-poster-box">
+                        @if (isMovie(data) || isTvShow(data)) {
+                        <img src="{{ imageUrl }}{{ data.poster_path }}" class="object-poster">
+                        } @else {
+                        <img src="{{ imageUrl }}{{ data.profile_path }}" class="object-poster">
+                        }
+                    </div>
+                    <div class="object-details">
+                        <div class="object-informations font-white">
+                            @if (isMovie(data) || isTvShow(data)) {
+                            <p class="vote_average font-yellow">
+                                <i class="fa-solid fa-star font-yellow"></i>
+                                {{ getFloor(data.vote_average) }}/10
+                            </p>
+                            <p class="object-votes font-soft-pink">
+                                <i class="fa-solid fa-comment"></i>
+                                {{ data.vote_count }}
+                            </p>
+                            }
+                            @if (isMovie(data)) {
+                            <p class="object-release-year font-soft-pink">
+                                <i class="fa-solid fa-calendar"></i>
+                                {{ data.release_date | date:'yyyy' }}
+                            </p>
+                            } @else if (isTvShow(data)) {
+                            <p class="object-release-year font-soft-pink">
+                                <i class="fa-solid fa-calendar"></i>
+                                {{ data.first_air_date | date:'yyyy' }}
+                            </p>
+                            }
+                            @if (isCast(data)) {
+                            <p class="vote_average font-yellow">
+                                <i class="fa-solid fa-star font-yellow"></i>
+                                {{ getFloor(data.popularity) }}/30
+                            </p>
+                            <p class="object-role font-soft-pink">
+                                <i class="fa-solid fa-street-view"></i>
+                                {{ getRole(data.known_for_department) }}
+                            </p>
+                            }
+                        </div>
+                        @if (isMovie(data)) {
+                        <p class="object-title font-white ellipsis2">{{ data.title }}</p>
+                        } @else {
+                        <p class="object-title font-white ellipsis2">{{ data.name }}</p>
+                        }
+                        @if (isCast(data) && data.known_for && data.known_for.length > 0) {
+                        <span class="object-known-with font-light">
+                            Şu yapımlarla bilinir;
+                            @for (item of data.known_for; track item.id; let i = $index) {
+                            <a [routerLink]="['/', item.media_type === 'movie' ? 'movies' : 'tvshows', item.id]"
+                                class="object-known-with-item font-light ellipsis2">
+                                @if (item.media_type == "movie") {
+                                <i class="fa-solid fa-video"></i>
+                                } @else if (item.media_type == "tv") {
+                                <i class="fa-solid fa-tv"></i>
+                                }
+                                {{ item?.title ? item.title : item.original_name }}
+                            </a>
+                            }
+                        </span>
+                        }
+                    </div>
+                </a>
+            </div>
+            }
+        </div>
+        <div class="pages">
+            <div class="pages-box">
+                <a [href]="`/${kind}/${currentTitle}/${currentPage - 1}`" class="page font-white"
+                    [class.disabled]="currentPage-1<=0">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+                @for (page of getPagesArray(); track page; let i = $index) {
+                <div>
+                    <a [class.page-btn]="page == generalList.page" [href]="`/${kind}/${currentTitle}/${page}`"
+                        class="page font-white">
+                        {{ page }}
+                    </a>
+                </div>
+                }
+                <a [href]="`/${kind}/${currentTitle}/${currentPage + 1}`" class="page font-white"
+                    [class.disabled]="currentPage+1>=generalList.total_pages || currentPage+1>=500">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
