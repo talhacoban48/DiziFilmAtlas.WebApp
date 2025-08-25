@@ -1,1 +1,269 @@
-<p>movie-details works!</p>
+@if (isLoading) {
+<app-spinner></app-spinner>
+}
+@else {
+@if (movieDetails) { <div style="height: 15rem;"></div>
+<div id="details" class="bg-dark">
+    <div class="container">
+        <div class="details bg-darker">
+            <div class="detail-title font-light">
+                <p>{{movieDetails.title}}</p>
+            </div> <img [src]="`${imageUrl}/${movieDetails.backdrop_path}`" [alt]="`${movieDetails.original_title}`"
+                class="backdrop-image">
+            @if (images.length > 0) {
+            <div class="title font-light">
+                <p>Medya;</p>
+            </div>
+            <div class="images-box">
+                <div class="images">
+                    @for (image of images; track image.file_path; let i = $index) {
+                    <div class="image-detail">
+                        <a class="image" [href]="`${imageUrl}/${image.file_path}`" target="_blank">
+                            <div class="image-image-box">
+                                <img [src]="`${imageUrl}/${image.file_path}`" class="image-image">
+                            </div>
+                        </a>
+                    </div>
+                    }
+                </div>
+                <div class="slider-buttons">
+                    <a (click)="toImageLeft()" class="slide-cast-list">
+                        <i class="fa-solid fa-angles-left font-yellow"></i>
+                    </a>
+                    <a (click)="toImageLeft()" class="slide-cast-list">
+                        <i class="fa-solid fa-angle-left font-yellow"></i>
+                    </a>
+                    <a (click)="toImageRight()" class="slide-cast-list">
+                        <i class="fa-solid fa-angle-right font-yellow"></i>
+                    </a>
+                    <a (click)="toImageRight()" class="slide-cast-list">
+                        <i class="fa-solid fa-angles-right font-yellow"></i>
+                    </a>
+                </div>
+            </div>
+            }
+            <div class="title font-light">
+                <p>Detaylar;</p>
+            </div>
+            <div class="extra-details">
+                <div class="poster-image-box">
+                    <img [src]="`${imageUrl}/${movieDetails.poster_path}`" [alt]="`${movieDetails.original_title}`"
+                        class="poster-image">
+                    @if (isInUserFavorite) {
+                    <button (click)="addFavorite(movieDetails.id)" type="button" class="btn btn-primary">
+                        Favorilere Ekle
+                    </button>
+                    } @else {
+                    <button (click)="RemoveFavorite(movieDetails.id)" type="button" class="btn btn-primary">
+                        Favorilere Çıkar
+                    </button>
+                    }
+                </div>
+                <div class="extra-details-box">
+                    <div class="overview font-light">
+                        <p>{{movieDetails.overview}}</p>
+                    </div>
+                    <div class="font-yellow">
+                        <i class="fa-solid fa-star font-yellow"></i>
+                        {{ getFloor(movieDetails.vote_average) }}/10
+                    </div>
+                    <div class="font-light">
+                        <i class="fa-solid fa-calendar"></i>
+                        {{ movieDetails.release_date | dayMonthYear }}
+                    </div>
+
+                    <div class="font-light">
+                        <i class="fa-solid fa-clock"></i>
+                        {{ movieDetails.runtime | duration }}
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Tür:</span>
+                        @for (item of movieDetails.genres; track item.id; let i = $index) {
+                        <span class="value">
+                            <a class="hover-effect">
+                                {{item.name}} @if (i != movieDetails.genres.length - 1) {,}
+                            </a>
+                        </span>
+                        }
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Diller:</span>
+                        @for (item of movieDetails.spoken_languages; track item.iso_639_1; let i = $index) {
+                        <span class="value">
+                            <a class="hover-effect">
+                                {{item.name}} @if (i != movieDetails.spoken_languages.length - 1) {,}
+                            </a>
+                        </span>
+                        }
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Ülke:</span>
+                        <span class="value">
+                            @for (country of movieDetails.production_countries; track country.iso_3166_1; let i =
+                            $index) {
+                            <a class="hover-effect">
+                                <span class="country">
+                                    <p class="font-light">{{country.iso_3166_1}}</p>
+                                    <img [src]="country.flag_path" [alt]="country.name" class="flag-image">
+                                </span>
+                            </a>
+                            }
+                        </span>
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Yapımcı:</span>
+                        @for (item of movieDetails.production_companies; track item.id; let i = $index) {
+                        <span class="value">
+                            <a class="hover-effect">
+                                <span class="company">
+                                    <p class="font-light">{{item.name | truncate}}</p>
+                                    @if (item.logo_path) {
+                                    <img [src]="`${imageUrl}/${item.logo_path}`" [alt]="item.name" class="company-logo">
+                                    }
+                                </span>
+                            </a>
+                        </span>
+                        }
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Populerlik:</span>
+                        <span class="value">{{movieDetails.popularity}}</span>
+                    </div>
+                    @if (movieDetails.budget && movieDetails.revenue) {
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Butçe:</span>
+                        <span class="value">{{movieDetails.budget | currency}}</span>
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Hasılat:</span>
+                        <span class="value">{{movieDetails.revenue | currency}}</span>
+                    </div>
+                    }
+                </div>
+            </div>
+            @if (videos.length > 0) {
+            <div class="title font-light">
+                <p>Fragman;</p>
+            </div>
+            <div class="videos-box">
+                <div class="videos">
+                    @for (video of videos; track video.key; let i = $index) {
+                    <div class="video-detail">
+                        <iframe class="video-image" [src]="getSafeUrl(video.key)" title="{{ video.name }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                        </iframe>
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+            @if (castsCrews.casts.length > 0) {
+            <div class="title font-light">
+                <p>Oyuncular;</p>
+            </div>
+            <div class="casts-crews">
+                <div class="casts">
+                    @for (cast of castsCrews.casts; track cast.cast_id; let i = $index) {
+                    <a class="cast" [routerLink]="`/casts/${cast.cast_id}`">
+                        <div class="cast-detail">
+                            <div class="cast-image-box">
+                                <img [src]="`${imageUrl}/${cast.profile_path}`" [alt]="cast.name" class="cast-image">
+                            </div>
+                            <span class="cast-character font-gray">
+                                {{cast.character | truncate: 11}}
+                            </span>
+                            <span class="cast-name font-light">
+                                {{cast.original_name | truncate: 11}}
+                            </span>
+                        </div>
+                    </a>
+                    }
+                </div>
+                <div class="slider-buttons">
+                    <a (click)="toCastLeft()" class="slide-cast-list">
+                        <i class="fa-solid fa-angles-left font-yellow"></i>
+                    </a>
+                    <a (click)="toCastLeft()" class="slide-cast-list">
+                        <i class="fa-solid fa-angle-left font-yellow"></i>
+                    </a>
+                    <a (click)="toCastRight()" class="slide-cast-list">
+                        <i class="fa-solid fa-angle-right font-yellow"></i>
+                    </a>
+                    <a (click)="toCastRight()" class="slide-cast-list">
+                        <i class="fa-solid fa-angles-right font-yellow"></i>
+                    </a>
+                </div>
+            </div>
+            }
+            @if (castsCrews.crews.length > 0) {
+            <div class="title font-light">
+                <p>Yazar ve Yönetmenler;</p>
+            </div>
+            <div class="casts-crews">
+                <div class="casts">
+                    @for (crew of castsCrews.crews; track crew.id; let i = $index) {
+                    <a class="cast" [routerLink]="`/casts/${crew.id}`">
+                        <div class="cast-detail">
+                            <div class="cast-image-box">
+                                <img [src]="`${imageUrl}/${crew.profile_path}`" [alt]="crew.name" class="cast-image">
+                            </div>
+                            <span class="cast-character font-gray">
+                                {{crew.department | truncate: 11}}
+                            </span>
+                            <span class="cast-name font-light">
+                                {{crew.original_name | truncate: 11}}
+                            </span>
+                        </div>
+                    </a>
+                    }
+                </div>
+            </div>
+            }
+            @if (reviews.results.length > 0) {
+            <div class="title font-light">
+                <p>Yorumlar;</p>
+            </div>
+            <div class="reviews">
+                @for (review of reviews.results; track review.id; let i = $index) {
+                <div class="review">
+                    <div class="reviewer">
+                        <div class="reviewer-image-box">
+                            @if (review.author_details.avatar_path) {
+                            <img [src]="`${imageUrl}/${review.author_details.avatar_path}`" class="reviewer-image">
+                            } @else {
+                            <img [src]="'/assets/img/avatar-male.jpg'" class="reviewer-image">
+                            }
+                        </div>
+                        <div class="reviewer-name font-light">
+                            <p>
+                                <i class="fa-solid fa-circle-user"></i>
+                                {{review.author_details.name}}
+                            </p>
+                        </div>
+                        <div class="review-date font-soft-pink">
+                            <p>
+                                <i class="fa-solid fa-calendar"></i>
+                                {{review.created_at | dayMonthYear}}
+                            </p>
+                        </div>
+                        <div class="review-average font-yellow">
+                            <p>
+                                <i class="fa-solid fa-star"></i>
+                                {{ review.author_details.rating }}/10
+                            </p>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p class="font-light" [innerText]="review.content"></p>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </div>
+</div>
+}
+}

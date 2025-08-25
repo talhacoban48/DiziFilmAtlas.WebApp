@@ -12,10 +12,10 @@
     --pink: #E90074;
     --dark-pink: #D80032;
     --dark-pink: #D80032;
-    --darker: #0b0e17;
+    --darker: #1b1e21;
     --soft-pink: #F78CA2;
     --blue: #009FBD;
-    --light: #EADBC8;
+    --light: #d2ccc4;
 }
 
 * {
@@ -32,6 +32,8 @@ html {
 body {
     font-family: "Fira Sans Condensed", sans-serif;
     font-size: 1.6rem;
+    width: 100%;
+    background-color: var(--dark);
 }
 
 li {
@@ -50,6 +52,10 @@ a.disabled {
 
 .bg-dark {
     background-color: var(--dark);
+}
+
+.bg-darker {
+    background-color: var(--darker);
 }
 
 .bg-pink {
@@ -96,6 +102,11 @@ a.disabled {
     color: var(--light);
 }
 
+.container {
+    width: 1000px;
+    margin: 0 auto;
+    height: 100%;
+}
 
 /* buttons */
 .btn {
@@ -123,6 +134,11 @@ a.disabled {
     cursor: pointer;
 }
 
+.hover-effect:hover {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: var(--soft-pink);
+}
 
 @keyframes playing {
     0% {

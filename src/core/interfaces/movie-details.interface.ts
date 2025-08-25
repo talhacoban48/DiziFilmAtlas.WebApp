@@ -31,7 +31,7 @@ interface Spoken_Languages {
     name: string,
 }
 
-export interface MovieDetails {
+export interface MovieDetailsResponse {
     adult: boolean,
     backdrop_path: string,
     belongs_to_collection: Belongs_to_Collection[] | boolean,
