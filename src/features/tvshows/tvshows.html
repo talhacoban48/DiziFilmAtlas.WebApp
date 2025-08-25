@@ -1,1 +1,7 @@
-<p>tvshows works!</p>
+@if (isLoading) {
+<app-spinner></app-spinner>
+} @else {
+@if (tvShows) {
+<app-general-list [currentTitle]="currentTitle" [currentPage]="page" [generalList]="tvShows"></app-general-list>
+}
+}

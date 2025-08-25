@@ -2,6 +2,6 @@
 <app-spinner></app-spinner>
 } @else {
 @if (movies) {
-
+<app-general-list [currentTitle]="currentTitle" [currentPage]="page" [generalList]="movies"></app-general-list>
 }
 }

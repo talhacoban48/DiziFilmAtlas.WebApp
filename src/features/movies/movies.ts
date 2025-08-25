@@ -6,11 +6,12 @@ import { GenericResponse } from '../../core/interfaces/generic-response.interfac
 import { Movie } from '../../core/interfaces/movie.interface';
 import { MoviesService } from '../../core/services/movies.service';
 import { environment } from '../../environments/environment';
+import { GeneralList } from '../../shared/general-list/general-list';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-movies',
-  imports: [Spinner],
+  imports: [Spinner, GeneralList],
   templateUrl: './movies.html',
   styleUrl: './movies.scss'
 })
@@ -18,7 +19,7 @@ export class Movies {
 
   imageUrl = environment.cdnUrl;
   movies!: GenericResponse<Movie[]>;
-  current_title: MovieSearchUrlParams = MovieSearchUrlParams.NowPlaying;
+  currentTitle: MovieSearchUrlParams = MovieSearchUrlParams.NowPlaying;
   page: number = 1;
   isLoading: boolean = true;
 
@@ -30,39 +31,36 @@ export class Movies {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.isLoading = true;
-      this.current_title = params["category"];
-      this.page = params["page"];
+      this.currentTitle = params["category"];
+      this.page = Number(params["page"]) ?? 1;
+      if (!this.page) this.page = 1;
 
-      if (!this.page) {
-        this.page = 1;
-      }
-
-      if (!this.current_title || this.current_title == MovieSearchUrlParams.NowPlaying) {
-        this.current_title = MovieSearchUrlParams.NowPlaying;
+      if (!this.currentTitle || this.currentTitle == MovieSearchUrlParams.NowPlaying) {
+        this.currentTitle = MovieSearchUrlParams.NowPlaying;
         this.moviesService.getNowPlayingMovies(this.page)
           .pipe(
             finalize(() => this.isLoading = false),
             map(movies => this.movies = movies)
           )
           .subscribe();
-      } else if (this.current_title == MovieSearchUrlParams.Popular) {
-        this.current_title = MovieSearchUrlParams.Popular;
+      } else if (this.currentTitle == MovieSearchUrlParams.Popular) {
+        this.currentTitle = MovieSearchUrlParams.Popular;
         this.moviesService.getPopularMovies(this.page)
           .pipe(
             finalize(() => this.isLoading = false),
             map(movies => this.movies = movies)
           )
           .subscribe();
-      } else if (this.current_title == MovieSearchUrlParams.TopRated) {
-        this.current_title = MovieSearchUrlParams.TopRated;
+      } else if (this.currentTitle == MovieSearchUrlParams.TopRated) {
+        this.currentTitle = MovieSearchUrlParams.TopRated;
         this.moviesService.getTopRatedMovies(this.page)
           .pipe(
             finalize(() => this.isLoading = false),
             map(movies => this.movies = movies)
           )
           .subscribe();
-      } else if (this.current_title == MovieSearchUrlParams.UpComing) {
-        this.current_title = MovieSearchUrlParams.UpComing;
+      } else if (this.currentTitle == MovieSearchUrlParams.UpComing) {
+        this.currentTitle = MovieSearchUrlParams.UpComing;
         this.moviesService.getUpcomingMovies(this.page)
           .pipe(
             finalize(() => this.isLoading = false),

@@ -1,1 +1,7 @@
-<p>casts works!</p>
+@if (isLoading) {
+<app-spinner></app-spinner>
+} @else {
+@if (casts) {
+<app-general-list [currentTitle]="currentTitle" [currentPage]="page" [generalList]="casts"></app-general-list>
+}
+}

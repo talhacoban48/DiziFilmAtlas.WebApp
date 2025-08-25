@@ -4,7 +4,7 @@
 
 :root {
     --turquose: rgb(36, 137, 120);
-    --white: #cec7c7;
+    --white: #ffffff;
     --black: rbg(0, 0, 0);
     --gray: #45474B;
     --dark: #22262a;
@@ -40,6 +40,7 @@ li {
 
 a {
     text-decoration: none;
+    pointer-events: all;
 }
 
 a.disabled {
@@ -51,6 +52,9 @@ a.disabled {
     background-color: var(--dark);
 }
 
+.bg-pink {
+    background-color: var(--pink);
+}
 
 .font-turquose {
     color: var(--turquose);
@@ -80,6 +84,10 @@ a.disabled {
     color: var(--pink);
 }
 
+.font-soft-pink {
+    color: var(--soft-pink);
+}
+
 .font-blue {
     color: var(--blue);
 }
@@ -100,6 +108,7 @@ a.disabled {
     margin: .3rem 0;
     font-size: 1rem;
     border: 1px solid var(--dark-pink);
+    pointer-events: all;
 }
 
 .btn-primary {
@@ -235,7 +244,7 @@ a.disabled {
     }
 
     .container {
-        width: 1200px;
+        width: 1000px;
         margin: 0 auto;
     }
 }
