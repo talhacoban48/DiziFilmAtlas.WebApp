@@ -26,7 +26,7 @@ export const routes: Routes = [
             { path: '', component: Tvshows },
             { path: 'discover', component: Tvshows },
             { path: ':category/:page', component: Tvshows },
-            { path: ':tvshowId', component: TvshowDetails },
+            { path: ':tvShowId', component: TvshowDetails },
         ],
     },
     {
@@ -34,7 +34,7 @@ export const routes: Routes = [
         children: [
             { path: '', component: Casts },
             { path: ":category/:page", component: Casts },
-            { path: "cast/:castId", component: CastDetails }
+            { path: ":castId", component: CastDetails }
         ],
     },
     { path: 'notfound', component: NotFound },

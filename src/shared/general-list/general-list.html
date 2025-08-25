@@ -25,7 +25,7 @@
         <div class="objects">
             @for (data of generalList.results; track data.id; let i = $index) {
             <div class="object">
-                <a [href]="'/movies/' + data.id">
+                <a [href]="`/${kind}/${data.id}`">
                     <div class="object-poster-box">
                         @if (isMovie(data) || isTvShow(data)) {
                         <img src="{{ imageUrl }}{{ data.poster_path }}" class="object-poster">

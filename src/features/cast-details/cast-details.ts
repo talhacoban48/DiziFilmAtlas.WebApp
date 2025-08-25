@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs';
 import { CastService } from '../../core/services/casts.service';
 import { NavigationService } from '../../core/services/navigation.service';
 import { environment } from '../../environments/environment';
@@ -26,8 +27,17 @@ export class CastDetails {
     this.route.params.subscribe(params => {
       this.isLoading = true;
       this.castId = Number(params['castId']);
-      if (this.castId) this.navigationSerive.navigateNotFound();
+      if (!this.castId) this.navigationSerive.navigateNotFound();
 
+      this.castService.getCastDetails(this.castId)
+        .pipe(
+          map(res => {
+            console.log(res)
+          })
+        )
+        .subscribe();
+
+      console.log("this.castId", this.castId)
     })
   }
 }

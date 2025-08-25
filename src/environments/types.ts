@@ -4,6 +4,7 @@ export interface IEnvironment {
     apiBasePath: string;
     apiKey: string;
     cdnUrl: string;
+    restCountriesPath: string;
 }
 
 export enum Stage {

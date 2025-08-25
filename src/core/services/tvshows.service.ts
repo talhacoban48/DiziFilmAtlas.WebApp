@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { genres } from '../data/genres';
 import { GenericResponse } from '../interfaces/generic-response.interface';
 import { TvShow } from '../interfaces/tv-shows.interface';
+import { TvShowDetails } from '../interfaces/tvshow-details.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,7 @@ export class TvShowsService {
 
     private genres = genres;
     private basePath = environment.apiBasePath;
+    private countryUrl = environment.restCountriesPath;
 
     constructor(
         private http: HttpClient,
@@ -50,6 +52,24 @@ export class TvShowsService {
         const url = `${this.basePath}/tv/${tvShowId}/similar?language=tr-tr&page=${page}`
         return this.getTvShows(url);
     };
+
+    getTvShowDetails(tvShowId: number): Observable<TvShowDetails> {
+        const url = `${this.basePath}/tv/${tvShowId}?language=tr-tr`
+        return this.http.get<TvShowDetails>(url).pipe(
+            map(result => {
+                for (let i in result.production_countries) {
+                    let country_data = result.production_countries[i];
+                    this.http.get(this.countryUrl + country_data.iso_3166_1).subscribe(country => {
+                        let country_flag = (country as Array<any>)[0].flags.png;
+                        if (country_flag) {
+                            result.production_countries[i].flag_path = country_flag;
+                        }
+                    })
+                }
+                return result;
+            })
+        );
+    }
 
     private getTvShows(url: string): Observable<GenericResponse<TvShow[]>> {
         return this.http.get<GenericResponse<TvShow[]>>(url)
