@@ -58,6 +58,32 @@
                         Favorilere Çıkar
                     </button>
                     }
+                    <div class="share">
+                        <a [href]="`https://api.whatsapp.com/send?text=${movieDetails.title}+${basePath}/movies/${movieId}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-whatsapp font-light"></i>
+                            </div>
+                        </a>
+                        <a [href]="`https://t.me/share/url?url=${basePath}/movies/${movieId}/&text=${movieDetails.title}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-telegram font-light"></i>
+                            </div>
+                        </a>
+                        <a [href]="`https://x.com/intent/post?text=${movieDetails.title}=${basePath}/movies/${movieId}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-x-twitter font-light"></i>
+                            </div>
+                        </a>
+                        <a [href]="`https://tr.pinterest.com/pin/create/button/?url=${basePath}/movies/${movieId}/${movieDetails.title}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-pinterest font-light"></i>
+                            </div>
+                        </a>
+                    </div>
                 </div>
                 <div class="extra-details-box">
                     <div class="overview font-light">

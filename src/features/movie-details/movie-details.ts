@@ -36,6 +36,7 @@ import { Spinner } from '../../shared/spinner/spinner';
 })
 export class MovieDetails {
 
+  basePath: string = environment.basePath;
   imageUrl: string = environment.cdnUrl;
   isLoading: boolean = false;
   movieId!: number;

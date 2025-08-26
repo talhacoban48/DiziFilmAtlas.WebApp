@@ -400,3 +400,28 @@
         }
     }
 }
+
+.share {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 0.7rem;
+
+    .share-with-button {
+        width: 2.7rem;
+        height: 2.7rem;
+        border-radius: 0.9rem;
+        border: 1px solid var(--yellow);
+        background-color: var(--gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .share-with-button:hover {
+        background-color: var(--pink);
+        transition: all 0.2s ease-in-out;
+    }
+}

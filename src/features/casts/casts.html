@@ -2,6 +2,11 @@
 <app-spinner></app-spinner>
 } @else {
 @if (casts) {
-<app-general-list [currentTitle]="currentTitle" [currentPage]="page" [generalList]="casts"></app-general-list>
+<div style="height: 5rem;"></div>
+<section class="general-list">
+    <div class="container">
+        <app-general-list [currentTitle]="currentTitle" [currentPage]="page" [generalList]="casts"></app-general-list>
+    </div>
+</section>
 }
 }

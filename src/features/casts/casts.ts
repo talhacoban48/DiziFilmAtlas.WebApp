@@ -31,6 +31,8 @@ export class Casts {
     this.route.params.subscribe(params => {
       this.isLoading = true;
       this.currentTitle = params["category"];
+      console.log(this.currentTitle)
+
       this.page = Number(params["page"]) ?? 1;
       if (!this.page) this.page = 1;
 

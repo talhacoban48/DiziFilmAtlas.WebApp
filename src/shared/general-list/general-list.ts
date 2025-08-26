@@ -76,7 +76,7 @@ export class GeneralList implements OnChanges {
     if ((item as TvShow).name !== undefined && (item as TvShow).first_air_date !== undefined) {
       return "tvshow";
     }
-    if ((item as Cast).id !== undefined && (item as Cast).known_for_department !== undefined) {
+    if ((item as Cast).profile_path !== undefined || (item as Cast).gender !== undefined) {
       return "cast";
     }
     return undefined;
