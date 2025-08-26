@@ -33,7 +33,6 @@ export class GeneralList implements OnChanges {
   menuForTvShows: ListChip[] = menuForTvShows
   menuForCasts: ListChip[] = menuForCasts
 
-
   constructor(protected helperService: HelperService) { }
 
   ngOnChanges(changes: SimpleChanges): void {

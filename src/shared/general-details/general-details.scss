@@ -88,12 +88,12 @@
             width: 100%;
 
             .key {
-                width: 20%;
+                width: 25%;
                 min-width: 100px;
             }
 
             .values {
-                width: 80%;
+                width: 75%;
                 display: flex;
                 flex-direction: row;
                 align-items: flex-start;
@@ -141,11 +141,6 @@
     }
 
 }
-
-
-
-
-
 
 .casts-crews {
     width: 100%;
@@ -261,13 +256,11 @@
             margin-bottom: 5rem;
 
             .image-image-box {
-                width: calc(125px * 1.778);
                 height: 125px;
                 overflow: hidden;
             }
 
             .image-image {
-                width: calc(125px * 1.778);
                 height: 125px;
             }
         }
@@ -604,6 +597,26 @@
         }
     }
 
+    .extra-details {
+
+        .extra-details-box {
+
+            .key-value {
+
+                .key {
+                    width: 40%;
+                    min-width: 100px;
+                }
+
+                .values {
+                    width: 60%;
+
+                }
+            }
+        }
+
+    }
+
 }
 
 /* landscape */
@@ -623,12 +636,71 @@
             width: 100%;
         }
     }
+
+    .extra-details {
+
+        .extra-details-box {
+
+            .key-value {
+
+                .key {
+                    width: 40%;
+                    min-width: 100px;
+                }
+
+                .values {
+                    width: 60%;
+
+                }
+            }
+        }
+
+    }
 }
 
-@media (min-width: 800px) and (max-width: 992px) {}
+@media (min-width: 800px) and (max-width: 992px) {
+    .extra-details {
+
+        .extra-details-box {
+
+            .key-value {
+
+                .key {
+                    width: 32%;
+                    min-width: 100px;
+                }
+
+                .values {
+                    width: 68%;
+
+                }
+            }
+        }
+    }
+}
 
 /* desktop */
-@media (min-width: 992px) and (max-width: 1120px) {}
+@media (min-width: 992px) and (max-width: 1120px) {
+    .extra-details {
+
+        .extra-details-box {
+
+            .key-value {
+
+                .key {
+                    width: 30%;
+                    min-width: 100px;
+                }
+
+                .values {
+                    width: 80%;
+
+                }
+            }
+        }
+
+    }
+}
 
 /* desktop */
 @media (min-width: 1120px) and (max-width: 1400px) {}

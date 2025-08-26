@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { forkJoin, map, Observable } from "rxjs";
 import { environment } from "../../environments/environment";
-import { CastDetail, CastFullDetails, CastImages, CastMovies, CastTvShows } from "../interfaces/cast-details.interface";
+import { CastDetailResponse, CastFullDetails, CastImages, CastMovies, CastTvShows } from "../interfaces/cast-details.interface";
 import { Cast } from "../interfaces/cast.interface";
 import { GenericResponse } from "../interfaces/generic-response.interface";
 
@@ -48,9 +48,9 @@ export class CastService {
         });
     }
 
-    private getCastBasicDetails(personId: number): Observable<CastDetail> {
+    private getCastBasicDetails(personId: number): Observable<CastDetailResponse> {
         const url = `${this.basePath}/person/${personId}?language=tr-tr`;
-        return this.http.get<CastDetail>(url);
+        return this.http.get<CastDetailResponse>(url);
     }
 
     private getCastImages(personId: number): Observable<CastImages> {
