@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { finalize, forkJoin, map } from 'rxjs';
 import { CastsCrews } from '../../core/interfaces/cast-crews.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
@@ -9,27 +8,18 @@ import { MovieDetailsResponse } from '../../core/interfaces/movie-details.interf
 import { Movie } from '../../core/interfaces/movie.interface';
 import { ReviewsResponse } from '../../core/interfaces/reviews-response.interface';
 import { Video } from '../../core/interfaces/videos-response.interface';
-import { CurrencyPipe } from '../../core/pipes/currency.pipe';
-import { DayMonthYearPipe } from '../../core/pipes/date.pipe';
-import { DurationPipe } from '../../core/pipes/time.pipe';
-import { TruncatePipe } from '../../core/pipes/truncate.pipe';
 import { HelperService } from '../../core/services/helper.service';
 import { MoviesService } from '../../core/services/movies.service';
 import { NavigationService } from '../../core/services/navigation.service';
 import { environment } from '../../environments/environment';
-import { GeneralList } from '../../shared/general-list/general-list';
+import { GeneralDetails } from '../../shared/general-details/general-details';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-movie-details',
   imports: [
-    RouterLink,
     Spinner,
-    DayMonthYearPipe,
-    DurationPipe,
-    CurrencyPipe,
-    TruncatePipe,
-    GeneralList,
+    GeneralDetails
   ],
   templateUrl: './movie-details.html',
   styleUrl: './movie-details.scss'
@@ -55,7 +45,6 @@ export class MovieDetails {
     private navigationSerive: NavigationService,
     protected helperService: HelperService,
     private route: ActivatedRoute,
-    private sanitizer: DomSanitizer
 
   ) { }
 
@@ -65,7 +54,7 @@ export class MovieDetails {
       this.movieId = Number(params['movieId']);
       if (!this.movieId) this.navigationSerive.navigateNotFound();
 
-      const observables = [
+      let observables = [
         this.movieService.getMovieDetails(this.movieId)
           .pipe(
             map(res => {
@@ -102,20 +91,10 @@ export class MovieDetails {
               // console.log("reviews", reviews);
             })
           )
-      ]
+      ];
       observables.push(this.getSimilarMovies(this.similarMoviesPage));
       forkJoin(observables).pipe(finalize(() => this.isLoading = false)).subscribe()
     })
-  }
-
-  getFloor(average: number | string): string {
-    return Number(average).toFixed(1);
-  }
-
-  getSafeUrl(key: string) {
-    const videoUrl = `https://www.youtube.com/embed/${key}?si=llfpXf6fDAEayG39`;
-    const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
-    return safeUrl;
   }
 
   addFavorite(id: number) {
@@ -162,21 +141,9 @@ export class MovieDetails {
     }
   }
 
-  getPreviousSimilarMovies() {
-    if (this.similarMoviesPage > 1) {
-      this.getSimilarMoviesByPage(this.similarMoviesPage - 1);
-    }
-  }
-
   getSimilarMoviesByPage(page: number) {
     this.similarMoviesPage = page;
     this.getSimilarMovies(page).subscribe();
-  }
-
-  getNextSimilarMovies() {
-    if (this.similarMoviesPage < 500) {
-      this.getSimilarMoviesByPage(this.similarMoviesPage + 1);
-    }
   }
 
   private getSimilarMovies(page: number) {

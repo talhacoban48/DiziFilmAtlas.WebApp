@@ -1,1 +1,409 @@
-<p>general-details works!</p>
+@if (generalDetails)
+{ <div style="height: 15rem;"></div>
+<div id="details" class="bg-dark">
+    <div class="container">
+        <div class="details bg-darker">
+            <div class="detail-title font-light">
+                @if (isMovie(generalDetails)) {
+                <p>{{generalDetails.title}}</p>
+                }
+                @if (isTvShow(generalDetails)) {
+                <p>{{generalDetails.name}}</p>
+                }
+            </div>
+            @if (isMovie(generalDetails)) {
+            <img [src]="`${imageUrl}/${generalDetails.backdrop_path}`" [alt]="`${generalDetails.original_title}`"
+                class="backdrop-image">
+            }
+            @if (isTvShow(generalDetails)) {
+            <img [src]="`${imageUrl}/${generalDetails.backdrop_path}`" [alt]="`${generalDetails.name}`"
+                class="backdrop-image">
+            }
+            @if (images.length > 0) {
+            <div class="title font-light">
+                <p>Medya</p>
+            </div>
+            <div class="images-box">
+                <div class="images">
+                    @for (image of images; track image.file_path; let i = $index) {
+                    <div class="image-detail">
+                        <a class="image" [href]="`${imageUrl}/${image.file_path}`" target="_blank">
+                            <div class="image-image-box">
+                                <img [src]="`${imageUrl}/${image.file_path}`" class="image-image">
+                            </div>
+                        </a>
+                    </div>
+                    }
+                </div>
+                <div class="slider-buttons">
+                    <a (click)="toImageLeft()" class="slide-cast-list">
+                        <i class="fa-solid fa-angles-left font-yellow"></i>
+                    </a>
+                    <a (click)="toImageLeft()" class="slide-cast-list">
+                        <i class="fa-solid fa-angle-left font-yellow"></i>
+                    </a>
+                    <a (click)="toImageRight()" class="slide-cast-list">
+                        <i class="fa-solid fa-angle-right font-yellow"></i>
+                    </a>
+                    <a (click)="toImageRight()" class="slide-cast-list">
+                        <i class="fa-solid fa-angles-right font-yellow"></i>
+                    </a>
+                </div>
+            </div>
+            }
+            <div class="title font-light">
+                <p>Detaylar</p>
+            </div>
+            <div class="extra-details">
+                <div class="poster-image-box">
+                    @if (isMovie(generalDetails)) {
+                    <img [src]="`${imageUrl}/${generalDetails.poster_path}`" [alt]="`${generalDetails.original_title}`"
+                        class="poster-image">
+                    }
+                    @if (isTvShow(generalDetails)) {
+                    <img [src]="`${imageUrl}/${generalDetails.poster_path}`" [alt]="`${generalDetails.name}`"
+                        class="poster-image">
+                    }
+                    @if (isInUserFavorite) {
+                    <button (click)="addFavorite(generalDetails.id)" type="button" class="btn btn-primary">
+                        Favorilere Ekle
+                    </button>
+                    } @else {
+                    <button (click)="RemoveFavorite(generalDetails.id)" type="button" class="btn btn-primary">
+                        Favorilere Çıkar
+                    </button>
+                    }
+                    @if (isMovie(generalDetails)) {
+                    <div class="share">
+                        <a [href]="`https://api.whatsapp.com/send?text=${generalDetails.title}+${basePath}/movies/${generalId}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-whatsapp font-light"></i>
+                            </div>
+                        </a>
+                        <a [href]="`https://t.me/share/url?url=${basePath}/movies/${generalId}/&text=${generalDetails.title}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-telegram font-light"></i>
+                            </div>
+                        </a>
+                        <a [href]="`https://x.com/intent/post?text=${generalDetails.title}=${basePath}/movies/${generalId}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-x-twitter font-light"></i>
+                            </div>
+                        </a>
+                        <a [href]="`https://tr.pinterest.com/pin/create/button/?url=${basePath}/movies/${generalId}/${generalDetails.title}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-pinterest font-light"></i>
+                            </div>
+                        </a>
+                    </div>
+                    }
+                    @if (isTvShow(generalDetails)) {
+                    <div class="share">
+                        <a [href]="`https://api.whatsapp.com/send?text=${generalDetails.name}+${basePath}/tvshows/${generalId}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-whatsapp font-light"></i>
+                            </div>
+                        </a>
+                        <a [href]="`https://t.me/share/url?url=${basePath}/tvshows/${generalId}/&text=${generalDetails.name}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-telegram font-light"></i>
+                            </div>
+                        </a>
+                        <a [href]="`https://x.com/intent/post?text=${generalDetails.name}=${basePath}/tvshows/${generalId}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-x-twitter font-light"></i>
+                            </div>
+                        </a>
+                        <a [href]="`https://tr.pinterest.com/pin/create/button/?url=${basePath}/tvshows/${generalId}/${generalDetails.name}`"
+                            target="_blank" class="share-with-button">
+                            <div class="share-with">
+                                <i class="fa-brands fa-pinterest font-light"></i>
+                            </div>
+                        </a>
+                    </div>
+                    }
+
+                </div>
+                <div class="extra-details-box">
+                    <div class="overview font-light">
+                        <p>{{generalDetails.overview}}</p>
+                    </div>
+                    <div class="font-yellow">
+                        <i class="fa-solid fa-star font-yellow"></i>
+                        {{ helperService.getFloor(generalDetails.vote_average) }}/10
+                    </div>
+                    @if (isMovie(generalDetails)) {
+                    <div class="font-light">
+                        <i class="fa-solid fa-calendar"></i>
+                        {{ generalDetails.release_date | dayMonthYear }}
+                    </div>
+                    <div class="font-light">
+                        <i class="fa-solid fa-clock"></i>
+                        {{ generalDetails.runtime | duration }}
+                    </div>
+                    }
+                    @if (isTvShow(generalDetails)) {
+                    @if (generalDetails.first_air_date) {
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Başlangıç Tarihi:</span>
+                        <span class="value">
+                            {{generalDetails.first_air_date | dayMonthYear}}
+                        </span>
+                    </div>
+                    }
+                    @if (generalDetails.last_air_date) {
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Bitiş Tarihi:</span>
+                        <span class="value">
+                            {{generalDetails.last_air_date | dayMonthYear}}
+                        </span>
+                    </div>
+                    }
+                    }
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Tür:</span>
+                        @for (item of generalDetails.genres; track item.id; let i = $index) {
+                        <span class="value">
+                            <a class="hover-effect">
+                                {{item.name}}@if (i != generalDetails.genres.length - 1) {, }
+                            </a>
+                        </span>
+                        }
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Diller:</span>
+                        @for (item of generalDetails.spoken_languages; track item.iso_639_1; let i = $index) {
+                        <span class="value">
+                            <a class="hover-effect">
+                                {{item.english_name}}@if (i != generalDetails.spoken_languages.length - 1) {, }
+                            </a>
+                        </span>
+                        }
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Ülke:</span>
+                        <span class="values">
+                            @for (item of generalDetails.production_countries; track item.iso_3166_1; let i =
+                            $index) {
+                            <a class="value hover-effect">
+                                <span class="country">
+                                    <p class="font-light">{{item.iso_3166_1}}</p>
+                                    <img [src]="item.flag_path" [alt]="item.name" class="flag-image">
+                                </span>
+                            </a>
+                            }
+                        </span>
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Yapımcı:</span>
+                        <span class="values">
+                            @for (item of generalDetails.production_companies; track item.id; let i = $index) {
+                            <a class="value hover-effect">
+                                <span class="company">
+                                    <p class="font-light">{{item.name | truncate: 9}}</p>
+                                    @if (item.logo_path) {
+                                    <img [src]="`${imageUrl}/${item.logo_path}`" [alt]="item.name" class="company-logo">
+                                    }
+                                </span>
+                            </a>
+                            }
+                        </span>
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Populerlik:</span>
+                        <span class="value">{{generalDetails.popularity}}</span>
+                    </div>
+                    @if (isMovie(generalDetails) && generalDetails.budget) {
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Butçe:</span>
+                        <span class="value">{{generalDetails.budget | currency}}</span>
+                    </div>
+                    }
+                    @if (isMovie(generalDetails) && generalDetails.revenue) {
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Hasılat:</span>
+                        <span class="value">{{generalDetails.revenue | currency}}</span>
+                    </div>
+                    }
+                </div>
+            </div>
+            @if (videos.length > 0) {
+            <div class="title font-light">
+                <p>Fragman</p>
+            </div>
+            <div class="videos-box">
+                <div class="videos">
+                    @for (video of videos; track video.key; let i = $index) {
+                    <div class="video-detail">
+                        <iframe class="video-image" [src]="helperService.getSafeUrl(video.key)" title="{{ video.name }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                        </iframe>
+                    </div>
+                    }
+                </div>
+            </div>
+            }
+            @if (castsCrews.casts.length > 0) {
+            <div class="title font-light">
+                <p>Oyuncular</p>
+            </div>
+            <div class="casts-crews">
+                <div class="casts">
+                    @for (cast of castsCrews.casts; track cast.id; let i = $index) {
+                    <a class="cast" [routerLink]="`/casts/${cast.id}`">
+                        <div class="cast-detail">
+                            <div class="cast-image-box">
+                                <img [src]="`${imageUrl}/${cast.profile_path}`" [alt]="cast.name" class="cast-image">
+                            </div>
+                            <span class="cast-character font-gray">
+                                {{cast.character | truncate: 11}}
+                            </span>
+                            <span class="cast-name font-light">
+                                {{cast.original_name | truncate: 11}}
+                            </span>
+                        </div>
+                    </a>
+                    }
+                </div>
+                <div class="slider-buttons">
+                    <a (click)="toCastLeft()" class="slide-cast-list">
+                        <i class="fa-solid fa-angles-left font-yellow"></i>
+                    </a>
+                    <a (click)="toCastLeft()" class="slide-cast-list">
+                        <i class="fa-solid fa-angle-left font-yellow"></i>
+                    </a>
+                    <a (click)="toCastRight()" class="slide-cast-list">
+                        <i class="fa-solid fa-angle-right font-yellow"></i>
+                    </a>
+                    <a (click)="toCastRight()" class="slide-cast-list">
+                        <i class="fa-solid fa-angles-right font-yellow"></i>
+                    </a>
+                </div>
+            </div>
+            }
+            @if (castsCrews.crews.length > 0) {
+            <div class="title font-light">
+                <p>Yazar ve Yönetmenler</p>
+            </div>
+            <div class="casts-crews">
+                <div class="casts">
+                    @for (crew of castsCrews.crews; track crew.id; let i = $index) {
+                    <a class="cast" [routerLink]="`/casts/${crew.id}`">
+                        <div class="cast-detail">
+                            <div class="cast-image-box">
+                                <img [src]="`${imageUrl}/${crew.profile_path}`" [alt]="crew.name" class="cast-image">
+                            </div>
+                            <span class="cast-character font-gray">
+                                {{crew.known_for_department | truncate: 17}}
+                            </span>
+                            <span class="cast-name font-light">
+                                {{crew.original_name | truncate: 17}}
+                            </span>
+                        </div>
+                    </a>
+                    }
+                </div>
+            </div>
+            }
+            @if (reviews.results.length > 0) {
+            <div class="title font-light">
+                <p>Yorumlar</p>
+            </div>
+            <div class="reviews">
+                @for (review of reviews.results; track review.id; let i = $index) {
+                <div class="review">
+                    <div class="reviewer">
+                        <div class="reviewer-image-box">
+                            @if (review.author_details.avatar_path) {
+                            <img [src]="`${imageUrl}/${review.author_details.avatar_path}`" class="reviewer-image">
+                            } @else {
+                            <img [src]="'/assets/img/avatar-male.jpg'" class="reviewer-image">
+                            }
+                        </div>
+                        @if (review.author_details.name || review.author_details.username) {
+                        <div class="reviewer-name font-light">
+                            <p>
+                                <i class="fa-solid fa-circle-user"></i>
+                                @if (review.author_details.name) {
+                                {{review.author_details.name}}
+                                } @else{
+                                {{review.author_details.username}}
+                                }
+                            </p>
+                        </div>
+                        }
+                        <div class="review-date font-soft-pink">
+                            <p>
+                                <i class="fa-solid fa-calendar"></i>
+                                {{review.created_at | dayMonthYear}}
+                            </p>
+                        </div>
+                        <div class="review-average font-yellow">
+                            <p>
+                                <i class="fa-solid fa-star"></i>
+                                {{ review.author_details.rating }}/10
+                            </p>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        @if (openedReviewIds.includes(review.id)) {
+                        <p class="font-light" [innerText]="review.content"></p>
+                        } @else {
+                        <p class="font-light" [innerText]="review.content | truncate: 500"></p>
+                        }
+                    </div>
+                    <div class="review-read-all">
+                        @if (review.content.length > 500) {
+                        <a (click)="readAllToggle(review.id)" class="read-all-button font-blue hover-effect">
+                            @if (openedReviewIds.includes(review.id)) {Kapat} @else {Devamını oku}
+                        </a>
+                        }
+                    </div>
+                </div>
+                }
+            </div>
+            }
+            @if (similarGenerals.results.length > 0) {
+            <div class="title font-light">
+                <p>Benzer Filmler</p>
+            </div>
+            <div>
+                <app-general-list [currentPage]="similarGeneralsPage"
+                    [generalList]="similarGenerals"></app-general-list>
+                <div class="pages">
+                    <div class="pages-box">
+                        <a (click)="getPreviousSimilarGenerals()" class="page font-white"
+                            [class.disabled]="similarGeneralsPage-1<=0">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+                        @for (page of helperService.getPagesArray(similarGenerals.total_pages, similarGeneralsPage);
+                        track
+                        page; let i = $index) {
+                        <div>
+                            <a [class.page-btn]="page == similarGenerals.page" (click)="getSimilarGeneralsByPage(page)"
+                                class="page font-white">
+                                {{ page }}
+                            </a>
+                        </div>
+                        }
+                        <a (click)="getNextSimilarTvShows()" class="page font-white"
+                            [class.disabled]="similarGeneralsPage+1>=similarGenerals.total_pages || similarGeneralsPage+1>=500">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+}

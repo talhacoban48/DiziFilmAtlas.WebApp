@@ -6,7 +6,7 @@ import { roles } from '../../core/enums/roles.enum';
 import { Cast } from '../../core/interfaces/cast.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
-import { TvShow } from '../../core/interfaces/tv-shows.interface';
+import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { HelperService } from '../../core/services/helper.service';
 import { environment } from '../../environments/environment';
 

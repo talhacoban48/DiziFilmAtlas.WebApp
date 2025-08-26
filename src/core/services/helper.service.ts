@@ -1,10 +1,15 @@
 import { Injectable } from "@angular/core";
+import { DomSanitizer } from "@angular/platform-browser";
 
 
 @Injectable({
     providedIn: "root"
 })
 export class HelperService {
+
+    constructor(
+        private sanitizer: DomSanitizer
+    ) { }
 
     getPagesArray(totalPages: number, currentPage: number): number[] {
         let result: number[] = [];
@@ -23,5 +28,11 @@ export class HelperService {
 
     getFloor(average: number): number {
         return Number(average.toFixed(1));
+    }
+
+    getSafeUrl(key: string) {
+        const videoUrl = `https://www.youtube.com/embed/${key}?si=llfpXf6fDAEayG39`;
+        const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
+        return safeUrl;
     }
 }

@@ -148,7 +148,7 @@ export class MoviesService {
         return this.http.get<ReviewsResponse>(url)
             .pipe(
                 map(res => {
-                    res.results = res.results.filter(r => r.author_details.name);
+                    // res.results = res.results.filter(r => r.author_details.name);
                     return res;
                 })
             );

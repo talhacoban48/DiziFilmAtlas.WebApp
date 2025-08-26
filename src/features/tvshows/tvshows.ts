@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { finalize, map } from 'rxjs';
 import { TvShowsSearchUrlParams } from '../../core/enums/url-params.enum';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
-import { TvShow } from '../../core/interfaces/tv-shows.interface';
+import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { TvShowsService } from '../../core/services/tvshows.service';
 import { environment } from '../../environments/environment';
 import { GeneralList } from '../../shared/general-list/general-list';

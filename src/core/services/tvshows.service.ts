@@ -4,9 +4,13 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { genres } from '../data/genres';
+import { CastsCrews, CastsCrewsResponse, Crew } from '../interfaces/cast-crews.interface';
 import { GenericResponse } from '../interfaces/generic-response.interface';
-import { TvShow } from '../interfaces/tv-shows.interface';
-import { TvShowDetails } from '../interfaces/tvshow-details.interface';
+import { Image, ImagesResponse } from '../interfaces/images-response.interface';
+import { ReviewsResponse } from '../interfaces/reviews-response.interface';
+import { TvShowDetailsResponse } from '../interfaces/tvshow-details.interface';
+import { TvShow } from '../interfaces/tvshows.interface';
+import { Video, VideosResponse } from '../interfaces/videos-response.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -53,9 +57,9 @@ export class TvShowsService {
         return this.getTvShows(url);
     };
 
-    getTvShowDetails(tvShowId: number): Observable<TvShowDetails> {
+    getTvShowDetails(tvShowId: number): Observable<TvShowDetailsResponse> {
         const url = `${this.basePath}/tv/${tvShowId}?language=tr-tr`
-        return this.http.get<TvShowDetails>(url).pipe(
+        return this.http.get<TvShowDetailsResponse>(url).pipe(
             map(result => {
                 for (let i in result.production_countries) {
                     let country_data = result.production_countries[i];
@@ -69,6 +73,85 @@ export class TvShowsService {
                 return result;
             })
         );
+    }
+
+    getTvShowCasts(tvShowId: Number): Observable<CastsCrews> {
+        const url = `${this.basePath}/tv/${tvShowId}/credits?language=tr-tr`
+        return this.http.get<CastsCrewsResponse>(url)
+            .pipe(
+                map(result => {
+                    let crews: Crew[] = [];
+
+                    for (let crew of result.crew) {
+                        if (crew.known_for_department == "Directing" || crew.known_for_department == "Writing") {
+                            const isCrewExist = crews.some(c => c.id == crew.id && c.known_for_department == crew.known_for_department)
+                            const isSamePerson = crews.some(c => c.id == crew.id && c.known_for_department != crew.known_for_department);
+                            if (crew.known_for_department == "Directing" && !isCrewExist) {
+                                crew.department = "Yönetmen"
+                                if (isSamePerson) {
+                                    crew.department = "Yazar & Yönetmen"
+                                    crews = crews.filter(c => c.id != crew.id);
+                                    crews.push(crew);
+                                } else {
+                                    crews.push(crew);
+                                }
+                            }
+                            if (crew.known_for_department == "Writing" && !isCrewExist) {
+                                crew.department = "Yazar"
+                                if (isSamePerson) {
+                                    crew.department = "Yazar & Yönetmen"
+                                    crews = crews.filter(c => c.id != crew.id);
+                                    crews.push(crew);
+                                } else {
+                                    crews.push(crew);
+                                }
+                            }
+                        }
+                    }
+                    const data: CastsCrews = {
+                        id: result.id,
+                        casts: result.cast.filter(c => c.known_for_department == "Acting" && !!c.profile_path),
+                        crews: crews.filter(c => !!c.profile_path),
+                    }
+                    return data
+                })
+            );
+    }
+
+    getTvShowImages(tvShowId: number): Observable<Image[]> {
+        const url = `${this.basePath}/tv/${tvShowId}/images`
+        return this.http.get<ImagesResponse>(url).pipe(
+            map(images => {
+                const data: Image[] = [...images.backdrops]
+                return data;
+            })
+        );
+    }
+
+    getTvShowvideos(tvShowId: number): Observable<Video[]> {
+        const url = `${this.basePath}/tv/${tvShowId}/videos?language=tr-tr`
+        return this.http.get<VideosResponse>(url).pipe(
+            map(videos => {
+                let videos_data: Video[] = [];
+                for (let video of videos.results) {
+                    if (video.site == "YouTube") {
+                        videos_data.push(video);
+                    }
+                }
+                return videos_data;
+            })
+        );
+    }
+
+    getTvShowReviews(tvShowId: number, page: number): Observable<ReviewsResponse> {
+        const url = `${this.basePath}/tv/${tvShowId}/reviews?language=en-US&page=${page}`
+        return this.http.get<ReviewsResponse>(url)
+            .pipe(
+                map(res => {
+                    // res.results = res.results.filter(r => r.author_details.name);
+                    return res;
+                })
+            );
     }
 
     private getTvShows(url: string): Observable<GenericResponse<TvShow[]>> {

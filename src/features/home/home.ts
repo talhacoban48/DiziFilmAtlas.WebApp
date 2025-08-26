@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { finalize, forkJoin, tap } from 'rxjs';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
-import { TvShow } from '../../core/interfaces/tv-shows.interface';
+import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { MoviesService } from '../../core/services/movies.service';
 import { TvShowsService } from '../../core/services/tvshows.service';
 import { environment } from '../../environments/environment';

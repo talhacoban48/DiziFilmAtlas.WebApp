@@ -1,1 +1,12 @@
-<p>tvshow-details works!</p>
+@if (isLoading) {
+<app-spinner></app-spinner>
+}
+@else {
+@if (tvShowDetails) {
+
+<app-general-details [generalId]="tvShowId" [generalDetails]="tvShowDetails" [castsCrews]="castsCrews" [images]="images"
+    [videos]="videos" [reviews]="reviews" [similarGenerals]="similarTvShows"
+    (similarGeneralsPageOutput)="getSimilarTvShowsByPage($event)">
+</app-general-details>
+}
+}
