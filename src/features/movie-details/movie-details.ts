@@ -3,28 +3,33 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { finalize, forkJoin, map } from 'rxjs';
 import { CastsCrews } from '../../core/interfaces/cast-crews.interface';
+import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Image } from '../../core/interfaces/images-response.interface';
 import { MovieDetailsResponse } from '../../core/interfaces/movie-details.interface';
+import { Movie } from '../../core/interfaces/movie.interface';
 import { ReviewsResponse } from '../../core/interfaces/reviews-response.interface';
 import { Video } from '../../core/interfaces/videos-response.interface';
 import { CurrencyPipe } from '../../core/pipes/currency.pipe';
 import { DayMonthYearPipe } from '../../core/pipes/date.pipe';
 import { DurationPipe } from '../../core/pipes/time.pipe';
 import { TruncatePipe } from '../../core/pipes/truncate.pipe';
+import { HelperService } from '../../core/services/helper.service';
 import { MoviesService } from '../../core/services/movies.service';
 import { NavigationService } from '../../core/services/navigation.service';
 import { environment } from '../../environments/environment';
+import { GeneralList } from '../../shared/general-list/general-list';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-movie-details',
   imports: [
+    RouterLink,
     Spinner,
     DayMonthYearPipe,
     DurationPipe,
     CurrencyPipe,
     TruncatePipe,
-    RouterLink,
+    GeneralList,
   ],
   templateUrl: './movie-details.html',
   styleUrl: './movie-details.scss'
@@ -39,11 +44,15 @@ export class MovieDetails {
   images!: Image[];
   videos!: Video[];
   reviews!: ReviewsResponse;
+  similarMovies!: GenericResponse<Movie[]>;
+  similarMoviesPage: number = 1;
   isInUserFavorite = false;
+  openedReviewIds: string[] = [];
 
   constructor(
     private movieService: MoviesService,
     private navigationSerive: NavigationService,
+    protected helperService: HelperService,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer
 
@@ -93,7 +102,7 @@ export class MovieDetails {
             })
           )
       ]
-
+      observables.push(this.getSimilarMovies(this.similarMoviesPage));
       forkJoin(observables).pipe(finalize(() => this.isLoading = false)).subscribe()
     })
   }
@@ -142,6 +151,40 @@ export class MovieDetails {
     if (image) {
       this.images.unshift(image);
     }
+  }
+
+  readAllToggle(id: string) {
+    if (this.openedReviewIds.includes(id)) {
+      this.openedReviewIds = this.openedReviewIds.filter(reviewId => reviewId != id);
+    } else {
+      this.openedReviewIds.push(id);
+    }
+  }
+
+  getPreviousSimilarMovies() {
+    if (this.similarMoviesPage > 1) {
+      this.getSimilarMoviesByPage(this.similarMoviesPage - 1);
+    }
+  }
+
+  getSimilarMoviesByPage(page: number) {
+    this.similarMoviesPage = page;
+    this.getSimilarMovies(page).subscribe();
+  }
+
+  getNextSimilarMovies() {
+    if (this.similarMoviesPage < 500) {
+      this.getSimilarMoviesByPage(this.similarMoviesPage + 1);
+    }
+  }
+
+  private getSimilarMovies(page: number) {
+    return this.movieService.getSimilarMovies(this.movieId, page)
+      .pipe(
+        map(movies => {
+          this.similarMovies = movies;
+        })
+      );
   }
 
 

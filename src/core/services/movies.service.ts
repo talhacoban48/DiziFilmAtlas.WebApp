@@ -84,9 +84,28 @@ export class MoviesService {
 
                     for (let crew of result.crew) {
                         if (crew.department == "Directing" || crew.department == "Writing") {
-                            if (crew.department == "Directing") crew.department = "Yönetmen"
-                            if (crew.department == "Writing") crew.department = "Yazar"
-                            crews.push(crew);
+                            const isCrewExist = crews.some(c => c.id == crew.id && c.department == crew.department)
+                            const isSamePerson = crews.some(c => c.id == crew.id && c.department != crew.department);
+                            if (crew.department == "Directing" && !isCrewExist) {
+                                crew.known_for_department = "Yönetmen"
+                                if (isSamePerson) {
+                                    crew.known_for_department = "Yazar & Yönetmen"
+                                    crews = crews.filter(c => c.id != crew.id);
+                                    crews.push(crew);
+                                } else {
+                                    crews.push(crew);
+                                }
+                            }
+                            if (crew.department == "Writing" && !isCrewExist) {
+                                crew.known_for_department = "Yazar"
+                                if (isSamePerson) {
+                                    crew.known_for_department = "Yazar & Yönetmen"
+                                    crews = crews.filter(c => c.id != crew.id);
+                                    crews.push(crew);
+                                } else {
+                                    crews.push(crew);
+                                }
+                            }
                         }
                     }
                     const data: CastsCrews = {

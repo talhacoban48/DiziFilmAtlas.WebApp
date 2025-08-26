@@ -81,7 +81,7 @@
                         @for (item of movieDetails.genres; track item.id; let i = $index) {
                         <span class="value">
                             <a class="hover-effect">
-                                {{item.name}} @if (i != movieDetails.genres.length - 1) {,}
+                                {{item.name}}@if (i != movieDetails.genres.length - 1) {, }
                             </a>
                         </span>
                         }
@@ -91,20 +91,20 @@
                         @for (item of movieDetails.spoken_languages; track item.iso_639_1; let i = $index) {
                         <span class="value">
                             <a class="hover-effect">
-                                {{item.name}} @if (i != movieDetails.spoken_languages.length - 1) {,}
+                                {{item.name}}@if (i != movieDetails.spoken_languages.length - 1) {, }
                             </a>
                         </span>
                         }
                     </div>
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Ülke:</span>
-                        <span class="value">
-                            @for (country of movieDetails.production_countries; track country.iso_3166_1; let i =
+                        <span class="values">
+                            @for (item of movieDetails.production_countries; track item.iso_3166_1; let i =
                             $index) {
-                            <a class="hover-effect">
+                            <a class="value hover-effect">
                                 <span class="country">
-                                    <p class="font-light">{{country.iso_3166_1}}</p>
-                                    <img [src]="country.flag_path" [alt]="country.name" class="flag-image">
+                                    <p class="font-light">{{item.iso_3166_1}}</p>
+                                    <img [src]="item.flag_path" [alt]="item.name" class="flag-image">
                                 </span>
                             </a>
                             }
@@ -112,9 +112,9 @@
                     </div>
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Yapımcı:</span>
-                        @for (item of movieDetails.production_companies; track item.id; let i = $index) {
-                        <span class="value">
-                            <a class="hover-effect">
+                        <span class="values">
+                            @for (item of movieDetails.production_companies; track item.id; let i = $index) {
+                            <a class="value hover-effect">
                                 <span class="company">
                                     <p class="font-light">{{item.name | truncate}}</p>
                                     @if (item.logo_path) {
@@ -122,18 +122,20 @@
                                     }
                                 </span>
                             </a>
+                            }
                         </span>
-                        }
                     </div>
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Populerlik:</span>
                         <span class="value">{{movieDetails.popularity}}</span>
                     </div>
-                    @if (movieDetails.budget && movieDetails.revenue) {
+                    @if (movieDetails.budget) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Butçe:</span>
                         <span class="value">{{movieDetails.budget | currency}}</span>
                     </div>
+                    }
+                    @if (movieDetails.revenue) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Hasılat:</span>
                         <span class="value">{{movieDetails.revenue | currency}}</span>
@@ -210,10 +212,10 @@
                                 <img [src]="`${imageUrl}/${crew.profile_path}`" [alt]="crew.name" class="cast-image">
                             </div>
                             <span class="cast-character font-gray">
-                                {{crew.department | truncate: 11}}
+                                {{crew.known_for_department | truncate: 17}}
                             </span>
                             <span class="cast-name font-light">
-                                {{crew.original_name | truncate: 11}}
+                                {{crew.original_name | truncate: 17}}
                             </span>
                         </div>
                     </a>
@@ -256,10 +258,50 @@
                         </div>
                     </div>
                     <div class="review-content">
+                        @if (openedReviewIds.includes(review.id)) {
                         <p class="font-light" [innerText]="review.content"></p>
+                        } @else {
+                        <p class="font-light" [innerText]="review.content | truncate: 500"></p>
+                        }
+                    </div>
+                    <div class="review-read-all">
+                        @if (review.content.length > 500) {
+                        <a (click)="readAllToggle(review.id)" class="read-all-button font-blue hover-effect">
+                            @if (openedReviewIds.includes(review.id)) {Kapat} @else {Devamını oku}
+                        </a>
+                        }
                     </div>
                 </div>
                 }
+            </div>
+            }
+            @if (similarMovies.results.length > 0) {
+            <div class="title font-light">
+                <p>Benzer Filmler;</p>
+            </div>
+            <div>
+                <app-general-list [currentPage]="similarMoviesPage" [generalList]="similarMovies"></app-general-list>
+                <div class="pages">
+                    <div class="pages-box">
+                        <a (click)="getPreviousSimilarMovies()" class="page font-white"
+                            [class.disabled]="similarMoviesPage-1<=0">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+                        @for (page of helperService.getPagesArray(similarMovies.total_pages, similarMoviesPage); track
+                        page; let i = $index) {
+                        <div>
+                            <a [class.page-btn]="page == similarMovies.page" (click)="getSimilarMoviesByPage(page)"
+                                class="page font-white">
+                                {{ page }}
+                            </a>
+                        </div>
+                        }
+                        <a (click)="getNextSimilarMovies()" class="page font-white"
+                            [class.disabled]="similarMoviesPage+1>=similarMovies.total_pages || similarMoviesPage+1>=500">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
             }
         </div>

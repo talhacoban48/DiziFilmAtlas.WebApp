@@ -7,6 +7,7 @@ import { Cast } from '../../core/interfaces/cast.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
 import { TvShow } from '../../core/interfaces/tv-shows.interface';
+import { HelperService } from '../../core/services/helper.service';
 import { environment } from '../../environments/environment';
 
 
@@ -19,7 +20,7 @@ import { environment } from '../../environments/environment';
 })
 export class GeneralList implements OnChanges {
 
-  @Input() currentTitle!: string;
+  @Input() currentTitle?: string;
   @Input() currentPage: number = 1;
   @Input() generalList!: GenericResponse<Movie[] | TvShow[] | Cast[]>;
   kind: "movies" | "tvshows" | "casts" | undefined;
@@ -31,6 +32,9 @@ export class GeneralList implements OnChanges {
   menuForMovies: ListChip[] = menuForMovies
   menuForTvShows: ListChip[] = menuForTvShows
   menuForCasts: ListChip[] = menuForCasts
+
+
+  constructor(protected helperService: HelperService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes["generalList"]?.currentValue) {
@@ -90,19 +94,4 @@ export class GeneralList implements OnChanges {
     return (item as Cast).gender !== undefined;
   }
 
-  getPagesArray(): number[] | null {
-    let result: number[] = [];
-    let total: number = this.generalList.total_pages;
-    if (total > 500) {
-      total = 500;
-    }
-    let array: number[] = [1, 2, 3, 4, this.currentPage - 1, this.currentPage, this.currentPage + 1, this.currentPage + 2, total - 2, total - 1, total]
-
-    for (let i of array) {
-      if (!result.includes(i) && i != 0 && Math.max(...result) < i && i < total) {
-        result.push(i);
-      }
-    }
-    return result;
-  }
 }

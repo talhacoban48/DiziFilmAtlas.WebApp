@@ -14,7 +14,6 @@
     padding: 5rem 2rem;
     gap: 1rem;
     width: 100%;
-    height: 100%;
 }
 
 .detail-title {
@@ -57,9 +56,6 @@
         margin: 0 1rem 1rem;
         font-size: 1.2rem;
 
-        * {
-            margin-right: 0.5rem;
-        }
     }
 
     .key-value {
@@ -67,14 +63,55 @@
         flex-direction: row;
         align-items: flex-start;
         justify-items: flex-start;
+        width: 100%;
 
         .key {
-            width: 6rem;
+            width: 20%;
         }
 
-        .value {
+        .values {
+            width: 80%;
             display: flex;
             flex-direction: row;
+            align-items: flex-start;
+            justify-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+
+            .value {
+                padding: 0.3rem;
+                background-color: var(--gray);
+                border-radius: 0.1rem;
+
+                .flag-image {
+                    width: 4rem;
+                    height: 2.5rem;
+                }
+
+                .company-logo {
+                    width: 4rem;
+                    background-color: var(--white);
+                    padding: 0.3rem;
+                }
+
+                .country {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.2rem;
+                    font-size: 0.9rem;
+                }
+
+                .company {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 0.2rem;
+                    font-size: 0.9rem;
+                }
+            }
         }
     }
 }
@@ -89,34 +126,7 @@
     line-height: 1.8rem;
 }
 
-.flag-image {
-    width: 5rem;
-    height: 3rem;
-}
 
-.company-logo {
-    width: 5rem;
-    background-color: var(--white);
-    padding: 0.3rem;
-}
-
-.country {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0.2rem;
-    font-size: 0.9rem;
-}
-
-.company {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0.2rem;
-    font-size: 0.9rem;
-}
 
 .casts-crews {
     width: 100%;
@@ -372,7 +382,21 @@
         }
 
         .review-content {
-            font-size: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .review-read-all {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+
+            .read-all-button {
+                padding: 0 2rem;
+                font-size: 1rem;
+                font-weight: 300;
+            }
         }
     }
 }

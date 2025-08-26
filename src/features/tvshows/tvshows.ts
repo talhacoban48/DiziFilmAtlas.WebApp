@@ -70,24 +70,4 @@ export class Tvshows {
       }
     })
   }
-
-  getFloor(average: number): number {
-    return Number(average.toFixed(1));
-  }
-
-  getPagesArray(): number[] {
-    let result: number[] = [];
-    let total: number = this.tvShows.total_pages;
-    if (total > 500) {
-      total = 500;
-    }
-    let array: number[] = [1, 2, 3, 4, this.page - 1, this.page, this.page + 1, this.page + 2, total - 2, total - 1, total]
-
-    for (let i of array) {
-      if (!result.includes(i) && i != 0 && Math.max(...result) < i && i < total) {
-        result.push(i);
-      }
-    }
-    return result;
-  }
 }
