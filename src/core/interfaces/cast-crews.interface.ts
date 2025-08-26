@@ -10,7 +10,8 @@ export interface Crew {
     name: string,
     original_name: string,
     popularity: number,
-    profile_path: string
+    profile_path: string,
+    jobs?: any[],
 }
 
 export interface Cast {
@@ -25,7 +26,12 @@ export interface Cast {
     order: string,
     original_name: string,
     popularity: number,
-    profile_path: string
+    profile_path: string,
+    roles?: {
+        credit_id: string,
+        character: string,
+        episode_count: string,
+    }[]
 }
 
 export interface CastsCrews {

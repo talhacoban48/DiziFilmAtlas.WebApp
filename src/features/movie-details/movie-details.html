@@ -4,7 +4,7 @@
 @else {
 @if (movieDetails) {
 <app-general-details [generalId]="movieId" [generalDetails]="movieDetails" [castsCrews]="castsCrews" [images]="images"
-    [videos]="videos" [reviews]="reviews" [similarGenerals]="similarMovies"
+    [videos]="videos" [reviews]="reviews" [similarGenerals]="similarMovies" [providers]="providers"
     (similarGeneralsPageOutput)="getSimilarMoviesByPage($event)">
 </app-general-details>
 }

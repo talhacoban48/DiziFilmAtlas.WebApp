@@ -4,6 +4,7 @@ import { finalize, forkJoin, map } from 'rxjs';
 import { CastsCrews } from '../../core/interfaces/cast-crews.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Image } from '../../core/interfaces/images-response.interface';
+import { Provider } from '../../core/interfaces/providers.interface';
 import { ReviewsResponse } from '../../core/interfaces/reviews-response.interface';
 import { TvShowDetailsResponse } from '../../core/interfaces/tvshow-details.interface';
 import { TvShow } from '../../core/interfaces/tvshows.interface';
@@ -34,6 +35,7 @@ export class TvshowDetails {
   videos!: Video[];
   reviews!: ReviewsResponse;
   similarTvShows!: GenericResponse<TvShow[]>;
+  providers!: Provider[];
   similarTvShowsPage: number = 1;
   isInUserFavorite = false;
   openedReviewIds: string[] = [];
@@ -86,7 +88,14 @@ export class TvshowDetails {
               this.reviews = reviews;
               console.log("reviews", reviews);
             })
-          )
+          ),
+        this.tvShowService.getProviders(this.tvShowId)
+          .pipe(
+            map(providers => {
+              this.providers = providers;
+              console.log("providers", providers);
+            })
+          ),
       ];
 
       observables.push(this.getSimilarTvShows(this.similarTvShowsPage));

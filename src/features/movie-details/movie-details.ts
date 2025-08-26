@@ -6,6 +6,7 @@ import { GenericResponse } from '../../core/interfaces/generic-response.interfac
 import { Image } from '../../core/interfaces/images-response.interface';
 import { MovieDetailsResponse } from '../../core/interfaces/movie-details.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
+import { Provider } from '../../core/interfaces/providers.interface';
 import { ReviewsResponse } from '../../core/interfaces/reviews-response.interface';
 import { Video } from '../../core/interfaces/videos-response.interface';
 import { HelperService } from '../../core/services/helper.service';
@@ -36,6 +37,7 @@ export class MovieDetails {
   videos!: Video[];
   reviews!: ReviewsResponse;
   similarMovies!: GenericResponse<Movie[]>;
+  providers!: Provider[];
   similarMoviesPage: number = 1;
   isInUserFavorite = false;
   openedReviewIds: string[] = [];
@@ -90,7 +92,14 @@ export class MovieDetails {
               this.reviews = reviews;
               // console.log("reviews", reviews);
             })
-          )
+          ),
+        this.movieService.getProviders(this.movieId)
+          .pipe(
+            map(providers => {
+              this.providers = providers;
+              console.log("providers", providers);
+            })
+          ),
       ];
       observables.push(this.getSimilarMovies(this.similarMoviesPage));
       forkJoin(observables).pipe(finalize(() => this.isLoading = false)).subscribe()

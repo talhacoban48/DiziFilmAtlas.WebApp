@@ -35,6 +35,8 @@ export class Tvshows {
       this.page = Number(params["page"]) ?? 1;
       if (!this.page) this.page = 1;
 
+      console.log(this.currentTitle)
+
       if (!this.currentTitle || this.currentTitle == TvShowsSearchUrlParams.AiringToday) {
         this.currentTitle = TvShowsSearchUrlParams.AiringToday;
         this.tvshowService.getAiringTodayTvShows(this.page)

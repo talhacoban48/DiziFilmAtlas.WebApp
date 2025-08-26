@@ -6,6 +6,7 @@ import { GenericResponse } from '../../core/interfaces/generic-response.interfac
 import { Image } from '../../core/interfaces/images-response.interface';
 import { MovieDetailsResponse } from '../../core/interfaces/movie-details.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
+import { Provider } from '../../core/interfaces/providers.interface';
 import { ReviewsResponse } from '../../core/interfaces/reviews-response.interface';
 import { TvShowDetailsResponse } from '../../core/interfaces/tvshow-details.interface';
 import { TvShow } from '../../core/interfaces/tvshows.interface';
@@ -41,6 +42,7 @@ export class GeneralDetails {
   @Input() videos!: Video[];
   @Input() reviews!: ReviewsResponse;
   @Input() similarGenerals!: GenericResponse<TvShow[] | Movie[]>;
+  @Input() providers!: Provider[];
   @Output() similarGeneralsPageOutput = new EventEmitter();
   similarGeneralsPage: number = 1;
   isInUserFavorite = false;
@@ -69,6 +71,20 @@ export class GeneralDetails {
     const cast = this.castsCrews.casts.pop();
     if (cast) {
       this.castsCrews.casts.unshift(cast);
+    }
+  }
+
+  toCrewLeft() {
+    const crew = this.castsCrews.crews.shift();
+    if (crew) {
+      this.castsCrews.crews.push(crew);
+    }
+  }
+
+  toCrewRight() {
+    const crew = this.castsCrews.crews.pop();
+    if (crew) {
+      this.castsCrews.crews.unshift(crew);
     }
   }
 

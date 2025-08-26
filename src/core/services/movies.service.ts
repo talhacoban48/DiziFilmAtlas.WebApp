@@ -9,6 +9,7 @@ import { GenericResponse } from '../interfaces/generic-response.interface';
 import { Image, ImagesResponse } from '../interfaces/images-response.interface';
 import { MovieDetailsResponse } from '../interfaces/movie-details.interface';
 import { Movie } from '../interfaces/movie.interface';
+import { Provider, ProviderResponse } from '../interfaces/providers.interface';
 import { ReviewsResponse } from '../interfaces/reviews-response.interface';
 import { Video, VideosResponse } from '../interfaces/videos-response.interface';
 
@@ -122,7 +123,10 @@ export class MoviesService {
         const url = `${this.basePath}/movie/${movieId}/images`
         return this.http.get<ImagesResponse>(url).pipe(
             map(images => {
-                const data: Image[] = [...images.backdrops]
+                const data: Image[] = [...new Map(images.backdrops.map(img => [img.file_path, img])).values()];
+                data.forEach(image => {
+
+                });
                 return data;
             })
         );
@@ -148,10 +152,31 @@ export class MoviesService {
         return this.http.get<ReviewsResponse>(url)
             .pipe(
                 map(res => {
-                    // res.results = res.results.filter(r => r.author_details.name);
                     return res;
                 })
             );
+    }
+
+    getProviders(movieId: number): Observable<Provider[]> {
+        const url = `${this.basePath}/movie/${movieId}/watch/providers`;
+        return this.http.get<ProviderResponse>(url).pipe(
+            map(res => {
+                const tr = res.results?.['TR'];
+                if (!tr) return [];
+
+                const merged = [
+                    ...(tr.flatrate || []),
+                    ...(tr.buy || []),
+                    ...(tr.rent || [])
+                ];
+
+                const unique = Array.from(
+                    new Map(merged.map(p => [p.provider_id, p])).values()
+                );
+
+                return unique;
+            })
+        );
     }
 
     private getMovies(url: string): Observable<GenericResponse<Movie[]>> {

@@ -54,6 +54,10 @@ a.disabled {
     background-color: var(--dark);
 }
 
+.bg-blue {
+    background-color: var(--blue);
+}
+
 .bg-darker {
     background-color: var(--darker);
 }
@@ -250,7 +254,7 @@ a.disabled {
 @media (max-width: 685px) {
 
     html {
-        font-size: 70%;
+        font-size: 80%;
     }
 
     .container {
@@ -264,7 +268,7 @@ a.disabled {
 @media (min-width: 685px) and (max-width: 800px) {
 
     html {
-        font-size: 75%;
+        font-size: 80%;
     }
 
     .container {

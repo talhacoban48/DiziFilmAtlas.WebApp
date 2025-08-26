@@ -1,9 +1,9 @@
 @if (generalDetails)
-{ <div style="height: 15rem;"></div>
+{ <div style="height: 20rem;"></div>
 <div id="details" class="bg-dark">
     <div class="container">
         <div class="details bg-darker">
-            <div class="detail-title font-light">
+            <div class="detail-title font-light bg-dark">
                 @if (isMovie(generalDetails)) {
                 <p>{{generalDetails.title}}</p>
                 }
@@ -20,7 +20,7 @@
                 class="backdrop-image">
             }
             @if (images.length > 0) {
-            <div class="title font-light">
+            <div class="title font-blue bg-dark">
                 <p>Medya</p>
             </div>
             <div class="images-box">
@@ -51,7 +51,7 @@
                 </div>
             </div>
             }
-            <div class="title font-light">
+            <div class="title font-blue bg-dark">
                 <p>Detaylar</p>
             </div>
             <div class="extra-details">
@@ -129,24 +129,45 @@
                         </a>
                     </div>
                     }
-
+                    @if (providers && providers.length > 0) {
+                    <div class="providers">
+                        <div class="providers-title font-blue">
+                            Nerden İzlenir?
+                        </div>
+                        <div class="providers-box">
+                            @for (provider of providers; track provider.provider_id; let i = $index) {
+                            <div class="provider">
+                                <img [src]="`${imageUrl}/${provider.logo_path}`" [alt]="`${provider.provider_name}`"
+                                    class="provider-image">
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    }
                 </div>
                 <div class="extra-details-box">
                     <div class="overview font-light">
                         <p>{{generalDetails.overview}}</p>
                     </div>
-                    <div class="font-yellow">
-                        <i class="fa-solid fa-star font-yellow"></i>
-                        {{ helperService.getFloor(generalDetails.vote_average) }}/10
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Puan:</span>
+                        <span class="value font-yellow">
+                            <i class="fa-solid fa-star font-yellow"></i>
+                            {{ helperService.getFloor(generalDetails.vote_average) }}/10
+                        </span>
                     </div>
                     @if (isMovie(generalDetails)) {
-                    <div class="font-light">
-                        <i class="fa-solid fa-calendar"></i>
-                        {{ generalDetails.release_date | dayMonthYear }}
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Yayın Tarihi:</span>
+                        <span class="value">
+                            {{generalDetails.release_date | dayMonthYear}}
+                        </span>
                     </div>
-                    <div class="font-light">
-                        <i class="fa-solid fa-clock"></i>
-                        {{ generalDetails.runtime | duration }}
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Süre:</span>
+                        <span class="value">
+                            {{generalDetails.runtime | duration}}
+                        </span>
                     </div>
                     }
                     @if (isTvShow(generalDetails)) {
@@ -169,23 +190,31 @@
                     }
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Tür:</span>
-                        @for (item of generalDetails.genres; track item.id; let i = $index) {
-                        <span class="value">
-                            <a class="hover-effect">
-                                {{item.name}}@if (i != generalDetails.genres.length - 1) {, }
-                            </a>
+                        <span class="values">
+                            @for (item of generalDetails.genres; track item.id; let i = $index) {
+                            <span class="value">
+                                <a class="text hover-effect">
+                                    <span>
+                                        {{item.name}}
+                                    </span>
+                                </a>
+                            </span>
+                            }
                         </span>
-                        }
                     </div>
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Diller:</span>
-                        @for (item of generalDetails.spoken_languages; track item.iso_639_1; let i = $index) {
-                        <span class="value">
-                            <a class="hover-effect">
-                                {{item.english_name}}@if (i != generalDetails.spoken_languages.length - 1) {, }
-                            </a>
+                        <span class="values">
+                            @for (item of generalDetails.spoken_languages; track item.iso_639_1; let i = $index) {
+                            <span class="value">
+                                <a class="text hover-effect">
+                                    <span class="text">
+                                        {{item.english_name}}
+                                    </span>
+                                </a>
+                            </span>
+                            }
                         </span>
-                        }
                     </div>
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Ülke:</span>
@@ -207,7 +236,7 @@
                             @for (item of generalDetails.production_companies; track item.id; let i = $index) {
                             <a class="value hover-effect">
                                 <span class="company">
-                                    <p class="font-light">{{item.name | truncate: 9}}</p>
+                                    <p class="font-light">{{item.name | truncate: 8}}</p>
                                     @if (item.logo_path) {
                                     <img [src]="`${imageUrl}/${item.logo_path}`" [alt]="item.name" class="company-logo">
                                     }
@@ -235,8 +264,8 @@
                 </div>
             </div>
             @if (videos.length > 0) {
-            <div class="title font-light">
-                <p>Fragman</p>
+            <div class="title font-blue bg-dark">
+                <p>Fragmanlar</p>
             </div>
             <div class="videos-box">
                 <div class="videos">
@@ -253,7 +282,7 @@
             </div>
             }
             @if (castsCrews.casts.length > 0) {
-            <div class="title font-light">
+            <div class="title font-blue bg-dark">
                 <p>Oyuncular</p>
             </div>
             <div class="casts-crews">
@@ -291,7 +320,7 @@
             </div>
             }
             @if (castsCrews.crews.length > 0) {
-            <div class="title font-light">
+            <div class="title font-blue bg-dark">
                 <p>Yazar ve Yönetmenler</p>
             </div>
             <div class="casts-crews">
@@ -302,20 +331,101 @@
                             <div class="cast-image-box">
                                 <img [src]="`${imageUrl}/${crew.profile_path}`" [alt]="crew.name" class="cast-image">
                             </div>
+                            @if (isMovie(generalDetails)) {
                             <span class="cast-character font-gray">
-                                {{crew.known_for_department | truncate: 17}}
+                                {{crew.known_for_department | truncate: 11}}
                             </span>
+                            } @else if(isTvShow(generalDetails)) {
+                            <span class="cast-character font-gray">
+                                {{crew.department | truncate: 11}}
+                            </span>
+                            }
                             <span class="cast-name font-light">
-                                {{crew.original_name | truncate: 17}}
+                                {{crew.original_name | truncate: 11}}
                             </span>
                         </div>
                     </a>
                     }
                 </div>
+                <div class="slider-buttons">
+                    <a (click)="toCrewLeft()" class="slide-cast-list">
+                        <i class="fa-solid fa-angles-left font-yellow"></i>
+                    </a>
+                    <a (click)="toCrewLeft()" class="slide-cast-list">
+                        <i class="fa-solid fa-angle-left font-yellow"></i>
+                    </a>
+                    <a (click)="toCrewRight()" class="slide-cast-list">
+                        <i class="fa-solid fa-angle-right font-yellow"></i>
+                    </a>
+                    <a (click)="toCrewRight()" class="slide-cast-list">
+                        <i class="fa-solid fa-angles-right font-yellow"></i>
+                    </a>
+                </div>
+            </div>
+            }
+            @if (isTvShow(generalDetails) && generalDetails.seasons && generalDetails.seasons.length > 0) {
+            <div class="title font-blue bg-dark">
+                <p>Bölümler</p>
+            </div>
+            <div class="seasons">
+                @for (season of generalDetails.seasons; track season.id; let i = $index) {
+                @if (season.name != "Özel Gösterim") {
+                <div class="season">
+                    <div class="season-poster-image-box">
+                        <img [src]="`${imageUrl}/${season.poster_path}`" [alt]="season.name"
+                            class="season-poster-image">
+                    </div>
+                    <div class="season-details">
+                        @if (season.name) {
+                        <div class="season-name font-turquose">
+                            {{season.name}}
+                        </div>
+                        }
+                        @if (season.overview) {
+                        <div class="season-detail font-light">
+                            {{season.overview}}
+                        </div>
+                        }
+                        @if (season.vote_average) {
+                        <div class="season-detail key-value">
+                            <div class="key font-soft-pink">
+                                Bölüm Puanı:
+                            </div>
+                            <div class="value font-yellow">
+                                <i class="fa-solid fa-star"></i>
+                                {{ season.vote_average}}/10
+                            </div>
+                        </div>
+                        }
+                        @if (season.air_date) {
+                        <div class="season-detail key-value">
+                            <div class="key font-soft-pink">
+                                Yayın Tarihi:
+                            </div>
+                            <div class="value font-light">
+                                {{ season.air_date | dayMonthYear}}
+                            </div>
+                        </div>
+                        }
+                        @if (season.episode_count) {
+                        <div class="season-detail key-value">
+                            <div class="key font-soft-pink">
+                                Bölüm Sayısı:
+                            </div>
+                            <div class="value font-light">
+                                {{ season.episode_count}}
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+                }
+
             </div>
             }
             @if (reviews.results.length > 0) {
-            <div class="title font-light">
+            <div class="title font-blue bg-dark">
                 <p>Yorumlar</p>
             </div>
             <div class="reviews">
@@ -373,7 +483,7 @@
             </div>
             }
             @if (similarGenerals.results.length > 0) {
-            <div class="title font-light">
+            <div class="title font-blue bg-dark">
                 <p>Benzer Filmler</p>
             </div>
             <div>
@@ -386,8 +496,7 @@
                             <i class="fa-solid fa-chevron-left"></i>
                         </a>
                         @for (page of helperService.getPagesArray(similarGenerals.total_pages, similarGeneralsPage);
-                        track
-                        page; let i = $index) {
+                        track page; let i = $index) {
                         <div>
                             <a [class.page-btn]="page == similarGenerals.page" (click)="getSimilarGeneralsByPage(page)"
                                 class="page font-white">

@@ -7,6 +7,7 @@ import { genres } from '../data/genres';
 import { CastsCrews, CastsCrewsResponse, Crew } from '../interfaces/cast-crews.interface';
 import { GenericResponse } from '../interfaces/generic-response.interface';
 import { Image, ImagesResponse } from '../interfaces/images-response.interface';
+import { Provider, ProviderResponse } from '../interfaces/providers.interface';
 import { ReviewsResponse } from '../interfaces/reviews-response.interface';
 import { TvShowDetailsResponse } from '../interfaces/tvshow-details.interface';
 import { TvShow } from '../interfaces/tvshows.interface';
@@ -76,11 +77,17 @@ export class TvShowsService {
     }
 
     getTvShowCasts(tvShowId: Number): Observable<CastsCrews> {
-        const url = `${this.basePath}/tv/${tvShowId}/credits?language=tr-tr`
+        const url = `${this.basePath}/tv/${tvShowId}/aggregate_credits?language=tr-tr`
         return this.http.get<CastsCrewsResponse>(url)
             .pipe(
                 map(result => {
                     let crews: Crew[] = [];
+
+                    for (let cast of result.cast) {
+                        if (cast.roles && cast.roles.length > 0) {
+                            cast.character = cast.roles?.at(0)?.character ?? "";
+                        }
+                    }
 
                     for (let crew of result.crew) {
                         if (crew.known_for_department == "Directing" || crew.known_for_department == "Writing") {
@@ -122,7 +129,7 @@ export class TvShowsService {
         const url = `${this.basePath}/tv/${tvShowId}/images`
         return this.http.get<ImagesResponse>(url).pipe(
             map(images => {
-                const data: Image[] = [...images.backdrops]
+                const data: Image[] = [...new Map(images.backdrops.map(img => [img.file_path, img])).values()];
                 return data;
             })
         );
@@ -148,10 +155,31 @@ export class TvShowsService {
         return this.http.get<ReviewsResponse>(url)
             .pipe(
                 map(res => {
-                    // res.results = res.results.filter(r => r.author_details.name);
                     return res;
                 })
             );
+    }
+
+    getProviders(tvShowId: number): Observable<Provider[]> {
+        const url = `${this.basePath}/tv/${tvShowId}/watch/providers`;
+        return this.http.get<ProviderResponse>(url).pipe(
+            map(res => {
+                const tr = res.results?.['TR'];
+                if (!tr) return [];
+
+                const merged = [
+                    ...(tr.flatrate || []),
+                    ...(tr.buy || []),
+                    ...(tr.rent || [])
+                ];
+
+                const unique = Array.from(
+                    new Map(merged.map(p => [p.provider_id, p])).values()
+                );
+
+                return unique;
+            })
+        );
     }
 
     private getTvShows(url: string): Observable<GenericResponse<TvShow[]>> {
