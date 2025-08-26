@@ -49,6 +49,8 @@ export class CastDetails {
     total_pages: 1,
     total_results: 1,
   };
+  totalItemsPerPage: number = 10;
+
   constructor(
     private castService: CastService,
     private navigationSerive: NavigationService,
@@ -70,48 +72,26 @@ export class CastDetails {
             this.images = res.images.profiles;
 
             if (res.movies && res.movies.cast) {
-              this.castMovies.total_pages = Math.ceil(res.movies.cast.length / 20);
+              this.castMovies.total_pages = Math.ceil(res.movies.cast.length / this.totalItemsPerPage) + 1;
               this.castMovies.total_results = res.movies.cast.length;
               this.castMovies.results = res.movies.cast;
             } if (res.movies && res.movies.crew) {
-              this.crewMovies.total_pages = Math.ceil(res.movies.crew.length / 20);
+              this.crewMovies.total_pages = Math.ceil(res.movies.crew.length / this.totalItemsPerPage) + 1;
               this.crewMovies.total_results = res.movies.crew.length;
               this.crewMovies.results = res.movies.crew;
             } if (res.tvShows && res.tvShows.cast) {
-              this.castTvShows.total_pages = Math.ceil(res.tvShows.cast.length / 20);
+              this.castTvShows.total_pages = Math.ceil(res.tvShows.cast.length / this.totalItemsPerPage) + 1;
               this.castTvShows.total_results = res.tvShows.cast.length;
               this.castTvShows.results = res.tvShows.cast;
             } if (res.tvShows && res.tvShows.crew) {
-              this.crewTvShows.total_pages = Math.ceil(res.tvShows.crew.length / 20);
+              this.crewTvShows.total_pages = Math.ceil(res.tvShows.crew.length / this.totalItemsPerPage) + 1;
               this.crewTvShows.total_results = res.tvShows.crew.length;
               this.crewTvShows.results = res.tvShows.crew;
             }
           })
         )
         .subscribe();
-
-      console.log("this.castId", this.castId)
     })
-  }
-
-  getPageCastMovies(page: number) {
-    if (!this.castMovies) return;
-    this.castMovies = { ...this.castMovies, page };
-  }
-
-  getPageCrewMovies(page: number) {
-    if (!this.crewMovies) return;
-    this.crewMovies = { ...this.crewMovies, page };
-  }
-
-  getPageCastTvShows(page: number) {
-    if (!this.castTvShows) return;
-    this.castTvShows = { ...this.castTvShows, page };
-  }
-
-  getPageCrewTvShows(page: number) {
-    if (!this.crewTvShows) return;
-    this.crewTvShows = { ...this.crewTvShows, page };
   }
 
 }

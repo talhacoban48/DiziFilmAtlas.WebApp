@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CastsCrews } from '../../core/interfaces/cast-crews.interface';
 import { CastDetailResponse } from '../../core/interfaces/cast-details.interface';
@@ -34,7 +34,7 @@ import { GeneralList } from '../general-list/general-list';
   templateUrl: './general-details.html',
   styleUrl: './general-details.scss'
 })
-export class GeneralDetails {
+export class GeneralDetails implements OnInit {
 
   basePath: string = environment.basePath;
   imageUrl: string = environment.cdnUrl;
@@ -53,32 +53,23 @@ export class GeneralDetails {
   @Input() crewTvShows?: GenericResponse<TvShow[]>;
   pagedGenerals?: GenericResponse<Movie[] | TvShow[]>;
   @Output() similarGeneralsPageOutput = new EventEmitter();
-  @Output() pageCastMovies = new EventEmitter();
-  @Output() pageCrewMovies = new EventEmitter();
-  @Output() pageCastTvShows = new EventEmitter();
-  @Output() pageCrewTvShows = new EventEmitter();
+  totalItemsPerPage: number = 10;
 
-  currentPage: number = 1;
+  similarGeneralsPage: number = 1;
   isInUserFavorite = false;
   openedReviewIds: string[] = [];
 
   constructor(
     protected helperService: HelperService,
-  ) { }
+  ) {
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['castMovies'] && this.castMovies) {
+  }
+
+
+  ngOnInit(): void {
+    if (this.castMovies) {
       this.pagedGenerals = this.getPagedGenerals(this.castMovies);
-      console.log("this.pagedGenerals", this.pagedGenerals)
-
-    } else if (changes['crewMovies'] && this.crewMovies) {
-      this.pagedGenerals = this.getPagedGenerals(this.crewMovies);
-    } else if (changes['castTvShows'] && this.castTvShows) {
-      this.pagedGenerals = this.getPagedGenerals(this.castTvShows);
-    } else if (changes['crewTvShows'] && this.crewTvShows) {
-      this.pagedGenerals = this.getPagedGenerals(this.crewTvShows);
     }
-
   }
 
   addFavorite(id: number) {
@@ -152,28 +143,28 @@ export class GeneralDetails {
   }
 
   getPreviousSimilarGenerals() {
-    if (this.currentPage > 1) {
-      this.currentPage = this.currentPage - 1;
-      this.getSimilarGeneralsByPage(this.currentPage);
+    if (this.similarGeneralsPage > 1) {
+      this.similarGeneralsPage = this.similarGeneralsPage - 1;
+      this.getSimilarGeneralsByPage(this.similarGeneralsPage);
     }
   }
 
   getSimilarGeneralsByPage(page: number) {
-    this.currentPage = page;
-    this.similarGeneralsPageOutput.emit(this.currentPage);
+    this.similarGeneralsPage = page;
+    this.similarGeneralsPageOutput.emit(this.similarGeneralsPage);
   }
 
   getNextSimilarTvShows() {
-    if (this.currentPage < 500) {
-      this.currentPage = this.currentPage + 1;
-      this.getSimilarGeneralsByPage(this.currentPage);
+    if (this.similarGeneralsPage < 500) {
+      this.similarGeneralsPage = this.similarGeneralsPage + 1;
+      this.getSimilarGeneralsByPage(this.similarGeneralsPage);
     }
   }
 
   getPagedGenerals(data: GenericResponse<Movie[] | TvShow[]>) {
     return {
       page: data.page,
-      results: data.results.slice((data.page - 1) * 20, 20),
+      results: data.results.slice((data.page - 1) * this.totalItemsPerPage, (data.page - 1) * this.totalItemsPerPage + this.totalItemsPerPage),
       total_pages: data.total_pages,
       total_results: data.total_results,
     };
@@ -181,16 +172,21 @@ export class GeneralDetails {
 
   getPreviousCastMovies() {
     if (this.castMovies!.page > 1) {
-
+      this.castMovies!.page = this.castMovies!.page - 1;
+      this.pagedGenerals = this.getPagedGenerals(this.castMovies!);
     }
   }
 
   getSimilarCastMoviesByPage(page: number) {
-    this.pageCastMovies.emit(page);
+    this.castMovies!.page = page;
+    this.pagedGenerals = this.getPagedGenerals(this.castMovies!);
+    console.log("this.pagedGenerals", this.pagedGenerals, this.castMovies)
   }
 
   getNextCastMoviesTvShows() {
     if (this.castMovies!.page < this.castMovies!.total_results) {
+      this.castMovies!.page = this.castMovies!.page + 1;
+      this.pagedGenerals = this.getPagedGenerals(this.castMovies!);
 
     }
   }

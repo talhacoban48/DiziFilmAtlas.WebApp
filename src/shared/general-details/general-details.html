@@ -582,14 +582,15 @@
                 <p>Benzer Filmler</p>
             </div>
             <div>
-                <app-general-list [currentPage]="currentPage" [generalList]="similarGenerals"></app-general-list>
+                <app-general-list [currentPage]="similarGeneralsPage"
+                    [generalList]="similarGenerals"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
                         <a (click)="getPreviousSimilarGenerals()" class="page font-white"
-                            [class.disabled]="currentPage-1<=0">
+                            [class.disabled]="similarGeneralsPage-1<=0">
                             <i class="fa-solid fa-chevron-left"></i>
                         </a>
-                        @for (page of helperService.getPagesArray(similarGenerals.total_pages, currentPage);
+                        @for (page of helperService.getPagesArray(similarGenerals.total_pages, similarGeneralsPage);
                         track page; let i = $index) {
                         <div>
                             <a [class.page-btn]="page == similarGenerals.page" (click)="getSimilarGeneralsByPage(page)"
@@ -599,7 +600,7 @@
                         </div>
                         }
                         <a (click)="getNextSimilarTvShows()" class="page font-white"
-                            [class.disabled]="currentPage+1>=similarGenerals.total_pages || currentPage+1>=500">
+                            [class.disabled]="similarGeneralsPage+1>=similarGenerals.total_pages || similarGeneralsPage+1>=500">
                             <i class="fa-solid fa-chevron-right"></i>
                         </a>
                     </div>
@@ -629,7 +630,7 @@
                         </div>
                         }
                         <a (click)="getNextCastMoviesTvShows()" class="page font-white"
-                            [class.disabled]="currentPage+1>=castMovies.total_pages || currentPage+1>=500">
+                            [class.disabled]="similarGeneralsPage+1>=castMovies.total_pages || similarGeneralsPage+1>=500">
                             <i class="fa-solid fa-chevron-right"></i>
                         </a>
                     </div>

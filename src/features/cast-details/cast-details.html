@@ -2,11 +2,9 @@
 <app-spinner></app-spinner>
 }
 @else {
-@if (castDetails) {
+@if (castDetails && crewMovies && castTvShows && castTvShows) {
 <app-general-details [generalId]="castId" [generalDetails]="castDetails" [images]="images" [castMovies]="castMovies"
-    [crewMovies]="crewMovies" [castTvShows] [castTvShows]="castTvShows" (pageCastMovies)="getPageCastMovies($event)"
-    (pageCastTvShows)="getPageCastTvShows($event)" (pageCrewMovies)="getPageCrewMovies($event)"
-    (pageCrewTvShows)="getPageCrewTvShows($event)">
+    [crewMovies]="crewMovies" [castTvShows] [castTvShows]="castTvShows">
 </app-general-details>
 }
 }
