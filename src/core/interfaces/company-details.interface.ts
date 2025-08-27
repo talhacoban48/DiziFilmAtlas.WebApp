@@ -1,5 +1,5 @@
 
-export interface CompanyDetails {
+export interface CompanyDetailsResponse {
     description: string;
     headquarters: string;
     homepage: string;

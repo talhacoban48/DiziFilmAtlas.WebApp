@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { finalize, forkJoin, map } from 'rxjs';
 import { SortByEnum } from '../../core/enums/sort-by.enum';
+import { CompanyDetailsResponse } from '../../core/interfaces/company-details.interface';
 import { DiscoverMoviesDto } from '../../core/interfaces/dtos/discover-movies.dto';
 import { DiscoverTvShowsDto } from '../../core/interfaces/dtos/discover-tvshows.dto';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
@@ -10,10 +11,12 @@ import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { CompanyService } from '../../core/services/company.service';
 import { DiscoverService } from '../../core/services/discover.service';
 import { NavigationService } from '../../core/services/navigation.service';
+import { GeneralDetails } from '../../shared/general-details/general-details';
+import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-company-details',
-  imports: [],
+  imports: [Spinner, GeneralDetails],
   templateUrl: './company-details.html',
   styleUrl: './company-details.scss'
 })
@@ -21,7 +24,7 @@ export class CompanyDetails {
 
   isLoading: boolean = false;
   companyId!: number;
-  companyDetails!: CompanyDetails;
+  companyDetails!: CompanyDetailsResponse;
   movies!: GenericResponse<Movie[]>;
   tvShows!: GenericResponse<TvShow[]>;
 
@@ -49,8 +52,7 @@ export class CompanyDetails {
       this.discoverTvShowsPayload.sort_by = SortByEnum.popularity_desc;
       this.discoverTvShowsPayload.with_companies = this.companyId;
 
-
-      const observables = [
+      let observables = [
         this.companyService.getCompanyDetails(this.companyId)
           .pipe(
             map((companyDetails) => {
@@ -58,24 +60,42 @@ export class CompanyDetails {
               console.log("companyDetails", companyDetails)
             })
           ),
-        this.discoverService.discoverMovies(this.discoverMoviesPayload)
-          .pipe(
-            map((movies) => {
-              this.movies = movies;
-              console.log("movies", movies)
-            })
-          ),
-        this.discoverService.discoverTvshows(this.discoverTvShowsPayload)
-          .pipe(
-            map((tvShows) => {
-              this.tvShows = tvShows;
-              console.log("tvShows", tvShows)
-            })
-          )
-      ]
+      ];
+
+      observables.push(this.getMovies());
+      observables.push(this.getTvShows());
 
       forkJoin(observables).pipe(finalize(() => this.isLoading = false)).subscribe();
-
     })
+  }
+
+  getMoviesByPage(page: number) {
+    this.discoverMoviesPayload.page = page;
+    this.getMovies().subscribe();
+  }
+
+  getTvShowByPage(page: number) {
+    this.discoverTvShowsPayload.page = page;
+    this.getTvShows().subscribe();
+  }
+
+  private getMovies() {
+    return this.discoverService.discoverMovies(this.discoverMoviesPayload)
+      .pipe(
+        map((movies) => {
+          this.movies = movies;
+          console.log("movies", movies)
+        })
+      )
+  }
+
+  private getTvShows() {
+    return this.discoverService.discoverTvshows(this.discoverTvShowsPayload)
+      .pipe(
+        map((tvShows) => {
+          this.tvShows = tvShows;
+          console.log("tvShows", tvShows)
+        })
+      )
   }
 }

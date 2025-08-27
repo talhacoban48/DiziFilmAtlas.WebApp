@@ -1,1 +1,11 @@
-<p>company-details works!</p>
+@if (isLoading) {
+<app-spinner></app-spinner>
+}
+@else {
+@if (companyDetails) {
+<app-general-details [generalName]="'company'" [generalId]="companyId" [generalDetails]="companyDetails"
+    [movies]="movies" [tvShows]="tvShows" (currentMoviesPageOutput)="getMoviesByPage($event)"
+    (currentTvShowsPageOutput)="getTvShowByPage($event)">
+</app-general-details>
+}
+}

@@ -3,9 +3,9 @@
 }
 @else {
 @if (movieDetails) {
-<app-general-details [generalId]="movieId" [generalDetails]="movieDetails" [castsCrews]="castsCrews" [images]="images"
-    [videos]="videos" [reviews]="reviews" [similarGenerals]="similarMovies" [providers]="providers"
-    [collection]="collection" (currentPageOutput)="getSimilarMoviesByPage($event)">
+<app-general-details [generalName]="'movies'" [generalId]="movieId" [generalDetails]="movieDetails"
+    [castsCrews]="castsCrews" [images]="images" [videos]="videos" [reviews]="reviews" [movies]="similarMovies"
+    [providers]="providers" [collection]="collection" (currentMoviesPageOutput)="getSimilarMoviesByPage($event)">
 </app-general-details>
 }
 }

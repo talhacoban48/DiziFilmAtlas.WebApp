@@ -21,7 +21,7 @@ export class Home {
 
   isLoading: boolean = true;
   imageUrl: string = environment.cdnUrl;
-  posterSize = PosterSizes.w154
+  posterSize = PosterSizes.w500;
   trendingMoviesCurrentIndex: number = 20;
   popularMoviesCurrentIndex: number = 20;
   trendingTvshowsCurrentIndex: number = 20;

@@ -1,4 +1,4 @@
-export const Countries = [
+export const Countries: { iso_3166_1: string, english_name: string, native_name: string }[] = [
     { iso_3166_1: "AE", english_name: "United Arab Emirates", native_name: "Birleşik Arap Emirlikleri" },
     { iso_3166_1: "AF", english_name: "Afghanistan", native_name: "Afganistan" },
     { iso_3166_1: "AL", english_name: "Albania", native_name: "Arnavutluk" },

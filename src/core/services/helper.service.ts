@@ -1,11 +1,14 @@
 import { Injectable } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
+import { Countries } from "../data/coutries";
 
 
 @Injectable({
     providedIn: "root"
 })
 export class HelperService {
+
+    countries: { iso_3166_1: string, english_name: string, native_name: string }[] = Countries;
 
     constructor(
         private sanitizer: DomSanitizer
@@ -30,9 +33,14 @@ export class HelperService {
         return Number(average.toFixed(1));
     }
 
+    getCountryNameByIsoCode(isoCode: string) {
+        return this.countries.find(country => country.iso_3166_1.toLowerCase() == isoCode.toLowerCase())?.native_name;
+    }
+
     getSafeUrl(key: string) {
         const videoUrl = `https://www.youtube.com/embed/${key}?si=llfpXf6fDAEayG39`;
         const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
         return safeUrl;
     }
+
 }

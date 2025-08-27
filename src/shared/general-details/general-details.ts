@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { BackdropSizes, LogoSizes, PosterSizes, ProfileSizes } from '../../core/enums/image-size';
 import { CastsCrews } from '../../core/interfaces/cast-crews.interface';
 import { CastDetailResponse } from '../../core/interfaces/cast-details.interface';
+import { CompanyDetailsResponse } from '../../core/interfaces/company-details.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Image } from '../../core/interfaces/images-response.interface';
 import { CollectionDetailsResponse, MovieDetailsResponse } from '../../core/interfaces/movie-details.interface';
@@ -42,30 +43,34 @@ export class GeneralDetails implements OnInit {
   backdropSize = BackdropSizes.w300;
   backdropSizeTarget = BackdropSizes.w1280;
   posterSize = PosterSizes.w500;
+  logoSizeBigger = LogoSizes.w300;
   logoSize = LogoSizes.w45;
   avatarSize = ProfileSizes.w45;
 
+  @Input() generalName!: string;
   @Input() generalId!: number;
-  @Input() generalDetails!: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse;
+  @Input() generalDetails!: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse;
   @Input() castsCrews?: CastsCrews;
-  @Input() images!: Image[];
+  @Input() images?: Image[];
   @Input() videos?: Video[];
   @Input() reviews?: ReviewsResponse;
-  @Input() similarGenerals?: GenericResponse<TvShow[] | Movie[]>;
+  @Input() movies?: GenericResponse<Movie[]>;
+  @Input() tvShows?: GenericResponse<TvShow[]>;
   @Input() providers?: Provider[];
   @Input() collection?: CollectionDetailsResponse;
   @Input() castMovies?: GenericResponse<Movie[]>;
   @Input() crewMovies?: GenericResponse<Movie[]>;
   @Input() castTvShows?: GenericResponse<TvShow[]>;
   @Input() crewTvShows?: GenericResponse<TvShow[]>;
-  @Output() currentPageOutput = new EventEmitter();
+  @Output() currentMoviesPageOutput = new EventEmitter();
+  @Output() currentTvShowsPageOutput = new EventEmitter();
+
   castMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
   crewMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
   castTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
   crewTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
 
   totalItemsPerPage: number = 10;
-  currentPage: number = 1;
   isInUserFavorite = false;
   openedReviewIds: string[] = [];
 
@@ -73,13 +78,19 @@ export class GeneralDetails implements OnInit {
     protected helperService: HelperService,
   ) { }
 
-
   ngOnInit(): void {
+    if (this.collection) {
+      this.collection!.parts = [...this.collection!.parts].sort((a, b) => {
+        if (!a.release_date) return 1;
+        if (!b.release_date) return -1;
+        return new Date(a.release_date).getTime() - new Date(b.release_date).getTime();
+      });
+    };
     if (this.castMovies) {
-      this.castMoviesPaged = (this.getPagedGeneral(this.castMovies) as GenericResponse<TvShow[]>);
+      this.castMoviesPaged = (this.getPagedGeneral(this.castMovies) as GenericResponse<Movie[]>);
     }
     if (this.crewMovies) {
-      this.crewMoviesPaged = (this.getPagedGeneral(this.crewMovies) as GenericResponse<TvShow[]>);
+      this.crewMoviesPaged = (this.getPagedGeneral(this.crewMovies) as GenericResponse<Movie[]>);
     }
     if (this.castTvShows) {
       this.castTvShowsPaged = (this.getPagedGeneral(this.castTvShows) as GenericResponse<TvShow[]>);
@@ -126,16 +137,16 @@ export class GeneralDetails implements OnInit {
   }
 
   toImageLeft() {
-    const image = this.images.shift();
+    const image = this.images!.shift();
     if (image) {
-      this.images.push(image);
+      this.images!.push(image);
     }
   }
 
   toImageRight() {
-    const image = this.images.pop();
+    const image = this.images!.pop();
     if (image) {
-      this.images.unshift(image);
+      this.images!.unshift(image);
     }
   }
 
@@ -147,23 +158,29 @@ export class GeneralDetails implements OnInit {
     }
   }
 
-  isMovie(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse): item is MovieDetailsResponse {
+  isMovie(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is MovieDetailsResponse {
     return (item as MovieDetailsResponse).title !== undefined;
   }
 
-  isTvShow(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse): item is TvShowDetailsResponse {
+  isTvShow(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is TvShowDetailsResponse {
     return (item as TvShowDetailsResponse).name !== undefined && (item as TvShowDetailsResponse).first_air_date !== undefined;
   }
 
-  isCast(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse): item is CastDetailResponse {
+  isCast(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is CastDetailResponse {
     return (item as CastDetailResponse).gender !== undefined;
   }
 
-  getSimilarGeneralsByPage(page: number) {
-    this.currentPage = page;
-    this.currentPageOutput.emit(this.currentPage);
+  isCompany(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is CompanyDetailsResponse {
+    return (item as CompanyDetailsResponse).headquarters !== undefined;
   }
 
+  getMoviesByPage(page: number) {
+    this.currentMoviesPageOutput.emit(page);
+  }
+
+  getTvShowsByPage(page: number) {
+    this.currentTvShowsPageOutput.emit(page);
+  }
 
   getCastMoviesByPage(page: number) {
     this.castMovies!.page = page;

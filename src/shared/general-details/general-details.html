@@ -7,7 +7,7 @@
                 @if (isMovie(generalDetails)) {
                 <p>{{generalDetails.title}}</p>
                 }
-                @if (isCast(generalDetails) || isTvShow(generalDetails)) {
+                @if (isCast(generalDetails) || isTvShow(generalDetails) || isCompany(generalDetails)) {
                 <p>{{generalDetails.name}}</p>
                 }
             </div>
@@ -19,7 +19,7 @@
             <img [src]="`${imageUrl}/${backdropSizeTarget}/${generalDetails.backdrop_path}`"
                 [alt]="`${generalDetails.name}`" class="backdrop-image">
             }
-            @if (images.length > 0) {
+            @if (images && images.length > 0) {
             <div class="title font-blue bg-dark">
                 <p>Medya</p>
             </div>
@@ -56,7 +56,8 @@
                 <p>Detaylar</p>
             </div>
             <div class="extra-details">
-                <div class="poster-image-box">
+                <div [class.logo-image-box]="isCompany(generalDetails)"
+                    [class.poster-image-box]="!isCompany(generalDetails)">
                     @if (isMovie(generalDetails)) {
                     <img [src]="`${imageUrl}/${posterSize}/${generalDetails.poster_path}`"
                         [alt]="`${generalDetails.original_title}`" class="poster-image">
@@ -69,6 +70,12 @@
                     <img [src]="`${imageUrl}/${posterSize}/${generalDetails.profile_path}`"
                         [alt]="`${generalDetails.name}`" class="poster-image">
                     }
+                    @if (isCompany(generalDetails)) {
+                    <div class="logo-box">
+                        <img [src]="`${imageUrl}/${logoSizeBigger}/${generalDetails.logo_path}`"
+                            [alt]="`${generalDetails.name}`" class="logo-image">
+                    </div>
+                    }
                     @if (isInUserFavorite) {
                     <button (click)="addFavorite(generalDetails.id)" type="button" class="btn btn-primary">
                         Favorilere Ekle
@@ -78,83 +85,28 @@
                         Favorilerden Çıkar
                     </button>
                     }
-                    @if (isMovie(generalDetails)) {
+                    @if (isMovie(generalDetails) || isTvShow(generalDetails) || isCast(generalDetails) ||
+                    isCompany(generalDetails)) {
                     <div class="share">
-                        <a [href]="`https://api.whatsapp.com/send?text=${generalDetails.title}+${basePath}/movies/${generalId}`"
+                        <a [href]="`https://api.whatsapp.com/send?text=${isMovie(generalDetails) ? generalDetails.title : generalDetails.name}+${basePath}/${generalName}/${generalId}`"
                             target="_blank" class="share-with-button">
                             <div class="share-with">
                                 <i class="fa-brands fa-whatsapp font-light"></i>
                             </div>
                         </a>
-                        <a [href]="`https://t.me/share/url?url=${basePath}/movies/${generalId}/&text=${generalDetails.title}`"
+                        <a [href]="`https://t.me/share/url?url=${basePath}/${generalName}/${generalId}/&text=${isMovie(generalDetails) ? generalDetails.title : generalDetails.name}`"
                             target="_blank" class="share-with-button">
                             <div class="share-with">
                                 <i class="fa-brands fa-telegram font-light"></i>
                             </div>
                         </a>
-                        <a [href]="`https://x.com/intent/post?text=${generalDetails.title}=${basePath}/movies/${generalId}`"
+                        <a [href]="`https://x.com/intent/post?text=${isMovie(generalDetails) ? generalDetails.title : generalDetails.name}=${basePath}/${generalName}/${generalId}`"
                             target="_blank" class="share-with-button">
                             <div class="share-with">
                                 <i class="fa-brands fa-x-twitter font-light"></i>
                             </div>
                         </a>
-                        <a [href]="`https://tr.pinterest.com/pin/create/button/?url=${basePath}/movies/${generalId}/${generalDetails.title}`"
-                            target="_blank" class="share-with-button">
-                            <div class="share-with">
-                                <i class="fa-brands fa-pinterest font-light"></i>
-                            </div>
-                        </a>
-                    </div>
-                    }
-                    @if (isTvShow(generalDetails)) {
-                    <div class="share">
-                        <a [href]="`https://api.whatsapp.com/send?text=${generalDetails.name}+${basePath}/tvshows/${generalId}`"
-                            target="_blank" class="share-with-button">
-                            <div class="share-with">
-                                <i class="fa-brands fa-whatsapp font-light"></i>
-                            </div>
-                        </a>
-                        <a [href]="`https://t.me/share/url?url=${basePath}/tvshows/${generalId}/&text=${generalDetails.name}`"
-                            target="_blank" class="share-with-button">
-                            <div class="share-with">
-                                <i class="fa-brands fa-telegram font-light"></i>
-                            </div>
-                        </a>
-                        <a [href]="`https://x.com/intent/post?text=${generalDetails.name}=${basePath}/tvshows/${generalId}`"
-                            target="_blank" class="share-with-button">
-                            <div class="share-with">
-                                <i class="fa-brands fa-x-twitter font-light"></i>
-                            </div>
-                        </a>
-                        <a [href]="`https://tr.pinterest.com/pin/create/button/?url=${basePath}/tvshows/${generalId}/${generalDetails.name}`"
-                            target="_blank" class="share-with-button">
-                            <div class="share-with">
-                                <i class="fa-brands fa-pinterest font-light"></i>
-                            </div>
-                        </a>
-                    </div>
-                    }
-                    @if (isCast(generalDetails)) {
-                    <div class="share">
-                        <a [href]="`https://api.whatsapp.com/send?text=${generalDetails.name}+${basePath}/casts/${generalId}`"
-                            target="_blank" class="share-with-button">
-                            <div class="share-with">
-                                <i class="fa-brands fa-whatsapp font-light"></i>
-                            </div>
-                        </a>
-                        <a [href]="`https://t.me/share/url?url=${basePath}/casts/${generalId}/&text=${generalDetails.name}`"
-                            target="_blank" class="share-with-button">
-                            <div class="share-with">
-                                <i class="fa-brands fa-telegram font-light"></i>
-                            </div>
-                        </a>
-                        <a [href]="`https://x.com/intent/post?text=${generalDetails.name}=${basePath}/casts/${generalId}`"
-                            target="_blank" class="share-with-button">
-                            <div class="share-with">
-                                <i class="fa-brands fa-x-twitter font-light"></i>
-                            </div>
-                        </a>
-                        <a [href]="`https://tr.pinterest.com/pin/create/button/?url=${basePath}/casts/${generalId}/${generalDetails.name}`"
+                        <a [href]="`https://tr.pinterest.com/pin/create/button/?url=${basePath}/${generalName}/${generalId}/${isMovie(generalDetails) ? generalDetails.title : generalDetails.name}`"
                             target="_blank" class="share-with-button">
                             <div class="share-with">
                                 <i class="fa-brands fa-pinterest font-light"></i>
@@ -191,30 +143,41 @@
                         </span>
                     </div>
                     }
-                    @if (isCast(generalDetails)) {
+                    @if (isCast(generalDetails) && generalDetails.biography) {
                     <div class="overview font-light">
                         <p>{{generalDetails.biography}}</p>
                     </div>
                     }
+                    @if (isCompany(generalDetails) && generalDetails.description) {
+                    <div class="overview font-light">
+                        <p>{{generalDetails.description}}</p>
+                    </div>
+                    }
                     @if (isMovie(generalDetails)) {
+                    @if (generalDetails.release_date) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Yayın Tarihi:</span>
                         <span class="value">
                             {{generalDetails.release_date | dayMonthYear}}
                         </span>
                     </div>
+                    }
+                    @if (generalDetails.runtime) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Süre:</span>
                         <span class="value">
                             {{generalDetails.runtime | duration}}
                         </span>
                     </div>
+                    }
+                    @if (generalDetails.original_title) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Original İsim:</span>
                         <span class="value">
                             {{generalDetails.original_title}}
                         </span>
                     </div>
+                    }
                     }
                     @if (isTvShow(generalDetails)) {
                     @if (generalDetails.first_air_date) {
@@ -226,12 +189,15 @@
                     </div>
                     }
                     @if (generalDetails.last_air_date) {
+                    @if (generalDetails.last_air_date) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Bitiş Tarihi:</span>
                         <span class="value">
                             {{generalDetails.last_air_date | dayMonthYear}}
                         </span>
                     </div>
+                    }
+                    @if (generalDetails.last_air_date) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Original İsim:</span>
                         <span class="value">
@@ -240,7 +206,9 @@
                     </div>
                     }
                     }
+                    }
                     @if (isMovie(generalDetails) || isTvShow(generalDetails)) {
+                    @if (generalDetails.genres && generalDetails.genres.length > 0) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Tür:</span>
                         <span class="values">
@@ -255,6 +223,8 @@
                             }
                         </span>
                     </div>
+                    }
+                    @if (generalDetails.spoken_languages && generalDetails.spoken_languages.length > 0) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Diller:</span>
                         <span class="values">
@@ -269,6 +239,8 @@
                             }
                         </span>
                     </div>
+                    }
+                    @if (generalDetails.production_countries && generalDetails.production_countries.length > 0) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Ülke:</span>
                         <span class="values">
@@ -283,6 +255,8 @@
                             }
                         </span>
                     </div>
+                    }
+                    @if (generalDetails.production_companies && generalDetails.production_companies.length > 0) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Yapımcı:</span>
                         <span class="values">
@@ -300,10 +274,13 @@
                         </span>
                     </div>
                     }
+                    }
+                    @if (isMovie(generalDetails) || isTvShow(generalDetails) || isCast(generalDetails)) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Populerlik:</span>
                         <span class="value">{{generalDetails.popularity}}</span>
                     </div>
+                    }
                     @if (isCast(generalDetails)) {
                     @if (generalDetails.place_of_birth) {
                     <div class="key-value font-light">
@@ -367,6 +344,22 @@
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Hasılat:</span>
                         <span class="value">{{generalDetails.revenue | currency}}</span>
+                    </div>
+                    }
+                    @if (isCompany(generalDetails) && generalDetails.origin_country) {
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Menşei ülke:</span>
+                        <span class="value">
+                            {{helperService.getCountryNameByIsoCode(generalDetails.origin_country)}}
+                        </span>
+                    </div>
+                    }
+                    @if (isCompany(generalDetails) && generalDetails.homepage) {
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Şirket Sayfası:</span>
+                        <a [href]="generalDetails.homepage" class="value hover-effect font-light">
+                            {{generalDetails.homepage}}
+                        </a>
                     </div>
                     }
                 </div>
@@ -482,7 +475,7 @@
             <div class="seasons">
                 @for (season of generalDetails.seasons; track season.id; let i = $index) {
                 @if (season.name != "Özel Gösterim") {
-                <div class="season">
+                <a class="season">
                     <div class="season-poster-image-box">
                         <img [src]="`${imageUrl}/${posterSize}/${season.poster_path}`" [alt]="season.name"
                             class="season-poster-image">
@@ -530,7 +523,7 @@
                         </div>
                         }
                     </div>
-                </div>
+                </a>
                 }
                 }
             </div>
@@ -575,8 +568,7 @@
                             <div class="key font-soft-pink">
                                 Popülerlik:
                             </div>
-                            <div class="value font-yellow">
-                                <i class="fa-solid fa-star"></i>
+                            <div class="value font-light">
                                 {{ part.popularity }}
                             </div>
                         </div>
@@ -657,29 +649,69 @@
                 }
             </div>
             }
-            @if (similarGenerals && similarGenerals.results.length > 0) {
+            @if (movies && movies.results.length > 0) {
             <div class="title font-blue bg-dark">
+                @if (isMovie(generalDetails) || isTvShow(generalDetails)) {
                 <p>Benzer Filmler</p>
+                }
+                @if (isCompany(generalDetails)) {
+                <p>{{generalDetails.name}} Filmleri</p>
+                }
             </div>
-            <div>
-                <app-general-list [currentPage]="currentPage" [generalList]="similarGenerals"></app-general-list>
+            <div class="cast-crew-generals">
+                <app-general-list [currentPage]="movies.page" [generalList]="movies"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
-                        <a (click)="getSimilarGeneralsByPage(currentPage-1)" class="page font-white"
-                            [class.disabled]="currentPage-1<=0">
+                        <a (click)="getMoviesByPage(movies.page-1)" class="page font-white"
+                            [class.disabled]="movies.page-1<=0">
                             <i class="fa-solid fa-chevron-left"></i>
                         </a>
-                        @for (page of helperService.getPagesArray(similarGenerals.total_pages, currentPage);
+                        @for (page of helperService.getPagesArray(movies.total_pages, movies.page);
                         track page; let i = $index) {
                         <div>
-                            <a [class.page-btn]="page == similarGenerals.page" (click)="getSimilarGeneralsByPage(page)"
+                            <a [class.page-btn]="page == movies.page" (click)="getMoviesByPage(page)"
                                 class="page font-white">
                                 {{ page }}
                             </a>
                         </div>
                         }
-                        <a (click)="getSimilarGeneralsByPage(currentPage+1)" class="page font-white"
-                            [class.disabled]="currentPage+1>=similarGenerals.total_pages || currentPage+1>=500">
+                        <a (click)="getMoviesByPage(movies.page+1)" class="page font-white"
+                            [class.disabled]="movies.page+1>=movies.total_pages || movies.page+1>=500">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            }
+            @if (tvShows && tvShows.results.length > 0) {
+            <div class="title font-blue bg-dark">
+                @if (isMovie(generalDetails) || isTvShow(generalDetails)) {
+                <p>Benzer Diziler</p>
+                }
+                @if (isCompany(generalDetails)) {
+                <p>{{generalDetails.name}} Dizileri</p>
+                }
+            </div>
+
+            <div class="cast-crew-generals">
+                <app-general-list [currentPage]="tvShows.page" [generalList]="tvShows"></app-general-list>
+                <div class="pages">
+                    <div class="pages-box">
+                        <a (click)="getTvShowsByPage(tvShows.page-1)" class="page font-white"
+                            [class.disabled]="tvShows.page-1<=0">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+                        @for (page of helperService.getPagesArray(tvShows.total_pages, tvShows.page);
+                        track page; let i = $index) {
+                        <div>
+                            <a [class.page-btn]="page == tvShows.page" (click)="getTvShowsByPage(page)"
+                                class="page font-white">
+                                {{ page }}
+                            </a>
+                        </div>
+                        }
+                        <a (click)="getTvShowsByPage(tvShows.page+1)" class="page font-white"
+                            [class.disabled]="tvShows.page+1>=tvShows.total_pages || tvShows.page+1>=500">
                             <i class="fa-solid fa-chevron-right"></i>
                         </a>
                     </div>
