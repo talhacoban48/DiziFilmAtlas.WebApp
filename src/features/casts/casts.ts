@@ -5,7 +5,6 @@ import { CastsSearchUrlParams } from '../../core/enums/url-params.enum';
 import { Cast } from '../../core/interfaces/cast.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { CastService } from '../../core/services/casts.service';
-import { environment } from '../../environments/environment';
 import { GeneralList } from '../../shared/general-list/general-list';
 import { Spinner } from '../../shared/spinner/spinner';
 
@@ -16,7 +15,7 @@ import { Spinner } from '../../shared/spinner/spinner';
   styleUrl: './casts.scss'
 })
 export class Casts {
-  imageUrl: string = environment.cdnUrl;
+
   isLoading: boolean = false;
   casts!: GenericResponse<Cast[]>;
   currentTitle: CastsSearchUrlParams = CastsSearchUrlParams.Popular;

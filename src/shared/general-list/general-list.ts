@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ListChip, menuForCasts, menuForMovies, menuForTvShows } from '../../core/data/list-chips';
+import { PosterSizes } from '../../core/enums/image-size';
 import { roles } from '../../core/enums/roles.enum';
 import { Cast } from '../../core/interfaces/cast.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
@@ -25,6 +26,7 @@ export class GeneralList implements OnChanges {
   @Input() generalList!: GenericResponse<Movie[] | TvShow[] | Cast[]>;
   kind: "movies" | "tvshows" | "casts" | undefined;
   imageUrl = environment.cdnUrl;
+  posterSize = PosterSizes.w300;
   roles = roles;
 
   menu: { label: string, name: string }[] = [];

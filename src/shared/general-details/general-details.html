@@ -12,12 +12,12 @@
                 }
             </div>
             @if (isMovie(generalDetails) && generalDetails.backdrop_path) {
-            <img [src]="`${imageUrl}/${generalDetails.backdrop_path}`" [alt]="`${generalDetails.original_title}`"
-                class="backdrop-image">
+            <img [src]="`${imageUrl}/${backdropSizeTarget}/${generalDetails.backdrop_path}`"
+                [alt]="`${generalDetails.original_title}`" class="backdrop-image">
             }
             @if (isTvShow(generalDetails) && generalDetails.backdrop_path) {
-            <img [src]="`${imageUrl}/${generalDetails.backdrop_path}`" [alt]="`${generalDetails.name}`"
-                class="backdrop-image">
+            <img [src]="`${imageUrl}/${backdropSizeTarget}/${generalDetails.backdrop_path}`"
+                [alt]="`${generalDetails.name}`" class="backdrop-image">
             }
             @if (images.length > 0) {
             <div class="title font-blue bg-dark">
@@ -27,9 +27,10 @@
                 <div class="images">
                     @for (image of images; track image.file_path; let i = $index) {
                     <div class="image-detail">
-                        <a class="image" [href]="`${imageUrl}/${image.file_path}`" target="_blank">
+                        <a class="image" [href]="`${imageUrl}/${backdropSizeTarget}/${image.file_path}`"
+                            target="_blank">
                             <div class="image-image-box">
-                                <img [src]="`${imageUrl}/${image.file_path}`" class="image-image">
+                                <img [src]="`${imageUrl}/${backdropSize}/${image.file_path}`" class="image-image">
                             </div>
                         </a>
                     </div>
@@ -57,16 +58,16 @@
             <div class="extra-details">
                 <div class="poster-image-box">
                     @if (isMovie(generalDetails)) {
-                    <img [src]="`${imageUrl}/${generalDetails.poster_path}`" [alt]="`${generalDetails.original_title}`"
-                        class="poster-image">
+                    <img [src]="`${imageUrl}/${posterSize}/${generalDetails.poster_path}`"
+                        [alt]="`${generalDetails.original_title}`" class="poster-image">
                     }
                     @if (isTvShow(generalDetails)) {
-                    <img [src]="`${imageUrl}/${generalDetails.poster_path}`" [alt]="`${generalDetails.name}`"
-                        class="poster-image">
+                    <img [src]="`${imageUrl}/${posterSize}/${generalDetails.poster_path}`"
+                        [alt]="`${generalDetails.name}`" class="poster-image">
                     }
                     @if (isCast(generalDetails)) {
-                    <img [src]="`${imageUrl}/${generalDetails.profile_path}`" [alt]="`${generalDetails.name}`"
-                        class="poster-image">
+                    <img [src]="`${imageUrl}/${posterSize}/${generalDetails.profile_path}`"
+                        [alt]="`${generalDetails.name}`" class="poster-image">
                     }
                     @if (isInUserFavorite) {
                     <button (click)="addFavorite(generalDetails.id)" type="button" class="btn btn-primary">
@@ -169,8 +170,8 @@
                         <div class="providers-box">
                             @for (provider of providers; track provider.provider_id; let i = $index) {
                             <div class="provider">
-                                <img [src]="`${imageUrl}/${provider.logo_path}`" [alt]="`${provider.provider_name}`"
-                                    class="provider-image">
+                                <img [src]="`${imageUrl}/${logoSize}/${provider.logo_path}`"
+                                    [alt]="`${provider.provider_name}`" class="provider-image">
                             </div>
                             }
                         </div>
@@ -286,11 +287,12 @@
                         <span class="key font-soft-pink">Yapımcı:</span>
                         <span class="values">
                             @for (item of generalDetails.production_companies; track item.id; let i = $index) {
-                            <a class="value hover-effect">
+                            <a [routerLink]="`/company/${item.id}`" class="value hover-effect">
                                 <span class="company">
                                     <p class="font-light">{{item.name | truncate: 8}}</p>
                                     @if (item.logo_path) {
-                                    <img [src]="`${imageUrl}/${item.logo_path}`" [alt]="item.name" class="company-logo">
+                                    <img [src]="`${imageUrl}/${logoSize}/${item.logo_path}`" [alt]="item.name"
+                                        class="company-logo">
                                     }
                                 </span>
                             </a>
@@ -398,7 +400,8 @@
                     <a class="cast" [routerLink]="`/casts/${cast.id}`">
                         <div class="cast-detail">
                             <div class="cast-image-box">
-                                <img [src]="`${imageUrl}/${cast.profile_path}`" [alt]="cast.name" class="cast-image">
+                                <img [src]="`${imageUrl}/${posterSize}/${cast.profile_path}`" [alt]="cast.name"
+                                    class="cast-image">
                             </div>
                             <span class="cast-character font-gray">
                                 {{cast.character | truncate: 11}}
@@ -436,7 +439,8 @@
                     <a lass="cast" [routerLink]="`/casts/${crew.id}`">
                         <div class="cast-detail">
                             <div class="cast-image-box">
-                                <img [src]="`${imageUrl}/${crew.profile_path}`" [alt]="crew.name" class="cast-image">
+                                <img [src]="`${imageUrl}/${posterSize}/${crew.profile_path}`" [alt]="crew.name"
+                                    class="cast-image">
                             </div>
                             @if (isMovie(generalDetails)) {
                             <span class="cast-character font-gray">
@@ -480,7 +484,7 @@
                 @if (season.name != "Özel Gösterim") {
                 <div class="season">
                     <div class="season-poster-image-box">
-                        <img [src]="`${imageUrl}/${season.poster_path}`" [alt]="season.name"
+                        <img [src]="`${imageUrl}/${posterSize}/${season.poster_path}`" [alt]="season.name"
                             class="season-poster-image">
                     </div>
                     <div class="season-details">
@@ -541,7 +545,8 @@
                 @for (part of collection.parts; track part.id; let i = $index) {
                 <a [routerLink]="`/movies/${part.id}`" class="season hover-effect">
                     <div class="season-poster-image-box">
-                        <img [src]="`${imageUrl}/${part.poster_path}`" [alt]="part.title" class="season-poster-image">
+                        <img [src]="`${imageUrl}/${posterSize}/${part.poster_path}`" [alt]="part.title"
+                            class="season-poster-image">
                     </div>
                     <div class="season-details">
                         @if (part.title) {
@@ -603,7 +608,8 @@
                     <div class="reviewer">
                         <div class="reviewer-image-box">
                             @if (review.author_details.avatar_path) {
-                            <img [src]="`${imageUrl}/${review.author_details.avatar_path}`" class="reviewer-image">
+                            <img [src]="`${imageUrl}/${avatarSize}/${review.author_details.avatar_path}`"
+                                class="reviewer-image">
                             } @else {
                             <img [src]="'/assets/img/avatar-male.jpg'" class="reviewer-image">
                             }

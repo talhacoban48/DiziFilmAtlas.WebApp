@@ -5,7 +5,6 @@ import { TvShowsSearchUrlParams } from '../../core/enums/url-params.enum';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { TvShowsService } from '../../core/services/tvshows.service';
-import { environment } from '../../environments/environment';
 import { GeneralList } from '../../shared/general-list/general-list';
 import { Spinner } from '../../shared/spinner/spinner';
 
@@ -17,7 +16,6 @@ import { Spinner } from '../../shared/spinner/spinner';
 })
 export class Tvshows {
 
-  imageUrl = environment.cdnUrl;
   tvShows!: GenericResponse<TvShow[]>;
   currentTitle: TvShowsSearchUrlParams = TvShowsSearchUrlParams.AiringToday;
   page: number = 1;

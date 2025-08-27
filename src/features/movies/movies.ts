@@ -5,7 +5,6 @@ import { MovieSearchUrlParams } from '../../core/enums/url-params.enum';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
 import { MoviesService } from '../../core/services/movies.service';
-import { environment } from '../../environments/environment';
 import { GeneralList } from '../../shared/general-list/general-list';
 import { Spinner } from '../../shared/spinner/spinner';
 
@@ -17,7 +16,6 @@ import { Spinner } from '../../shared/spinner/spinner';
 })
 export class Movies {
 
-  imageUrl = environment.cdnUrl;
   movies!: GenericResponse<Movie[]>;
   currentTitle: MovieSearchUrlParams = MovieSearchUrlParams.NowPlaying;
   page: number = 1;

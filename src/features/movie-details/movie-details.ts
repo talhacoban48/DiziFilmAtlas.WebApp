@@ -12,7 +12,6 @@ import { Video } from '../../core/interfaces/videos-response.interface';
 import { HelperService } from '../../core/services/helper.service';
 import { MoviesService } from '../../core/services/movies.service';
 import { NavigationService } from '../../core/services/navigation.service';
-import { environment } from '../../environments/environment';
 import { GeneralDetails } from '../../shared/general-details/general-details';
 import { Spinner } from '../../shared/spinner/spinner';
 
@@ -27,8 +26,6 @@ import { Spinner } from '../../shared/spinner/spinner';
 })
 export class MovieDetails {
 
-  basePath: string = environment.basePath;
-  imageUrl: string = environment.cdnUrl;
   isLoading: boolean = false;
   movieId!: number;
   movieDetails!: MovieDetailsResponse;

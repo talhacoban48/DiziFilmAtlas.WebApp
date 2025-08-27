@@ -1,6 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { BackdropSizes, LogoSizes, PosterSizes, ProfileSizes } from '../../core/enums/image-size';
 import { CastsCrews } from '../../core/interfaces/cast-crews.interface';
 import { CastDetailResponse } from '../../core/interfaces/cast-details.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
@@ -38,6 +39,11 @@ export class GeneralDetails implements OnInit {
 
   basePath: string = environment.basePath;
   imageUrl: string = environment.cdnUrl;
+  backdropSize = BackdropSizes.w300;
+  backdropSizeTarget = BackdropSizes.w1280;
+  posterSize = PosterSizes.w500;
+  logoSize = LogoSizes.w45;
+  avatarSize = ProfileSizes.w45;
 
   @Input() generalId!: number;
   @Input() generalDetails!: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse;
@@ -52,14 +58,13 @@ export class GeneralDetails implements OnInit {
   @Input() crewMovies?: GenericResponse<Movie[]>;
   @Input() castTvShows?: GenericResponse<TvShow[]>;
   @Input() crewTvShows?: GenericResponse<TvShow[]>;
+  @Output() currentPageOutput = new EventEmitter();
   castMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
   crewMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
   castTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
   crewTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
 
-  @Output() currentPageOutput = new EventEmitter();
   totalItemsPerPage: number = 10;
-
   currentPage: number = 1;
   isInUserFavorite = false;
   openedReviewIds: string[] = [];

@@ -105,8 +105,8 @@
             [class.active]="popularMoviesCurrentIndex === (i + 1)" [class.to_left]="popularMoviesCurrentIndex <= i">
             <a href="/movies/{{ popularMovie.id }}">
                 <div class="news-poster">
-                    <img src="{{ imageUrl }}{{ popularMovie.poster_path }}" alt="{{ popularMovie.title }}"
-                        class="news-poster-img">
+                    <img src="{{ imageUrl }}/{{ posterSize }}/{{ popularMovie.poster_path }}"
+                        alt="{{ popularMovie.title }}" class="news-poster-img">
                 </div>
                 <div class="news-informations">
                     <h2 class="poster-title font-white">{{ popularMovie.title }}</h2>
@@ -173,8 +173,8 @@
             [class.active]="trendingTvshowsCurrentIndex === (i + 1)" [class.to_left]="trendingTvshowsCurrentIndex <= i">
             <a href="/tv-shows/{{ trendingTvShow.id }}">
                 <div class="news-poster">
-                    <img src="{{ imageUrl }}{{ trendingTvShow.poster_path }}" alt="{{ trendingTvShow.name }}"
-                        class="news-poster-img">
+                    <img src="{{ imageUrl }}/{{ posterSize }}/{{ trendingTvShow.poster_path }}"
+                        alt="{{ trendingTvShow.name }}" class="news-poster-img">
                 </div>
                 <div class="news-informations">
                     <h2 class="poster-title font-white">{{ trendingTvShow.name }}</h2>
@@ -241,8 +241,8 @@
             [class.active]="popularTvshowsCurrentIndex === (i + 1)" [class.to_left]="popularTvshowsCurrentIndex <= i">
             <a href="/tv-shows/{{ popularTvshow.id }}">
                 <div class="news-poster">
-                    <img src="{{ imageUrl }}{{ popularTvshow.poster_path }}" alt="{{ popularTvshow.name }}"
-                        class="news-poster-img">
+                    <img src="{{ imageUrl }}/{{ posterSize }}/{{ popularTvshow.poster_path }}"
+                        alt="{{ popularTvshow.name }}" class="news-poster-img">
                 </div>
                 <div class="news-informations">
                     <h2 class="poster-title font-white">{{ popularTvshow.name }}</h2>

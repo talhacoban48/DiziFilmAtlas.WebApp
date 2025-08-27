@@ -11,7 +11,6 @@ import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { Video } from '../../core/interfaces/videos-response.interface';
 import { NavigationService } from '../../core/services/navigation.service';
 import { TvShowsService } from '../../core/services/tvshows.service';
-import { environment } from '../../environments/environment';
 import { GeneralDetails } from '../../shared/general-details/general-details';
 import { Spinner } from '../../shared/spinner/spinner';
 
@@ -26,7 +25,6 @@ import { Spinner } from '../../shared/spinner/spinner';
 })
 export class TvshowDetails {
 
-  imageUrl: string = environment.cdnUrl;
   isLoading: boolean = false;
   tvShowId!: number;
   tvShowDetails!: TvShowDetailsResponse;
