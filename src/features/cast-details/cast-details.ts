@@ -72,19 +72,19 @@ export class CastDetails {
             this.images = res.images.profiles;
 
             if (res.movies && res.movies.cast) {
-              this.castMovies.total_pages = Math.ceil(res.movies.cast.length / this.totalItemsPerPage) + 1;
+              this.castMovies.total_pages = Math.ceil(res.movies.cast.length / this.totalItemsPerPage);
               this.castMovies.total_results = res.movies.cast.length;
               this.castMovies.results = res.movies.cast;
             } if (res.movies && res.movies.crew) {
-              this.crewMovies.total_pages = Math.ceil(res.movies.crew.length / this.totalItemsPerPage) + 1;
+              this.crewMovies.total_pages = Math.ceil(res.movies.crew.length / this.totalItemsPerPage);
               this.crewMovies.total_results = res.movies.crew.length;
               this.crewMovies.results = res.movies.crew;
             } if (res.tvShows && res.tvShows.cast) {
-              this.castTvShows.total_pages = Math.ceil(res.tvShows.cast.length / this.totalItemsPerPage) + 1;
+              this.castTvShows.total_pages = Math.ceil(res.tvShows.cast.length / this.totalItemsPerPage);
               this.castTvShows.total_results = res.tvShows.cast.length;
               this.castTvShows.results = res.tvShows.cast;
             } if (res.tvShows && res.tvShows.crew) {
-              this.crewTvShows.total_pages = Math.ceil(res.tvShows.crew.length / this.totalItemsPerPage) + 1;
+              this.crewTvShows.total_pages = Math.ceil(res.tvShows.crew.length / this.totalItemsPerPage);
               this.crewTvShows.total_results = res.tvShows.crew.length;
               this.crewTvShows.results = res.tvShows.crew;
             }

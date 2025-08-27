@@ -11,11 +11,11 @@
                 <p>{{generalDetails.name}}</p>
                 }
             </div>
-            @if (isMovie(generalDetails)) {
+            @if (isMovie(generalDetails) && generalDetails.backdrop_path) {
             <img [src]="`${imageUrl}/${generalDetails.backdrop_path}`" [alt]="`${generalDetails.original_title}`"
                 class="backdrop-image">
             }
-            @if (isTvShow(generalDetails)) {
+            @if (isTvShow(generalDetails) && generalDetails.backdrop_path) {
             <img [src]="`${imageUrl}/${generalDetails.backdrop_path}`" [alt]="`${generalDetails.name}`"
                 class="backdrop-image">
             }
@@ -208,6 +208,12 @@
                             {{generalDetails.runtime | duration}}
                         </span>
                     </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Original İsim:</span>
+                        <span class="value">
+                            {{generalDetails.original_title}}
+                        </span>
+                    </div>
                     }
                     @if (isTvShow(generalDetails)) {
                     @if (generalDetails.first_air_date) {
@@ -223,6 +229,12 @@
                         <span class="key font-soft-pink">Bitiş Tarihi:</span>
                         <span class="value">
                             {{generalDetails.last_air_date | dayMonthYear}}
+                        </span>
+                    </div>
+                    <div class="key-value font-light">
+                        <span class="key font-soft-pink">Original İsim:</span>
+                        <span class="value">
+                            {{generalDetails.original_name}}
                         </span>
                     </div>
                     }
@@ -519,6 +531,68 @@
                 }
             </div>
             }
+
+
+            @if (isMovie(generalDetails) && collection && collection.parts && collection.parts.length > 0) {
+            <div class="title font-blue bg-dark">
+                <p>{{generalDetails.title}} Koleksiyonu</p>
+            </div>
+            <div class="seasons">
+                @for (part of collection.parts; track part.id; let i = $index) {
+                <a [routerLink]="`/movies/${part.id}`" class="season hover-effect">
+                    <div class="season-poster-image-box">
+                        <img [src]="`${imageUrl}/${part.poster_path}`" [alt]="part.title" class="season-poster-image">
+                    </div>
+                    <div class="season-details">
+                        @if (part.title) {
+                        <div class="season-name font-turquose">
+                            {{part.title}}
+                        </div>
+                        }
+                        @if (part.overview) {
+                        <div class="season-detail font-light">
+                            {{part.overview | truncate: 150}}
+                        </div>
+                        }
+                        @if (part.vote_average) {
+                        <div class="season-detail key-value">
+                            <div class="key font-soft-pink">
+                                Puan:
+                            </div>
+                            <div class="value font-yellow">
+                                <i class="fa-solid fa-star"></i>
+                                {{ helperService.getFloor(part.vote_average) }}/10
+                            </div>
+                        </div>
+                        }
+                        @if (part.popularity) {
+                        <div class="season-detail key-value">
+                            <div class="key font-soft-pink">
+                                Popülerlik:
+                            </div>
+                            <div class="value font-yellow">
+                                <i class="fa-solid fa-star"></i>
+                                {{ part.popularity }}
+                            </div>
+                        </div>
+                        }
+                        @if (part.release_date) {
+                        <div class="season-detail key-value">
+                            <div class="key font-soft-pink">
+                                Yayın Tarihi:
+                            </div>
+                            <div class="value font-light">
+                                {{ part.release_date | dayMonthYear}}
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </a>
+                }
+            </div>
+            }
+
+
             @if (reviews && reviews.results.length > 0) {
             <div class="title font-blue bg-dark">
                 <p>Yorumlar</p>
@@ -582,15 +656,14 @@
                 <p>Benzer Filmler</p>
             </div>
             <div>
-                <app-general-list [currentPage]="similarGeneralsPage"
-                    [generalList]="similarGenerals"></app-general-list>
+                <app-general-list [currentPage]="currentPage" [generalList]="similarGenerals"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
-                        <a (click)="getPreviousSimilarGenerals()" class="page font-white"
-                            [class.disabled]="similarGeneralsPage-1<=0">
+                        <a (click)="getSimilarGeneralsByPage(currentPage-1)" class="page font-white"
+                            [class.disabled]="currentPage-1<=0">
                             <i class="fa-solid fa-chevron-left"></i>
                         </a>
-                        @for (page of helperService.getPagesArray(similarGenerals.total_pages, similarGeneralsPage);
+                        @for (page of helperService.getPagesArray(similarGenerals.total_pages, currentPage);
                         track page; let i = $index) {
                         <div>
                             <a [class.page-btn]="page == similarGenerals.page" (click)="getSimilarGeneralsByPage(page)"
@@ -599,8 +672,8 @@
                             </a>
                         </div>
                         }
-                        <a (click)="getNextSimilarTvShows()" class="page font-white"
-                            [class.disabled]="similarGeneralsPage+1>=similarGenerals.total_pages || similarGeneralsPage+1>=500">
+                        <a (click)="getSimilarGeneralsByPage(currentPage+1)" class="page font-white"
+                            [class.disabled]="currentPage+1>=similarGenerals.total_pages || currentPage+1>=500">
                             <i class="fa-solid fa-chevron-right"></i>
                         </a>
                     </div>
@@ -612,34 +685,117 @@
             <div class="title font-blue bg-dark">
                 <p>Oynadığı Filmler</p>
             </div>
-            <div>
-                <app-general-list [currentPage]="castMovies.page" [generalList]="pagedGenerals!"></app-general-list>
+            <div class="cast-crew-generals">
+                <app-general-list [currentPage]="castMovies.page" [generalList]="castMoviesPaged!"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
-                        <a (click)="getPreviousCastMovies()" class="page font-white"
-                            [class.disabled]="castMovies.page-1<=0">
+                        <a (click)="getCastMoviesByPage(castMovies.page-1)" class="page font-white"
+                            [class.disabled]="castMovies.page<=1">
                             <i class="fa-solid fa-chevron-left"></i>
                         </a>
                         @for (page of helperService.getPagesArray(castMovies.total_pages, castMovies.page);
                         track page; let i = $index) {
                         <div>
-                            <a [class.page-btn]="page == castMovies.page" (click)="getSimilarCastMoviesByPage(page)"
+                            <a [class.page-btn]="page == castMovies.page" (click)="getCastMoviesByPage(page)"
                                 class="page font-white">
                                 {{ page }}
                             </a>
                         </div>
                         }
-                        <a (click)="getNextCastMoviesTvShows()" class="page font-white"
-                            [class.disabled]="similarGeneralsPage+1>=castMovies.total_pages || similarGeneralsPage+1>=500">
+                        <a (click)="getCastMoviesByPage(castMovies.page+1)" class="page font-white"
+                            [class.disabled]="castMovies.page>=castMovies.total_pages">
                             <i class="fa-solid fa-chevron-right"></i>
                         </a>
                     </div>
                 </div>
             </div>
-
             }
-            @if (castMovies && castMovies.total_results > 0) {
-
+            @if (crewMovies && crewMovies.total_results > 0) {
+            <div class="title font-blue bg-dark">
+                <p>Yazdığı/Yönettiği Filmler</p>
+            </div>
+            <div class="cast-crew-generals">
+                <app-general-list [currentPage]="crewMovies.page" [generalList]="crewMoviesPaged!"></app-general-list>
+                <div class="pages">
+                    <div class="pages-box">
+                        <a (click)="getCrewMoviesByPage(crewMovies.page-1)" class="page font-white"
+                            [class.disabled]="crewMovies.page<=1">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+                        @for (page of helperService.getPagesArray(crewMovies.total_pages, crewMovies.page);
+                        track page; let i = $index) {
+                        <div>
+                            <a [class.page-btn]="page == crewMovies.page" (click)="getCrewMoviesByPage(page)"
+                                class="page font-white">
+                                {{ page }}
+                            </a>
+                        </div>
+                        }
+                        <a (click)="getCrewMoviesByPage(crewMovies.page+1)" class="page font-white"
+                            [class.disabled]="crewMovies.page>=crewMovies.total_pages">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            }
+            @if (castTvShows && castTvShows.total_results > 0) {
+            <div class="title font-blue bg-dark">
+                <p>Oynadığı Diziler</p>
+            </div>
+            <div class="cast-crew-generals">
+                <app-general-list [currentPage]="castTvShows.page" [generalList]="castTvShowsPaged!"></app-general-list>
+                <div class="pages">
+                    <div class="pages-box">
+                        <a (click)="getCastTvShowsByPage(castTvShows.page-1)" class="page font-white"
+                            [class.disabled]="castTvShows.page<=1">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+                        @for (page of helperService.getPagesArray(castTvShows.total_pages, castTvShows.page);
+                        track page; let i = $index) {
+                        <div>
+                            <a [class.page-btn]="page == castTvShows.page" (click)="getCastTvShowsByPage(page)"
+                                class="page font-white">
+                                {{ page }}
+                            </a>
+                        </div>
+                        }
+                        <a (click)="getCastTvShowsByPage(castTvShows.page+1)" class="page font-white"
+                            [class.disabled]="castTvShows.page>=castTvShows.total_pages">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            }
+            @if (crewTvShows && crewTvShows.total_results > 0) {
+            <div class="title font-blue bg-dark">
+                <p>Yazdığı/Yönettiği Diziler</p>
+            </div>
+            <div class="cast-crew-generals">
+                <app-general-list [currentPage]="crewTvShows.page" [generalList]="crewTvShowsPaged!"></app-general-list>
+                <div class="pages">
+                    <div class="pages-box">
+                        <a (click)="getCrewTvShowsByPage(crewTvShows.page-1)" class="page font-white"
+                            [class.disabled]="crewTvShows.page<=1">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+                        @for (page of helperService.getPagesArray(crewTvShows.total_pages, crewTvShows.page);
+                        track page; let i = $index) {
+                        <div>
+                            <a [class.page-btn]="page == crewTvShows.page" (click)="getCrewTvShowsByPage(page)"
+                                class="page font-white">
+                                {{ page }}
+                            </a>
+                        </div>
+                        }
+                        <a (click)="getCrewTvShowsByPage(crewTvShows.page+1)" class="page font-white"
+                            [class.disabled]="crewTvShows.page>=crewTvShows.total_pages">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
             }
             }
         </div>

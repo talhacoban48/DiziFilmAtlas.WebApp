@@ -404,8 +404,8 @@
         }
 
         .review-content {
-            font-size: 1rem;
-            line-height: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.3rem;
         }
 
         .review-read-all {
@@ -502,7 +502,8 @@
         align-items: flex-start;
         justify-content: flex-start;
         min-width: 310px;
-        padding-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
+        padding: 0.5rem;
 
         .season-poster-image-box {
             width: 40%;
@@ -521,7 +522,6 @@
             align-items: flex-start;
             justify-content: flex-start;
             gap: 0.5rem;
-            margin-bottom: 2rem;
 
             .season-name {
                 width: 100%;
@@ -553,6 +553,10 @@
 
         }
     }
+}
+
+.cast-crew-generals {
+    width: 100%;
 }
 
 

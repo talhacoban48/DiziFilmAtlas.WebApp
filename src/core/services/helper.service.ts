@@ -19,7 +19,7 @@ export class HelperService {
         let array: number[] = [1, 2, 3, 4, currentPage - 1, currentPage, currentPage + 1, currentPage + 2, totalPages - 2, totalPages - 1, totalPages]
 
         for (let i of array) {
-            if (!result.includes(i) && i != 0 && Math.max(...result) < i && i < totalPages) {
+            if (!result.includes(i) && i != 0 && Math.max(...result) < i && i <= totalPages) {
                 result.push(i);
             }
         }

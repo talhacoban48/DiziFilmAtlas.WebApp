@@ -4,7 +4,7 @@ import { finalize, forkJoin, map } from 'rxjs';
 import { CastsCrews } from '../../core/interfaces/cast-crews.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Image } from '../../core/interfaces/images-response.interface';
-import { MovieDetailsResponse } from '../../core/interfaces/movie-details.interface';
+import { CollectionDetailsResponse, MovieDetailsResponse } from '../../core/interfaces/movie-details.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
 import { Provider } from '../../core/interfaces/providers.interface';
 import { ReviewsResponse } from '../../core/interfaces/reviews-response.interface';
@@ -38,6 +38,7 @@ export class MovieDetails {
   reviews!: ReviewsResponse;
   similarMovies!: GenericResponse<Movie[]>;
   providers!: Provider[];
+  collection?: CollectionDetailsResponse;
   similarMoviesPage: number = 1;
   isInUserFavorite = false;
   openedReviewIds: string[] = [];
@@ -102,7 +103,25 @@ export class MovieDetails {
           ),
       ];
       observables.push(this.getSimilarMovies(this.similarMoviesPage));
-      forkJoin(observables).pipe(finalize(() => this.isLoading = false)).subscribe()
+      forkJoin(observables)
+        .pipe(
+          finalize(() => {
+            if (this.movieDetails?.belongs_to_collection && this.movieDetails?.belongs_to_collection.id) {
+              this.movieService.getCollectionDetails(this.movieDetails.belongs_to_collection.id)
+                .pipe(
+                  map(collection => {
+                    this.collection = collection;
+                    console.log("collection", collection)
+                    this.isLoading = false;
+                  })
+                )
+                .subscribe()
+            } else {
+              this.isLoading = false;
+            }
+          })
+        )
+        .subscribe()
     })
   }
 

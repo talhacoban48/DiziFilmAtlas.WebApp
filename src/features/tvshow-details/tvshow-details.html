@@ -5,7 +5,7 @@
 @if (tvShowDetails) {
 <app-general-details [generalId]="tvShowId" [generalDetails]="tvShowDetails" [castsCrews]="castsCrews" [images]="images"
     [videos]="videos" [reviews]="reviews" [similarGenerals]="similarTvShows" [providers]="providers"
-    (similarGeneralsPageOutput)="getSimilarTvShowsByPage($event)">
+    (currentPageOutput)="getSimilarTvShowsByPage($event)">
 </app-general-details>
 }
 }

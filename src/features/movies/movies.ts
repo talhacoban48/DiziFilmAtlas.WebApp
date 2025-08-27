@@ -40,7 +40,7 @@ export class Movies {
         this.moviesService.getNowPlayingMovies(this.page)
           .pipe(
             finalize(() => this.isLoading = false),
-            map(movies => this.movies = movies)
+            map(movies => this.movies = movies),
           )
           .subscribe();
       } else if (this.currentTitle == MovieSearchUrlParams.Popular) {
@@ -68,7 +68,9 @@ export class Movies {
           )
           .subscribe();
       }
-    })
+    }
+
+    )
   }
 
 }

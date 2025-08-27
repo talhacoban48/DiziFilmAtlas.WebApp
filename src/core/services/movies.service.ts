@@ -7,7 +7,7 @@ import { genres } from '../data/genres';
 import { CastsCrews, CastsCrewsResponse, Crew } from '../interfaces/cast-crews.interface';
 import { GenericResponse } from '../interfaces/generic-response.interface';
 import { Image, ImagesResponse } from '../interfaces/images-response.interface';
-import { MovieDetailsResponse } from '../interfaces/movie-details.interface';
+import { CollectionDetailsResponse, MovieDetailsResponse } from '../interfaces/movie-details.interface';
 import { Movie } from '../interfaces/movie.interface';
 import { Provider, ProviderResponse } from '../interfaces/providers.interface';
 import { ReviewsResponse } from '../interfaces/reviews-response.interface';
@@ -177,6 +177,11 @@ export class MoviesService {
                 return unique;
             })
         );
+    }
+
+    getCollectionDetails(collectionId: number): Observable<CollectionDetailsResponse> {
+        const url = `${this.basePath}/collection/${collectionId}?language=tr-tr`;
+        return this.http.get<CollectionDetailsResponse>(url);
     }
 
     private getMovies(url: string): Observable<GenericResponse<Movie[]>> {

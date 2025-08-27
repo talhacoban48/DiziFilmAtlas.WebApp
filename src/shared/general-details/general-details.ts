@@ -5,7 +5,7 @@ import { CastsCrews } from '../../core/interfaces/cast-crews.interface';
 import { CastDetailResponse } from '../../core/interfaces/cast-details.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Image } from '../../core/interfaces/images-response.interface';
-import { MovieDetailsResponse } from '../../core/interfaces/movie-details.interface';
+import { CollectionDetailsResponse, MovieDetailsResponse } from '../../core/interfaces/movie-details.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
 import { Provider } from '../../core/interfaces/providers.interface';
 import { ReviewsResponse } from '../../core/interfaces/reviews-response.interface';
@@ -47,28 +47,40 @@ export class GeneralDetails implements OnInit {
   @Input() reviews?: ReviewsResponse;
   @Input() similarGenerals?: GenericResponse<TvShow[] | Movie[]>;
   @Input() providers?: Provider[];
+  @Input() collection?: CollectionDetailsResponse;
   @Input() castMovies?: GenericResponse<Movie[]>;
   @Input() crewMovies?: GenericResponse<Movie[]>;
   @Input() castTvShows?: GenericResponse<TvShow[]>;
   @Input() crewTvShows?: GenericResponse<TvShow[]>;
-  pagedGenerals?: GenericResponse<Movie[] | TvShow[]>;
-  @Output() similarGeneralsPageOutput = new EventEmitter();
+  castMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
+  crewMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
+  castTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
+  crewTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
+
+  @Output() currentPageOutput = new EventEmitter();
   totalItemsPerPage: number = 10;
 
-  similarGeneralsPage: number = 1;
+  currentPage: number = 1;
   isInUserFavorite = false;
   openedReviewIds: string[] = [];
 
   constructor(
     protected helperService: HelperService,
-  ) {
-
-  }
+  ) { }
 
 
   ngOnInit(): void {
     if (this.castMovies) {
-      this.pagedGenerals = this.getPagedGenerals(this.castMovies);
+      this.castMoviesPaged = (this.getPagedGeneral(this.castMovies) as GenericResponse<TvShow[]>);
+    }
+    if (this.crewMovies) {
+      this.crewMoviesPaged = (this.getPagedGeneral(this.crewMovies) as GenericResponse<TvShow[]>);
+    }
+    if (this.castTvShows) {
+      this.castTvShowsPaged = (this.getPagedGeneral(this.castTvShows) as GenericResponse<TvShow[]>);
+    }
+    if (this.crewTvShows) {
+      this.crewTvShowsPaged = (this.getPagedGeneral(this.crewTvShows) as GenericResponse<TvShow[]>);
     }
   }
 
@@ -142,26 +154,33 @@ export class GeneralDetails implements OnInit {
     return (item as CastDetailResponse).gender !== undefined;
   }
 
-  getPreviousSimilarGenerals() {
-    if (this.similarGeneralsPage > 1) {
-      this.similarGeneralsPage = this.similarGeneralsPage - 1;
-      this.getSimilarGeneralsByPage(this.similarGeneralsPage);
-    }
-  }
-
   getSimilarGeneralsByPage(page: number) {
-    this.similarGeneralsPage = page;
-    this.similarGeneralsPageOutput.emit(this.similarGeneralsPage);
+    this.currentPage = page;
+    this.currentPageOutput.emit(this.currentPage);
   }
 
-  getNextSimilarTvShows() {
-    if (this.similarGeneralsPage < 500) {
-      this.similarGeneralsPage = this.similarGeneralsPage + 1;
-      this.getSimilarGeneralsByPage(this.similarGeneralsPage);
-    }
+
+  getCastMoviesByPage(page: number) {
+    this.castMovies!.page = page;
+    this.castMoviesPaged = this.getPagedGeneral(this.castMovies!);
   }
 
-  getPagedGenerals(data: GenericResponse<Movie[] | TvShow[]>) {
+  getCrewMoviesByPage(page: number) {
+    this.crewMovies!.page = page;
+    this.crewMoviesPaged = this.getPagedGeneral(this.crewMovies!);
+  }
+
+  getCastTvShowsByPage(page: number) {
+    this.castTvShows!.page = page;
+    this.castTvShowsPaged = this.getPagedGeneral(this.castTvShows!);
+  }
+
+  getCrewTvShowsByPage(page: number) {
+    this.crewTvShows!.page = page;
+    this.crewTvShowsPaged = this.getPagedGeneral(this.crewTvShows!);
+  }
+
+  private getPagedGeneral(data: GenericResponse<Movie[] | TvShow[]>) {
     return {
       page: data.page,
       results: data.results.slice((data.page - 1) * this.totalItemsPerPage, (data.page - 1) * this.totalItemsPerPage + this.totalItemsPerPage),
@@ -170,24 +189,5 @@ export class GeneralDetails implements OnInit {
     };
   }
 
-  getPreviousCastMovies() {
-    if (this.castMovies!.page > 1) {
-      this.castMovies!.page = this.castMovies!.page - 1;
-      this.pagedGenerals = this.getPagedGenerals(this.castMovies!);
-    }
-  }
 
-  getSimilarCastMoviesByPage(page: number) {
-    this.castMovies!.page = page;
-    this.pagedGenerals = this.getPagedGenerals(this.castMovies!);
-    console.log("this.pagedGenerals", this.pagedGenerals, this.castMovies)
-  }
-
-  getNextCastMoviesTvShows() {
-    if (this.castMovies!.page < this.castMovies!.total_results) {
-      this.castMovies!.page = this.castMovies!.page + 1;
-      this.pagedGenerals = this.getPagedGenerals(this.castMovies!);
-
-    }
-  }
 }

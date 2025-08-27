@@ -1,3 +1,4 @@
+import { Movie } from "./movie.interface"
 
 
 interface Belongs_to_Collection {
@@ -34,7 +35,7 @@ interface Spoken_Languages {
 export interface MovieDetailsResponse {
     adult: boolean,
     backdrop_path: string,
-    belongs_to_collection: Belongs_to_Collection[] | boolean,
+    belongs_to_collection?: Belongs_to_Collection,
     budget: number,
     genres: Genre[],
     homepage: string,
@@ -58,4 +59,13 @@ export interface MovieDetailsResponse {
     video: boolean,
     vote_average: number,
     vote_count: number
+}
+
+export interface CollectionDetailsResponse {
+    id: string,
+    name: string,
+    overview: string,
+    poster_path: string,
+    backdrop_path: string,
+    parts: Movie[]
 }
