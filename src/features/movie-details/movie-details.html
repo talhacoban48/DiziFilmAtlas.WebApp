@@ -1,1 +1,11 @@
-<p>movie-details works!</p>
+@if (isLoading) {
+<app-spinner></app-spinner>
+}
+@else {
+@if (movieDetails) {
+<app-general-details [generalName]="'movies'" [generalId]="movieId" [generalDetails]="movieDetails"
+    [castsCrews]="castsCrews" [images]="images" [videos]="videos" [reviews]="reviews" [movies]="similarMovies"
+    [providers]="providers" [collection]="collection" (currentMoviesPageOutput)="getSimilarMoviesByPage($event)">
+</app-general-details>
+}
+}

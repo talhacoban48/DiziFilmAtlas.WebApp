@@ -37,8 +37,8 @@
             [class.active]="trendingMoviesCurrentIndex === (i + 1)" [class.to_left]="trendingMoviesCurrentIndex <= i">
             <a href="/movies/{{ trendingMovie.id }}">
                 <div class="news-poster">
-                    <img src="{{ imageUrl }}{{ trendingMovie.poster_path }}" alt="{{ trendingMovie.title }}"
-                        class="news-poster-img">
+                    <img src="{{ imageUrl }}/{{ posterSize }}/{{ trendingMovie.poster_path }}"
+                        alt="{{ trendingMovie.title }}" class="news-poster-img">
                 </div>
                 <div class="news-informations">
                     <h2 class="poster-title font-white">{{ trendingMovie.title }}</h2>
@@ -105,8 +105,8 @@
             [class.active]="popularMoviesCurrentIndex === (i + 1)" [class.to_left]="popularMoviesCurrentIndex <= i">
             <a href="/movies/{{ popularMovie.id }}">
                 <div class="news-poster">
-                    <img src="{{ imageUrl }}{{ popularMovie.poster_path }}" alt="{{ popularMovie.title }}"
-                        class="news-poster-img">
+                    <img src="{{ imageUrl }}/{{ posterSize }}/{{ popularMovie.poster_path }}"
+                        alt="{{ popularMovie.title }}" class="news-poster-img">
                 </div>
                 <div class="news-informations">
                     <h2 class="poster-title font-white">{{ popularMovie.title }}</h2>
@@ -171,10 +171,10 @@
             [class.to_right]="trendingTvshowsCurrentIndex >= (i + 2)"
             [class.to_middle]="trendingTvshowsCurrentIndex === (i + 1)"
             [class.active]="trendingTvshowsCurrentIndex === (i + 1)" [class.to_left]="trendingTvshowsCurrentIndex <= i">
-            <a href="/tv-shows/{{ trendingTvShow.id }}">
+            <a href="/tvshows/{{ trendingTvShow.id }}">
                 <div class="news-poster">
-                    <img src="{{ imageUrl }}{{ trendingTvShow.poster_path }}" alt="{{ trendingTvShow.name }}"
-                        class="news-poster-img">
+                    <img src="{{ imageUrl }}/{{ posterSize }}/{{ trendingTvShow.poster_path }}"
+                        alt="{{ trendingTvShow.name }}" class="news-poster-img">
                 </div>
                 <div class="news-informations">
                     <h2 class="poster-title font-white">{{ trendingTvShow.name }}</h2>
@@ -239,10 +239,10 @@
             [class.to_right]="popularTvshowsCurrentIndex >= (i + 2)"
             [class.to_middle]="popularTvshowsCurrentIndex === (i + 1)"
             [class.active]="popularTvshowsCurrentIndex === (i + 1)" [class.to_left]="popularTvshowsCurrentIndex <= i">
-            <a href="/tv-shows/{{ popularTvshow.id }}">
+            <a href="/tvshows/{{ popularTvshow.id }}">
                 <div class="news-poster">
-                    <img src="{{ imageUrl }}{{ popularTvshow.poster_path }}" alt="{{ popularTvshow.name }}"
-                        class="news-poster-img">
+                    <img src="{{ imageUrl }}/{{ posterSize }}/{{ popularTvshow.poster_path }}"
+                        alt="{{ popularTvshow.name }}" class="news-poster-img">
                 </div>
                 <div class="news-informations">
                     <h2 class="poster-title font-white">{{ popularTvshow.name }}</h2>
@@ -283,7 +283,6 @@
         }
     </section>
     }
-
 
     <div class="back-to-top">
         <a href="#welcome">

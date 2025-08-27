@@ -66,7 +66,7 @@ interface Created_By {
     profile_path: string,
 }
 
-export interface TvShowDetails {
+export interface TvShowDetailsResponse {
     adult: boolean,
     backdrop_path: string,
     created_by: Created_By[],

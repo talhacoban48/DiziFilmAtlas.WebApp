@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { CastDetails } from '../features/cast-details/cast-details';
 import { Casts } from '../features/casts/casts';
+import { CompanyDetails } from '../features/company-details/company-details';
 import { Home } from '../features/home/home';
 import { MovieDetails } from '../features/movie-details/movie-details';
 import { Movies } from '../features/movies/movies';
@@ -35,6 +36,12 @@ export const routes: Routes = [
             { path: '', component: Casts },
             { path: ":category/:page", component: Casts },
             { path: ":castId", component: CastDetails }
+        ],
+    },
+    {
+        path: 'company',
+        children: [
+            { path: ":companyId", component: CompanyDetails }
         ],
     },
     { path: 'notfound', component: NotFound },

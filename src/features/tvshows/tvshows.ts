@@ -3,9 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { finalize, map } from 'rxjs';
 import { TvShowsSearchUrlParams } from '../../core/enums/url-params.enum';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
-import { TvShow } from '../../core/interfaces/tv-shows.interface';
+import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { TvShowsService } from '../../core/services/tvshows.service';
-import { environment } from '../../environments/environment';
 import { GeneralList } from '../../shared/general-list/general-list';
 import { Spinner } from '../../shared/spinner/spinner';
 
@@ -17,7 +16,6 @@ import { Spinner } from '../../shared/spinner/spinner';
 })
 export class Tvshows {
 
-  imageUrl = environment.cdnUrl;
   tvShows!: GenericResponse<TvShow[]>;
   currentTitle: TvShowsSearchUrlParams = TvShowsSearchUrlParams.AiringToday;
   page: number = 1;
@@ -34,6 +32,8 @@ export class Tvshows {
       this.currentTitle = params["category"];
       this.page = Number(params["page"]) ?? 1;
       if (!this.page) this.page = 1;
+
+      console.log(this.currentTitle)
 
       if (!this.currentTitle || this.currentTitle == TvShowsSearchUrlParams.AiringToday) {
         this.currentTitle = TvShowsSearchUrlParams.AiringToday;
@@ -69,25 +69,5 @@ export class Tvshows {
           .subscribe();
       }
     })
-  }
-
-  getFloor(average: number): number {
-    return Number(average.toFixed(1));
-  }
-
-  getPagesArray(): number[] {
-    let result: number[] = [];
-    let total: number = this.tvShows.total_pages;
-    if (total > 500) {
-      total = 500;
-    }
-    let array: number[] = [1, 2, 3, 4, this.page - 1, this.page, this.page + 1, this.page + 2, total - 2, total - 1, total]
-
-    for (let i of array) {
-      if (!result.includes(i) && i != 0 && Math.max(...result) < i && i < total) {
-        result.push(i);
-      }
-    }
-    return result;
   }
 }

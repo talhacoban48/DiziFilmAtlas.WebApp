@@ -12,10 +12,10 @@
     --pink: #E90074;
     --dark-pink: #D80032;
     --dark-pink: #D80032;
-    --darker: #0b0e17;
+    --darker: #1b1e21;
     --soft-pink: #F78CA2;
     --blue: #009FBD;
-    --light: #EADBC8;
+    --light: #d2ccc4;
 }
 
 * {
@@ -32,6 +32,8 @@ html {
 body {
     font-family: "Fira Sans Condensed", sans-serif;
     font-size: 1.6rem;
+    width: 100%;
+    background-color: var(--dark);
 }
 
 li {
@@ -52,8 +54,20 @@ a.disabled {
     background-color: var(--dark);
 }
 
+.bg-blue {
+    background-color: var(--blue);
+}
+
+.bg-darker {
+    background-color: var(--darker);
+}
+
 .bg-pink {
     background-color: var(--pink);
+}
+
+.bg-gray {
+    background-color: var(--gray);
 }
 
 .font-turquose {
@@ -96,6 +110,16 @@ a.disabled {
     color: var(--light);
 }
 
+.container {
+    width: 1000px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.general-list {
+    width: 100%;
+    margin-top: 10rem;
+}
 
 /* buttons */
 .btn {
@@ -123,6 +147,15 @@ a.disabled {
     cursor: pointer;
 }
 
+.hover-effect:hover {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    color: var(--soft-pink);
+    margin: 0;
+    padding: 0;
+    box-shadow: 2px -1px 25px -2px rgba(0, 0, 0, 0.97);
+    transition: box-shadow 0.2s ease-in-out 0s;
+}
 
 @keyframes playing {
     0% {
@@ -166,6 +199,54 @@ a.disabled {
     }
 }
 
+.pages {
+    margin: 1rem 0;
+    height: 46px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+}
+
+.pages p,
+.pages a {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.pages a {
+    cursor: pointer;
+
+}
+
+.pages-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.pages-box div {
+    display: flex;
+    flex-direction: row;
+    padding: 0.4rem;
+}
+
+.page {
+    padding: 0.4rem;
+}
+
+.pages-empty-space {
+    padding: 1rem;
+}
+
+.page-btn {
+    background-color: var(--pink);
+    border-radius: 0.3rem;
+}
+
+
 .back-to-top:hover {
     background-color: var(--soft-pink);
     transition: all 0.2s ease-in-out;
@@ -175,7 +256,7 @@ a.disabled {
 @media (max-width: 685px) {
 
     html {
-        font-size: 70%;
+        font-size: 80%;
     }
 
     .container {
@@ -189,7 +270,7 @@ a.disabled {
 @media (min-width: 685px) and (max-width: 800px) {
 
     html {
-        font-size: 75%;
+        font-size: 80%;
     }
 
     .container {
@@ -244,7 +325,7 @@ a.disabled {
     }
 
     .container {
-        width: 1000px;
+        width: 1150px;
         margin: 0 auto;
     }
 }

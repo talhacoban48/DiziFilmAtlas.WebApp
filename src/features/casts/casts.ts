@@ -5,7 +5,6 @@ import { CastsSearchUrlParams } from '../../core/enums/url-params.enum';
 import { Cast } from '../../core/interfaces/cast.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { CastService } from '../../core/services/casts.service';
-import { environment } from '../../environments/environment';
 import { GeneralList } from '../../shared/general-list/general-list';
 import { Spinner } from '../../shared/spinner/spinner';
 
@@ -16,7 +15,7 @@ import { Spinner } from '../../shared/spinner/spinner';
   styleUrl: './casts.scss'
 })
 export class Casts {
-  imageUrl: string = environment.cdnUrl;
+
   isLoading: boolean = false;
   casts!: GenericResponse<Cast[]>;
   currentTitle: CastsSearchUrlParams = CastsSearchUrlParams.Popular;
@@ -31,6 +30,8 @@ export class Casts {
     this.route.params.subscribe(params => {
       this.isLoading = true;
       this.currentTitle = params["category"];
+      console.log(this.currentTitle)
+
       this.page = Number(params["page"]) ?? 1;
       if (!this.page) this.page = 1;
 
@@ -54,23 +55,6 @@ export class Casts {
     })
   }
 
-  getFloor(average: number): number {
-    return Number(average.toFixed(1));
-  }
 
-  getPagesArray(): number[] {
-    let result: number[] = [];
-    let total: number = this.casts.total_pages;
-    if (total > 500) {
-      total = 500;
-    }
-    let array: number[] = [1, 2, 3, 4, this.page - 1, this.page, this.page + 1, this.page + 2, total - 2, total - 1, total]
 
-    for (let i of array) {
-      if (!result.includes(i) && i != 0 && Math.max(...result) < i && i < total) {
-        result.push(i);
-      }
-    }
-    return result;
-  }
 }
