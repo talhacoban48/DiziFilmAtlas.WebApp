@@ -2,7 +2,7 @@ import { CurrencyPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BackdropSizes, LogoSizes, PosterSizes, ProfileSizes } from '../../core/enums/image-size';
-import { CastsCrews } from '../../core/interfaces/cast-crews.interface';
+import { Cast, CastsCrews, Crew } from '../../core/interfaces/cast-crews.interface';
 import { CastDetailResponse } from '../../core/interfaces/cast-details.interface';
 import { CompanyDetailsResponse } from '../../core/interfaces/company-details.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
@@ -65,18 +65,33 @@ export class GeneralDetails implements OnInit {
   @Output() currentMoviesPageOutput = new EventEmitter();
   @Output() currentTvShowsPageOutput = new EventEmitter();
 
+  castsPaged?: GenericResponse<Cast[]> = {
+    page: 1,
+    results: [],
+    total_pages: 1,
+    total_results: 0,
+  };
+  crewsPaged?: GenericResponse<Crew[]> = {
+    page: 1,
+    results: [],
+    total_pages: 1,
+    total_results: 0,
+  };;
   castMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
   crewMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
   castTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
   crewTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
 
   totalItemsPerPage: number = 10;
+  totalCastsCrewsPerPage: number = 10;
   isInUserFavorite = false;
   openedReviewIds: string[] = [];
 
   constructor(
     protected helperService: HelperService,
-  ) { }
+  ) {
+
+  }
 
   ngOnInit(): void {
     if (this.collection) {
@@ -86,6 +101,21 @@ export class GeneralDetails implements OnInit {
         return new Date(a.release_date).getTime() - new Date(b.release_date).getTime();
       });
     };
+    if (this.castsCrews) {
+      this.castsPaged = {
+        page: 1,
+        results: this.castsCrews.casts.slice(0, this.totalCastsCrewsPerPage),
+        total_pages: Math.ceil(this.castsCrews.casts.length / this.totalCastsCrewsPerPage),
+        total_results: this.castsCrews.casts.length,
+      };
+      this.crewsPaged = {
+        page: 1,
+        results: this.castsCrews.crews.slice(0, this.totalCastsCrewsPerPage),
+        total_pages: Math.ceil(this.castsCrews.crews.length / this.totalCastsCrewsPerPage),
+        total_results: this.castsCrews.crews.length,
+      };
+      console.log("paged", this.castsPaged, this.crewsPaged)
+    }
     if (this.castMovies) {
       this.castMoviesPaged = (this.getPagedGeneral(this.castMovies) as GenericResponse<Movie[]>);
     }
@@ -98,6 +128,7 @@ export class GeneralDetails implements OnInit {
     if (this.crewTvShows) {
       this.crewTvShowsPaged = (this.getPagedGeneral(this.crewTvShows) as GenericResponse<TvShow[]>);
     }
+
   }
 
   addFavorite(id: number) {
@@ -106,34 +137,6 @@ export class GeneralDetails implements OnInit {
 
   RemoveFavorite(id: number) {
 
-  }
-
-  toCastLeft() {
-    const cast = this.castsCrews?.casts.shift();
-    if (cast) {
-      this.castsCrews?.casts.push(cast);
-    }
-  }
-
-  toCastRight() {
-    const cast = this.castsCrews?.casts.pop();
-    if (cast) {
-      this.castsCrews?.casts.unshift(cast);
-    }
-  }
-
-  toCrewLeft() {
-    const crew = this.castsCrews?.crews.shift();
-    if (crew) {
-      this.castsCrews?.crews.push(crew);
-    }
-  }
-
-  toCrewRight() {
-    const crew = this.castsCrews?.crews.pop();
-    if (crew) {
-      this.castsCrews?.crews.unshift(crew);
-    }
   }
 
   toImageLeft() {
@@ -202,6 +205,24 @@ export class GeneralDetails implements OnInit {
     this.crewTvShowsPaged = this.getPagedGeneral(this.crewTvShows!);
   }
 
+  getCastsByPage(page: number) {
+    this.castsPaged = {
+      page: page,
+      results: this.castsCrews!.casts.slice((page - 1) * this.totalCastsCrewsPerPage, (page - 1) * this.totalCastsCrewsPerPage + this.totalCastsCrewsPerPage),
+      total_pages: Math.ceil(this.castsCrews!.casts.length / this.totalCastsCrewsPerPage),
+      total_results: this.castsCrews!.casts.length,
+    };
+  }
+
+  getCrewsByPage(page: number) {
+    this.crewsPaged = {
+      page: page,
+      results: this.castsCrews!.crews.slice((page - 1) * this.totalCastsCrewsPerPage, (page - 1) * this.totalCastsCrewsPerPage + this.totalCastsCrewsPerPage),
+      total_pages: Math.ceil(this.castsCrews!.crews.length / this.totalCastsCrewsPerPage),
+      total_results: this.castsCrews!.crews.length,
+    };
+  }
+
   private getPagedGeneral(data: GenericResponse<Movie[] | TvShow[]>) {
     return {
       page: data.page,
@@ -210,6 +231,5 @@ export class GeneralDetails implements OnInit {
       total_results: data.total_results,
     };
   }
-
 
 }

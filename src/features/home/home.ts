@@ -61,7 +61,6 @@ export class Home {
       this.tvShowService.getPopularTvShows(1)
         .pipe(
           tap(res => {
-            res.results = res.results.slice(0, 18)
             this.popularTvshows = res;
             this.popularTvshowsCurrentIndex = res.results.length;
           }),

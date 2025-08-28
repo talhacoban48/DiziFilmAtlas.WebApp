@@ -1,8 +1,8 @@
 @if (isLoading) {
 <app-spinner></app-spinner>
 } @else {
-
-<div class="body" style="margin-top: 10rem">
+<div style="height: 18rem;"></div>
+<div class="body">
     <!-- <section id="welcome">
         <div class="welcome-area">
             <div class="welcome">
@@ -14,81 +14,84 @@
 
     <!-- trending movies -->
     @if (trendingMovies) {
-    <section id="trendings" class="trendings">
-        <a (click)="getPreviousTrendingMovies()" class="change-card-poster-first">
-            <i class="fa-solid fa-chevron-left change-card-poster"></i>
-        </a>
-        <a (click)="getNextTrendingMovies()" class="change-card-poster-second">
-            <i class="fa-solid fa-chevron-right change-card-poster"></i>
-        </a>
-        <div class="container">
-            <div class="title-section">
-                <i class="fa-solid fa-fire font-yellow"></i>
-                <h1 class="title font-turquose">
-                    Trend Filmler
-                </h1>
-            </div>
-        </div>
-        @for(trendingMovie of trendingMovies.results; track trendingMovie.id; let i = $index) {
-        <div class="card left-card"
-            [class.lost]="trendingMoviesCurrentIndex <= (i - 1) || trendingMoviesCurrentIndex >= (i + 3)"
-            [class.to_right]="trendingMoviesCurrentIndex >= (i + 2)"
-            [class.to_middle]="trendingMoviesCurrentIndex === (i + 1)"
-            [class.active]="trendingMoviesCurrentIndex === (i + 1)" [class.to_left]="trendingMoviesCurrentIndex <= i">
-            <a href="/movies/{{ trendingMovie.id }}">
-                <div class="news-poster">
-                    <img src="{{ imageUrl }}/{{ posterSize }}/{{ trendingMovie.poster_path }}"
-                        alt="{{ trendingMovie.title }}" class="news-poster-img">
+    <div class="trendings-box">
+        <section id="trendings" class="trendings">
+            <div class="container">
+                <div class="title-section">
+                    <i class="fa-solid fa-fire font-yellow"></i>
+                    <h1 class="title font-turquose">
+                        Trend Filmler
+                    </h1>
                 </div>
-                <div class="news-informations">
-                    <h2 class="poster-title font-white">{{ trendingMovie.title }}</h2>
-                    <div class="poster-votes">
-                        <div class="poster-stars">
-                            <i class="fa-solid fa-star font-yellow"></i>
-                            <p class="vote-average font-yellow">
-                                {{ getFloor(trendingMovie.vote_average) }}/10
+            </div>
+            @for(trendingMovie of trendingMovies.results; track trendingMovie.id; let i = $index) {
+            <div class="card left-card"
+                [class.lost]="trendingMoviesCurrentIndex <= (i - 1) || trendingMoviesCurrentIndex >= (i + 3)"
+                [class.to_right]="trendingMoviesCurrentIndex >= (i + 2)"
+                [class.to_middle]="trendingMoviesCurrentIndex === (i + 1)"
+                [class.active]="trendingMoviesCurrentIndex === (i + 1)"
+                [class.to_left]="trendingMoviesCurrentIndex <= i">
+                <a href="/movies/{{ trendingMovie.id }}">
+                    <div class="news-poster">
+                        <img src="{{ imageUrl }}/{{ posterSize }}/{{ trendingMovie.poster_path }}"
+                            alt="{{ trendingMovie.title }}" class="news-poster-img">
+                    </div>
+                    <div class="news-informations">
+                        <h2 class="poster-title font-white">{{ trendingMovie.title }}</h2>
+                        <div class="poster-votes">
+                            <div class="poster-stars">
+                                <i class="fa-solid fa-star font-yellow"></i>
+                                <p class="vote-average font-yellow">
+                                    {{ getFloor(trendingMovie.vote_average) }}/10
+                                </p>
+                            </div>
+                            <span class="poster-vote font-white">
+                                <i class="fa-solid fa-check-to-slot font-yellow"></i>
+                                <p class="vote-average">
+                                    {{ trendingMovie.vote_count }} oy
+                                </p>
+                            </span>
+                        </div>
+                        <div class="poster-description">
+                            <p class="font-white ellipsis">
+                                {{ trendingMovie.overview }}
                             </p>
                         </div>
-                        <span class="poster-vote font-white">
-                            <i class="fa-solid fa-check-to-slot font-yellow"></i>
+                        <span class="poster-cast-title font-white">
+                            <i class="fa-solid fa-genderless font-yellow"></i>
+                            <p class="vote-average ellipsis">
+                                {{ trendingMovie.genre_names }}
+                            </p>
+                        </span>
+                        <span class="poster-cast-title font-white">
+                            <i class="fa-solid fa-calendar-days font-yellow"></i>
                             <p class="vote-average">
-                                {{ trendingMovie.vote_count }} oy
+                                {{ trendingMovie.release_date | date: 'd MMMM y' }}
                             </p>
                         </span>
                     </div>
-                    <div class="poster-description">
-                        <p class="font-white ellipsis">
-                            {{ trendingMovie.overview }}
-                        </p>
-                    </div>
-                    <span class="poster-cast-title font-white">
-                        <i class="fa-solid fa-genderless font-yellow"></i>
-                        <p class="vote-average ellipsis">
-                            {{ trendingMovie.genre_names }}
-                        </p>
-                    </span>
-                    <span class="poster-cast-title font-white">
-                        <i class="fa-solid fa-calendar-days font-yellow"></i>
-                        <p class="vote-average">
-                            {{ trendingMovie.release_date | date: 'd MMMM y' }}
-                        </p>
-                    </span>
+                </a>
+            </div>
+            }
+        </section>
+        <div class="slider-buttons-section">
+            <a (click)="getPreviousTrendingMovies()" class="change-card-poster-first">
+                <div class="change-card-poster-box">
+                    <i class="fa-solid fa-chevron-left change-card-poster"></i>
+                </div>
+            </a>
+            <a (click)="getNextTrendingMovies()" class="change-card-poster-second">
+                <div class="change-card-poster-box">
+                    <i class="fa-solid fa-chevron-right change-card-poster"></i>
                 </div>
             </a>
         </div>
-        }
-    </section>
+    </div>
     }
 
     <!-- popular movies -->
     @if (popularMovies) {
     <section id="populars" class="populars">
-        <a (click)="getPreviousPopularMovies()" class="change-card-poster-first">
-            <i class="fa-solid fa-chevron-left change-card-poster"></i>
-        </a>
-        <a (click)="getNextPopularMovies()" class="change-card-poster-second">
-            <i class="fa-solid fa-chevron-right change-card-poster"></i>
-        </a>
         <div class="container">
             <div class="title-section">
                 <i class="fa-solid fa-fire font-yellow"></i>
@@ -146,17 +149,23 @@
         </div>
         }
     </section>
+    <div class="slider-buttons-section">
+        <a (click)="getPreviousPopularMovies()" class="change-card-poster-first">
+            <div class="change-card-poster-box">
+                <i class="fa-solid fa-chevron-left change-card-poster"></i>
+            </div>
+        </a>
+        <a (click)="getNextPopularMovies()" class="change-card-poster-second">
+            <div class="change-card-poster-box">
+                <i class="fa-solid fa-chevron-right change-card-poster"></i>
+            </div>
+        </a>
+    </div>
     }
 
     <!-- trending tv shows -->
     @if (trendingTvshows) {
     <section id="trendings2" class="trendings2">
-        <a (click)="getPreviousTrendingTvshow()" class="change-card-poster-first">
-            <i class="fa-solid fa-chevron-left change-card-poster"></i>
-        </a>
-        <a (click)="getNextTrendingTvshow()" class="change-card-poster-second">
-            <i class="fa-solid fa-chevron-right change-card-poster"></i>
-        </a>
         <div class="container">
             <div class="title-section">
                 <i class="fa-solid fa-fire font-yellow"></i>
@@ -214,17 +223,23 @@
         </div>
         }
     </section>
+    <div class="slider-buttons-section">
+        <a (click)="getPreviousTrendingTvshow()" class="change-card-poster-first">
+            <div class="change-card-poster-box">
+                <i class="fa-solid fa-chevron-left change-card-poster"></i>
+            </div>
+        </a>
+        <a (click)="getNextTrendingTvshow()" class="change-card-poster-second">
+            <div class="change-card-poster-box">
+                <i class="fa-solid fa-chevron-right change-card-poster"></i>
+            </div>
+        </a>
+    </div>
     }
 
     <!-- popular tv shows -->
     @if (popularTvshows) {
     <section id="populars2" class="populars2">
-        <a (click)="getPreviousPopularTvshow()" class="change-card-poster-first">
-            <i class="fa-solid fa-chevron-left change-card-poster"></i>
-        </a>
-        <a (click)="getNextPopularTvshow()" class="change-card-poster-second">
-            <i class="fa-solid fa-chevron-right change-card-poster"></i>
-        </a>
         <div class="container">
             <div class="title-section">
                 <i class="fa-solid fa-fire font-yellow"></i>
@@ -282,6 +297,18 @@
         </div>
         }
     </section>
+    <div class="slider-buttons-section">
+        <a (click)="getPreviousPopularTvshow()" class="change-card-poster-first">
+            <div class="change-card-poster-box">
+                <i class="fa-solid fa-chevron-left change-card-poster"></i>
+            </div>
+        </a>
+        <a (click)="getNextPopularTvshow()" class="change-card-poster-second">
+            <div class="change-card-poster-box">
+                <i class="fa-solid fa-chevron-right change-card-poster"></i>
+            </div>
+        </a>
+    </div>
     }
 
     <div class="back-to-top">

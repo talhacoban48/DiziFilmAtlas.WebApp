@@ -249,7 +249,11 @@
                             <a class="value hover-effect">
                                 <span class="country">
                                     <p class="font-light">{{item.iso_3166_1}}</p>
+                                    @if (item.flag_path) {
                                     <img [src]="item.flag_path" [alt]="item.name" class="flag-image">
+                                    } @else {
+                                    <span class="flag-image"></span>
+                                    }
                                 </span>
                             </a>
                             }
@@ -383,13 +387,13 @@
             </div>
             }
             @if (isMovie(generalDetails) || isTvShow(generalDetails)) {
-            @if (castsCrews!.casts.length > 0) {
+            @if (castsPaged && castsPaged.results!.length > 0) {
             <div class="title font-blue bg-dark">
                 <p>Oyuncular</p>
             </div>
             <div class="casts-crews">
                 <div class="casts">
-                    @for (cast of castsCrews!.casts; track cast.id; let i = $index) {
+                    @for (cast of castsPaged!.results; track cast.id; let i = $index) {
                     <a class="cast" [routerLink]="`/casts/${cast.id}`">
                         <div class="cast-detail">
                             <div class="cast-image-box">
@@ -406,30 +410,37 @@
                     </a>
                     }
                 </div>
-                <div class="slider-buttons">
-                    <a (click)="toCastLeft()" class="slide-cast-list">
-                        <i class="fa-solid fa-angles-left font-yellow"></i>
-                    </a>
-                    <a (click)="toCastLeft()" class="slide-cast-list">
-                        <i class="fa-solid fa-angle-left font-yellow"></i>
-                    </a>
-                    <a (click)="toCastRight()" class="slide-cast-list">
-                        <i class="fa-solid fa-angle-right font-yellow"></i>
-                    </a>
-                    <a (click)="toCastRight()" class="slide-cast-list">
-                        <i class="fa-solid fa-angles-right font-yellow"></i>
-                    </a>
+                <div class="pages">
+                    <div class="pages-box">
+                        <a (click)="getCastsByPage(castsPaged.page-1)" class="page font-yellow"
+                            [class.disabled]="castsPaged.page-1<=0">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+                        @for (page of helperService.getPagesArray(castsPaged.total_pages, castsPaged.page);
+                        track page; let i = $index) {
+                        <div>
+                            <a [class.page-btn]="page == castsPaged.page" (click)="getCastsByPage(page)"
+                                class="page font-yellow">
+                                {{ page }}
+                            </a>
+                        </div>
+                        }
+                        <a (click)="getCastsByPage(castsPaged.page+1)" class="page font-yellow"
+                            [class.disabled]="castsPaged.page>=castsPaged.total_pages || castsPaged.page>=500">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             }
-            @if (castsCrews!.crews.length > 0) {
+            @if (crewsPaged && crewsPaged.results!.length > 0) {
             <div class="title font-blue bg-dark">
                 <p>Yazar ve Yönetmenler</p>
             </div>
             <div class="casts-crews">
                 <div class="casts">
-                    @for (crew of castsCrews!.crews; track crew.id; let i = $index) {
-                    <a lass="cast" [routerLink]="`/casts/${crew.id}`">
+                    @for (crew of crewsPaged!.results; track crew.id; let i = $index) {
+                    <a class="cast" [routerLink]="`/casts/${crew.id}`">
                         <div class="cast-detail">
                             <div class="cast-image-box">
                                 <img [src]="`${imageUrl}/${posterSize}/${crew.profile_path}`" [alt]="crew.name"
@@ -451,19 +462,26 @@
                     </a>
                     }
                 </div>
-                <div class="slider-buttons">
-                    <a (click)="toCrewLeft()" class="slide-cast-list">
-                        <i class="fa-solid fa-angles-left font-yellow"></i>
-                    </a>
-                    <a (click)="toCrewLeft()" class="slide-cast-list">
-                        <i class="fa-solid fa-angle-left font-yellow"></i>
-                    </a>
-                    <a (click)="toCrewRight()" class="slide-cast-list">
-                        <i class="fa-solid fa-angle-right font-yellow"></i>
-                    </a>
-                    <a (click)="toCrewRight()" class="slide-cast-list">
-                        <i class="fa-solid fa-angles-right font-yellow"></i>
-                    </a>
+                <div class="pages">
+                    <div class="pages-box">
+                        <a (click)="getCrewsByPage(crewsPaged.page-1)" class="page font-yellow"
+                            [class.disabled]="crewsPaged.page-1<=0">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </a>
+                        @for (page of helperService.getPagesArray(crewsPaged.total_pages, crewsPaged.page);
+                        track page; let i = $index) {
+                        <div>
+                            <a [class.page-btn]="page == crewsPaged.page" (click)="getCrewsByPage(page)"
+                                class="page font-yellow">
+                                {{ page }}
+                            </a>
+                        </div>
+                        }
+                        <a (click)="getCrewsByPage(crewsPaged.page+1)" class="page font-yellow"
+                            [class.disabled]="crewsPaged.page>=crewsPaged.total_pages || crewsPaged.page>=500">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             }
@@ -528,8 +546,6 @@
                 }
             </div>
             }
-
-
             @if (isMovie(generalDetails) && collection && collection.parts && collection.parts.length > 0) {
             <div class="title font-blue bg-dark">
                 <p>{{generalDetails.title}} Koleksiyonu</p>
@@ -588,8 +604,6 @@
                 }
             </div>
             }
-
-
             @if (reviews && reviews.results.length > 0) {
             <div class="title font-blue bg-dark">
                 <p>Yorumlar</p>
@@ -606,29 +620,31 @@
                             <img [src]="'/assets/img/avatar-male.jpg'" class="reviewer-image">
                             }
                         </div>
-                        @if (review.author_details.name || review.author_details.username) {
-                        <div class="reviewer-name font-light">
-                            <p>
-                                <i class="fa-solid fa-circle-user"></i>
-                                @if (review.author_details.name) {
-                                {{review.author_details.name}}
-                                } @else{
-                                {{review.author_details.username}}
-                                }
-                            </p>
-                        </div>
-                        }
-                        <div class="review-date font-soft-pink">
-                            <p>
-                                <i class="fa-solid fa-calendar"></i>
-                                {{review.created_at | dayMonthYear}}
-                            </p>
-                        </div>
-                        <div class="review-average font-yellow">
-                            <p>
-                                <i class="fa-solid fa-star"></i>
-                                {{ review.author_details.rating }}/10
-                            </p>
+                        <div class="reviewer-details">
+                            @if (review.author_details.name || review.author_details.username) {
+                            <div class="reviewer-name font-light">
+                                <p>
+                                    <i class="fa-solid fa-circle-user"></i>
+                                    @if (review.author_details.name) {
+                                    {{review.author_details.name}}
+                                    } @else{
+                                    {{review.author_details.username}}
+                                    }
+                                </p>
+                            </div>
+                            }
+                            <div class="review-date font-soft-pink">
+                                <p>
+                                    <i class="fa-solid fa-calendar"></i>
+                                    {{review.created_at | dayMonthYear}}
+                                </p>
+                            </div>
+                            <div class="review-average font-yellow">
+                                <p>
+                                    <i class="fa-solid fa-star"></i>
+                                    {{ review.author_details.rating }}/10
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <div class="review-content">
@@ -658,7 +674,7 @@
                 <p>{{generalDetails.name}} Filmleri</p>
                 }
             </div>
-            <div class="cast-crew-generals">
+            <div class="movies-tvshows-generals">
                 <app-general-list [currentPage]="movies.page" [generalList]="movies"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
@@ -676,7 +692,7 @@
                         </div>
                         }
                         <a (click)="getMoviesByPage(movies.page+1)" class="page font-white"
-                            [class.disabled]="movies.page+1>=movies.total_pages || movies.page+1>=500">
+                            [class.disabled]="movies.page>=movies.total_pages || movies.page>=500">
                             <i class="fa-solid fa-chevron-right"></i>
                         </a>
                     </div>
@@ -693,7 +709,7 @@
                 }
             </div>
 
-            <div class="cast-crew-generals">
+            <div class="movies-tvshows-generals">
                 <app-general-list [currentPage]="tvShows.page" [generalList]="tvShows"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
@@ -711,7 +727,7 @@
                         </div>
                         }
                         <a (click)="getTvShowsByPage(tvShows.page+1)" class="page font-white"
-                            [class.disabled]="tvShows.page+1>=tvShows.total_pages || tvShows.page+1>=500">
+                            [class.disabled]="tvShows.page>=tvShows.total_pages || tvShows.page>=500">
                             <i class="fa-solid fa-chevron-right"></i>
                         </a>
                     </div>
@@ -723,7 +739,7 @@
             <div class="title font-blue bg-dark">
                 <p>Oynadığı Filmler</p>
             </div>
-            <div class="cast-crew-generals">
+            <div class="movies-tvshows-generals">
                 <app-general-list [currentPage]="castMovies.page" [generalList]="castMoviesPaged!"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
@@ -752,7 +768,7 @@
             <div class="title font-blue bg-dark">
                 <p>Yazdığı/Yönettiği Filmler</p>
             </div>
-            <div class="cast-crew-generals">
+            <div class="movies-tvshows-generals">
                 <app-general-list [currentPage]="crewMovies.page" [generalList]="crewMoviesPaged!"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
@@ -781,7 +797,7 @@
             <div class="title font-blue bg-dark">
                 <p>Oynadığı Diziler</p>
             </div>
-            <div class="cast-crew-generals">
+            <div class="movies-tvshows-generals">
                 <app-general-list [currentPage]="castTvShows.page" [generalList]="castTvShowsPaged!"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
@@ -810,7 +826,7 @@
             <div class="title font-blue bg-dark">
                 <p>Yazdığı/Yönettiği Diziler</p>
             </div>
-            <div class="cast-crew-generals">
+            <div class="movies-tvshows-generals">
                 <app-general-list [currentPage]="crewTvShows.page" [generalList]="crewTvShowsPaged!"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">

@@ -66,7 +66,7 @@ export class MovieDetails {
           .pipe(
             map(casts => {
               this.castsCrews = casts;
-              // console.log("casts", this.castsCrews);
+              console.log("casts", this.castsCrews);
             })
           ),
         this.movieService.getMovieImages(this.movieId)
@@ -95,7 +95,7 @@ export class MovieDetails {
           .pipe(
             map(providers => {
               this.providers = providers;
-              console.log("providers", providers);
+              // console.log("providers", providers);
             })
           ),
       ];
