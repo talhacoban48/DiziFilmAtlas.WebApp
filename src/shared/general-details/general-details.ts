@@ -41,11 +41,13 @@ export class GeneralDetails implements OnInit {
   basePath: string = environment.basePath;
   imageUrl: string = environment.cdnUrl;
   backdropSize = BackdropSizes.w300;
-  backdropSizeTarget = BackdropSizes.w1280;
+  backdropSizeTarget = BackdropSizes.w780;
   posterSize = PosterSizes.w500;
   logoSizeBigger = LogoSizes.w300;
   logoSize = LogoSizes.w45;
   avatarSize = ProfileSizes.w45;
+  selectedImage: string = "";
+  selectedImagePath: string = `${this.imageUrl}/${this.backdropSizeTarget}/`;
 
   @Input() generalName!: string;
   @Input() generalId!: number;
@@ -94,6 +96,11 @@ export class GeneralDetails implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if (this.isMovie(this.generalDetails) || this.isTvShow(this.generalDetails) || this.isCast(this.generalDetails)) {
+      this.selectedImage = this.images![0].file_path;
+    }
+
     if (this.collection) {
       this.collection!.parts = [...this.collection!.parts].sort((a, b) => {
         if (!a.release_date) return 1;
@@ -114,7 +121,6 @@ export class GeneralDetails implements OnInit {
         total_pages: Math.ceil(this.castsCrews.crews.length / this.totalCastsCrewsPerPage),
         total_results: this.castsCrews.crews.length,
       };
-      console.log("paged", this.castsPaged, this.crewsPaged)
     }
     if (this.castMovies) {
       this.castMoviesPaged = (this.getPagedGeneral(this.castMovies) as GenericResponse<Movie[]>);

@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { genres } from '../data/genres';
+import { movieGenres } from '../data/genres';
 import { CastsCrews, CastsCrewsResponse, Crew } from '../interfaces/cast-crews.interface';
 import { GenericResponse } from '../interfaces/generic-response.interface';
 import { Image, ImagesResponse } from '../interfaces/images-response.interface';
@@ -18,7 +18,7 @@ import { Video, VideosResponse } from '../interfaces/videos-response.interface';
 })
 export class MoviesService {
 
-    private genres = genres;
+    private genres = movieGenres;
     private basePath = environment.apiBasePath;
     private countryUrl = environment.restCountriesPath;
 

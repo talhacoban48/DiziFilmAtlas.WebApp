@@ -75,15 +75,14 @@
                 <span class="object-known-with font-light">
                     Şu yapımlarla bilinir;
                     @for (item of data.known_for; track item.id; let i = $index) {
-                    <a [routerLink]="['/', item.media_type === 'movie' ? 'movies' : 'tvshows', item.id]"
-                        class="object-known-with-item font-light ellipsis2">
+                    <div class="object-known-with-item font-light ellipsis2">
                         @if (item.media_type == "movie") {
                         <i class="fa-solid fa-video"></i>
                         } @else if (item.media_type == "tv") {
                         <i class="fa-solid fa-tv"></i>
                         }
                         {{ item?.title ? item.title : item.original_name }}
-                    </a>
+                    </div>
                     }
                 </span>
                 }

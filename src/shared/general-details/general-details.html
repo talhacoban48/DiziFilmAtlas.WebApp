@@ -11,13 +11,13 @@
                 <p>{{generalDetails.name}}</p>
                 }
             </div>
-            @if (isMovie(generalDetails) && generalDetails.backdrop_path) {
-            <img [src]="`${imageUrl}/${backdropSizeTarget}/${generalDetails.backdrop_path}`"
-                [alt]="`${generalDetails.original_title}`" class="backdrop-image">
+            @if (isMovie(generalDetails) || isTvShow(generalDetails)) {
+            <img [src]="selectedImagePath + selectedImage" [alt]="selectedImagePath + selectedImage"
+                class="backdrop-image">
             }
-            @if (isTvShow(generalDetails) && generalDetails.backdrop_path) {
-            <img [src]="`${imageUrl}/${backdropSizeTarget}/${generalDetails.backdrop_path}`"
-                [alt]="`${generalDetails.name}`" class="backdrop-image">
+            @if (isCast(generalDetails)) {
+            <img [src]="selectedImagePath + selectedImage" [alt]="selectedImagePath + selectedImage"
+                class="backdrop-image-cast">
             }
             @if (images && images.length > 0) {
             <div class="title font-blue bg-dark">
@@ -27,8 +27,7 @@
                 <div class="images">
                     @for (image of images; track image.file_path; let i = $index) {
                     <div class="image-detail">
-                        <a class="image" [href]="`${imageUrl}/${backdropSizeTarget}/${image.file_path}`"
-                            target="_blank">
+                        <a class="image hover-effect" (click)="selectedImage = image.file_path">
                             <div class="image-image-box">
                                 <img [src]="`${imageUrl}/${backdropSize}/${image.file_path}`" class="image-image">
                             </div>
@@ -292,9 +291,11 @@
                         <span class="value" style="margin-right: 1rem;">
                             {{generalDetails.birthday | dayMonthYear}}
                         </span>
+                        @if (!generalDetails.deathday) {
                         <i class="value">
                             ({{generalDetails.birthday | calculateAge}} yaşında)
                         </i>
+                        }
                     </div>
                     }
                     @if (generalDetails.deathday) {
@@ -329,7 +330,7 @@
                         </span>
                     </div>
                     }
-                    @if (crewTvShows && crewTvShows.total_results) {
+                    @if (crewTvShows && crewTvShows.results) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Yönettiği Diziler:</span>
                         <span class="value">
@@ -495,8 +496,13 @@
                 @if (season.name != "Özel Gösterim") {
                 <a class="season">
                     <div class="season-poster-image-box">
+                        @if (season.poster_path) {
                         <img [src]="`${imageUrl}/${posterSize}/${season.poster_path}`" [alt]="season.name"
                             class="season-poster-image">
+                        } @else {
+                        <div class="season-poster-image"></div>
+                        }
+
                     </div>
                     <div class="season-details">
                         @if (season.name) {
@@ -554,8 +560,13 @@
                 @for (part of collection.parts; track part.id; let i = $index) {
                 <a [routerLink]="`/movies/${part.id}`" class="season hover-effect">
                     <div class="season-poster-image-box">
+                        @if (part.poster_path) {
                         <img [src]="`${imageUrl}/${posterSize}/${part.poster_path}`" [alt]="part.title"
                             class="season-poster-image">
+                        } @else {
+                        <div class="season-poster-image"></div>
+                        }
+
                     </div>
                     <div class="season-details">
                         @if (part.title) {
