@@ -29,7 +29,8 @@ export class HelperService {
         return result;
     }
 
-    getFloor(average: number): number {
+    getFloor(average: number | string): number {
+        average = Number(average);
         return Number(average.toFixed(1));
     }
 
@@ -42,5 +43,6 @@ export class HelperService {
         const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
         return safeUrl;
     }
+
 
 }

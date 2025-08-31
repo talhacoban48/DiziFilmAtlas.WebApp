@@ -5,7 +5,8 @@
 <div style="height: 12rem;"></div>
 <section class="general-list">
     <div class="container">
-        <app-general-list [currentTitle]="currentTitle" [currentPage]="page" [generalList]="movies"></app-general-list>
+        <app-general-list [navigateParams]="navigateParams" [menu]="menuForMovies" [kind]="'movies'"
+            (navigateParamsEmitter)="navigateByParams($event)" [generalList]="movies"></app-general-list>
     </div>
 </section>
 <div style="height: 5rem;"></div>

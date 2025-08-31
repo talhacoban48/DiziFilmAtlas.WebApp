@@ -5,6 +5,7 @@ import { CompanyDetails } from '../features/company-details/company-details';
 import { Home } from '../features/home/home';
 import { MovieDetails } from '../features/movie-details/movie-details';
 import { Movies } from '../features/movies/movies';
+import { Search } from '../features/search/search';
 import { TvshowDetails } from '../features/tvshow-details/tvshow-details';
 import { Tvshows } from '../features/tvshows/tvshows';
 import { NotFound } from '../shared/not-found/not-found';
@@ -42,6 +43,12 @@ export const routes: Routes = [
         path: 'company',
         children: [
             { path: ":companyId", component: CompanyDetails }
+        ],
+    },
+    {
+        path: 'search',
+        children: [
+            { path: ':category', component: Search },
         ],
     },
     { path: 'notfound', component: NotFound },

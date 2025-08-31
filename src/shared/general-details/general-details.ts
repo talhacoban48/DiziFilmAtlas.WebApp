@@ -46,7 +46,7 @@ export class GeneralDetails implements OnInit {
   logoSizeBigger = LogoSizes.w300;
   logoSize = LogoSizes.w45;
   avatarSize = ProfileSizes.w45;
-  selectedImage: string = "";
+  selectedImage?: string;
   selectedImagePath: string = `${this.imageUrl}/${this.backdropSizeTarget}/`;
 
   @Input() generalName!: string;
@@ -97,8 +97,8 @@ export class GeneralDetails implements OnInit {
 
   ngOnInit(): void {
 
-    if (this.isMovie(this.generalDetails) || this.isTvShow(this.generalDetails) || this.isCast(this.generalDetails)) {
-      this.selectedImage = this.images![0].file_path;
+    if ((this.isMovie(this.generalDetails) || this.isTvShow(this.generalDetails) || this.isCast(this.generalDetails)) && this.images && this.images.length > 0) {
+      this.selectedImage = this.images[0].file_path;
     }
 
     if (this.collection) {

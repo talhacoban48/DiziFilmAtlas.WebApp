@@ -3,7 +3,7 @@ import { SortByEnum } from "../../enums/sort-by.enum";
 export class DiscoverMoviesDto {
     certification?: string;
     certification_country?: string;
-    include_adult: boolean = true;
+    include_adult: boolean = false;
     include_video: boolean = true;
     language: string = "tr-tr";
     page: number = 1;

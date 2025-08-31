@@ -1,7 +1,7 @@
 import { SortByEnum } from "../../enums/sort-by.enum";
 
 export class DiscoverTvShowsDto {
-    include_adult: boolean = true;
+    include_adult: boolean = false;
     include_null_first_air_dates: boolean = true;
     language: string = "tr-tr";
     page: number = 1;

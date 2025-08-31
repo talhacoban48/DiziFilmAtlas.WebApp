@@ -11,11 +11,11 @@
                 <p>{{generalDetails.name}}</p>
                 }
             </div>
-            @if (isMovie(generalDetails) || isTvShow(generalDetails)) {
+            @if ((isMovie(generalDetails) || isTvShow(generalDetails)) && selectedImage) {
             <img [src]="selectedImagePath + selectedImage" [alt]="selectedImagePath + selectedImage"
                 class="backdrop-image">
             }
-            @if (isCast(generalDetails)) {
+            @if ((isCast(generalDetails)) && selectedImage) {
             <img [src]="selectedImagePath + selectedImage" [alt]="selectedImagePath + selectedImage"
                 class="backdrop-image-cast">
             }
@@ -58,16 +58,28 @@
                 <div [class.logo-image-box]="isCompany(generalDetails)"
                     [class.poster-image-box]="!isCompany(generalDetails)">
                     @if (isMovie(generalDetails)) {
+                    @if (generalDetails.poster_path) {
                     <img [src]="`${imageUrl}/${posterSize}/${generalDetails.poster_path}`"
                         [alt]="`${generalDetails.original_title}`" class="poster-image">
+                    } @else {
+                    <div class="poster-image"></div>
+                    }
                     }
                     @if (isTvShow(generalDetails)) {
+                    @if (generalDetails.poster_path) {
                     <img [src]="`${imageUrl}/${posterSize}/${generalDetails.poster_path}`"
                         [alt]="`${generalDetails.name}`" class="poster-image">
+                    } @else {
+                    <div class="poster-image"></div>
+                    }
                     }
                     @if (isCast(generalDetails)) {
+                    @if (generalDetails.profile_path) {
                     <img [src]="`${imageUrl}/${posterSize}/${generalDetails.profile_path}`"
                         [alt]="`${generalDetails.name}`" class="poster-image">
+                    } @else {
+                    <div class="poster-image"></div>
+                    }
                     }
                     @if (isCompany(generalDetails)) {
                     <div class="logo-box">
@@ -362,7 +374,7 @@
                     @if (isCompany(generalDetails) && generalDetails.homepage) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Şirket Sayfası:</span>
-                        <a [href]="generalDetails.homepage" class="value hover-effect font-light">
+                        <a [href]="generalDetails.homepage" target="_blank" class="value hover-effect font-light">
                             {{generalDetails.homepage}}
                         </a>
                     </div>
@@ -686,7 +698,7 @@
                 }
             </div>
             <div class="movies-tvshows-generals">
-                <app-general-list [currentPage]="movies.page" [generalList]="movies"></app-general-list>
+                <app-general-list [generalList]="movies" [kind]="'movies'"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
                         <a (click)="getMoviesByPage(movies.page-1)" class="page font-white"
@@ -721,7 +733,7 @@
             </div>
 
             <div class="movies-tvshows-generals">
-                <app-general-list [currentPage]="tvShows.page" [generalList]="tvShows"></app-general-list>
+                <app-general-list [generalList]="tvShows" [kind]="'tvshows'"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
                         <a (click)="getTvShowsByPage(tvShows.page-1)" class="page font-white"
@@ -751,7 +763,7 @@
                 <p>Oynadığı Filmler</p>
             </div>
             <div class="movies-tvshows-generals">
-                <app-general-list [currentPage]="castMovies.page" [generalList]="castMoviesPaged!"></app-general-list>
+                <app-general-list [generalList]="castMoviesPaged!" [kind]="'movies'"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
                         <a (click)="getCastMoviesByPage(castMovies.page-1)" class="page font-white"
@@ -780,7 +792,7 @@
                 <p>Yazdığı/Yönettiği Filmler</p>
             </div>
             <div class="movies-tvshows-generals">
-                <app-general-list [currentPage]="crewMovies.page" [generalList]="crewMoviesPaged!"></app-general-list>
+                <app-general-list [generalList]="crewMoviesPaged!" [kind]="'movies'"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
                         <a (click)="getCrewMoviesByPage(crewMovies.page-1)" class="page font-white"
@@ -809,7 +821,7 @@
                 <p>Oynadığı Diziler</p>
             </div>
             <div class="movies-tvshows-generals">
-                <app-general-list [currentPage]="castTvShows.page" [generalList]="castTvShowsPaged!"></app-general-list>
+                <app-general-list [generalList]="castTvShowsPaged!" [kind]="'tvshows'"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
                         <a (click)="getCastTvShowsByPage(castTvShows.page-1)" class="page font-white"
@@ -838,7 +850,7 @@
                 <p>Yazdığı/Yönettiği Diziler</p>
             </div>
             <div class="movies-tvshows-generals">
-                <app-general-list [currentPage]="crewTvShows.page" [generalList]="crewTvShowsPaged!"></app-general-list>
+                <app-general-list [generalList]="crewTvShowsPaged!" [kind]="'tvshows'"></app-general-list>
                 <div class="pages">
                     <div class="pages-box">
                         <a (click)="getCrewTvShowsByPage(crewTvShows.page-1)" class="page font-white"

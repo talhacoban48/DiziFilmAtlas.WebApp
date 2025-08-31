@@ -9,8 +9,9 @@
             <div class="search-and-links">
                 <div class="search-area">
                     <form>
-                        <input class="font-white" type="text" autocomplete="off" name="search_key" id="search-key">
-                        <button type="submit">
+                        <input [formControl]="searchKey" class="font-white" type="text" autocomplete="off"
+                            name="search_key" id="search-key">
+                        <button (click)="search()" type="submit">
                             <i class="fa-solid fa-magnifying-glass font-white"></i>
                         </button>
                     </form>

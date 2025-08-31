@@ -1,0 +1,14 @@
+@if (isLoading) {
+<app-spinner></app-spinner>
+} @else {
+@if (result) {
+<div style="height: 12rem;"></div>
+<section class="general-list">
+    <div class="container">
+        <app-general-list [navigateParams]="navigateParams" [menu]="menuForSearch" [kind]="kind"
+            (navigateParamsEmitter)="navigateByParams($event)" [generalList]="result"></app-general-list>
+    </div>
+</section>
+<div style="height: 5rem;"></div>
+}
+}

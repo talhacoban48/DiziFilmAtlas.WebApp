@@ -67,6 +67,8 @@
 
         .poster-image {
             width: 100%;
+            aspect-ratio: 0.667;
+            background-color: var(--gray);
         }
     }
 
