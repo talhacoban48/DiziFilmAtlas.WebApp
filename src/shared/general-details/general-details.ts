@@ -11,6 +11,7 @@ import { CollectionDetailsResponse, MovieDetailsResponse } from '../../core/inte
 import { Movie } from '../../core/interfaces/movie.interface';
 import { Provider } from '../../core/interfaces/providers.interface';
 import { ReviewsResponse } from '../../core/interfaces/reviews-response.interface';
+import { SeasonDetailsResponse } from '../../core/interfaces/seson-details.interface';
 import { TvShowDetailsResponse } from '../../core/interfaces/tvshow-details.interface';
 import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { Video } from '../../core/interfaces/videos-response.interface';
@@ -55,7 +56,7 @@ export class GeneralDetails implements OnInit {
 
   @Input() generalName!: string;
   @Input() generalId!: number;
-  @Input() generalDetails!: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse;
+  @Input() generalDetails!: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse;
   @Input() castsCrews?: CastsCrews;
   @Input() images?: Image[];
   @Input() videos?: Video[];
@@ -82,7 +83,7 @@ export class GeneralDetails implements OnInit {
     results: [],
     total_pages: 1,
     total_results: 0,
-  };;
+  };
   castMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
   crewMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
   castTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
@@ -101,10 +102,6 @@ export class GeneralDetails implements OnInit {
 
     if ((this.isMovie(this.generalDetails) || this.isTvShow(this.generalDetails) || this.isCast(this.generalDetails)) && this.images && this.images.length > 0) {
       this.selectedImage = this.images[0].file_path;
-    }
-
-    if (this.videos) {
-      console.log(this.videos)
     }
 
     if (this.collection) {
@@ -177,21 +174,26 @@ export class GeneralDetails implements OnInit {
     }
   }
 
-  isMovie(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is MovieDetailsResponse {
+  isMovie(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse): item is MovieDetailsResponse {
     return (item as MovieDetailsResponse).title !== undefined;
   }
 
-  isTvShow(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is TvShowDetailsResponse {
+  isTvShow(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse): item is TvShowDetailsResponse {
     return (item as TvShowDetailsResponse).name !== undefined && (item as TvShowDetailsResponse).first_air_date !== undefined;
   }
 
-  isCast(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is CastDetailResponse {
+  isCast(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse): item is CastDetailResponse {
     return (item as CastDetailResponse).gender !== undefined;
   }
 
-  isCompany(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is CompanyDetailsResponse {
+  isCompany(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse): item is CompanyDetailsResponse {
     return (item as CompanyDetailsResponse).headquarters !== undefined;
   }
+
+  isSeason(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse): item is SeasonDetailsResponse {
+    return (item as SeasonDetailsResponse).season_number !== undefined;
+  }
+
 
   getMoviesByPage(page: number) {
     this.currentMoviesPageOutput.emit(page);

@@ -1,0 +1,9 @@
+@if (isLoading) {
+<app-spinner></app-spinner>
+}
+@else {
+@if (seasonDetails) {
+<app-general-details [generalName]="'seasons'" [generalId]="seriesId" [generalDetails]="seasonDetails">
+</app-general-details>
+}
+}

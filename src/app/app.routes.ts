@@ -6,13 +6,20 @@ import { Home } from '../features/home/home';
 import { MovieDetails } from '../features/movie-details/movie-details';
 import { Movies } from '../features/movies/movies';
 import { Search } from '../features/search/search';
+import { SeasonDetails } from '../features/season-details/season-details';
 import { TvshowDetails } from '../features/tvshow-details/tvshow-details';
 import { Tvshows } from '../features/tvshows/tvshows';
 import { NotFound } from '../shared/not-found/not-found';
 
 export const routes: Routes = [
-    { path: '', component: Home },
-    { path: 'home', component: Home },
+    {
+        path: '',
+        component: Home
+    },
+    {
+        path: 'home',
+        component: Home
+    },
     {
         path: 'movies',
         children: [
@@ -46,13 +53,25 @@ export const routes: Routes = [
         ],
     },
     {
+        path: 'seasons',
+        children: [
+            { path: ":seriesId/:seasonNumber", component: SeasonDetails }
+        ],
+    },
+    {
         path: 'search',
         children: [
             { path: ':category', component: Search },
         ],
     },
-    { path: 'notfound', component: NotFound },
-    { path: '**', component: NotFound },
+    {
+        path: 'notfound',
+        component: NotFound
+    },
+    {
+        path: '**',
+        component: NotFound
+    },
 ];
 
 
