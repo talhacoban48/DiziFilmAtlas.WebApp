@@ -75,6 +75,6 @@ export class Tvshows {
   }
 
   navigateByParams(params: { currentTitle: string, page: number }) {
-    return this.navigationService.navigateTo(["movies", params.currentTitle, params.page])
+    return this.navigationService.navigateTo(["tvshows", params.currentTitle, params.page])
   }
 }
