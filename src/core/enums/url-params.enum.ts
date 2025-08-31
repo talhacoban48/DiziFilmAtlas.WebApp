@@ -21,4 +21,5 @@ export enum SearchUrlParams {
     Movies = "movies",
     TvShows = "tvshows",
     Casts = "casts",
+    Companies = "companies"
 }

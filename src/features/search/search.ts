@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { combineLatest, debounceTime } from 'rxjs';
 import { ListChip, menuForSearch } from '../../core/data/list-chips';
 import { SearchUrlParams } from '../../core/enums/url-params.enum';
 import { Cast } from '../../core/interfaces/cast.interface';
+import { Company } from '../../core/interfaces/company.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
 import { TvShow } from '../../core/interfaces/tvshows.interface';
@@ -21,8 +22,8 @@ import { Spinner } from '../../shared/spinner/spinner';
 })
 export class Search implements OnInit {
 
-  result?: GenericResponse<Movie[] | TvShow[] | Cast[]>;
-  kind: "movies" | "tvshows" | "casts" | undefined;
+  result?: GenericResponse<Movie[] | TvShow[] | Cast[] | Company[]>;
+  kind: "movies" | "tvshows" | "casts" | "companies" | undefined;
   navigateParams: { currentTitle: SearchUrlParams, page: number } = { currentTitle: SearchUrlParams.Movies, page: 1 };
   searchKey?: string = "";
   isLoading: boolean = true;
@@ -39,30 +40,37 @@ export class Search implements OnInit {
     combineLatest([
       this.route.params,
       this.route.queryParamMap
-    ]).subscribe(([params, queryParams]) => {
-      this.navigateParams.currentTitle = params["category"];
-      this.searchKey = queryParams.get('searchKey') ?? undefined;
-      this.navigateParams.page = Number(queryParams.get('page')) || 1;
+    ])
+      .pipe(
+        debounceTime(50)
+      )
+      .subscribe(([params, queryParams]) => {
+        this.navigateParams.currentTitle = params["category"];
+        this.searchKey = queryParams.get('searchKey') ?? undefined;
+        this.navigateParams.page = Number(queryParams.get('page')) || 1;
 
-      console.log(this.navigateParams.currentTitle, this.searchKey, this.navigateParams.page);
+        console.log(this.navigateParams.currentTitle, this.searchKey, this.navigateParams.page);
 
-      if (!this.searchKey) return;
+        if (!this.searchKey) return;
 
-      switch (this.navigateParams.currentTitle) {
-        case SearchUrlParams.Movies:
-          this.getMovies(this.navigateParams.page);
-          return;
-        case SearchUrlParams.TvShows:
-          this.getTvShows(this.navigateParams.page);
-          return;
-        case SearchUrlParams.Casts:
-          this.getCasts(this.navigateParams.page);
-          return;
-        default:
-          this.navigationService.navigateNotFound();
-          break;
-      }
-    });
+        switch (this.navigateParams.currentTitle) {
+          case SearchUrlParams.Movies:
+            this.getMovies(this.navigateParams.page);
+            return;
+          case SearchUrlParams.TvShows:
+            this.getTvShows(this.navigateParams.page);
+            return;
+          case SearchUrlParams.Casts:
+            this.getCasts(this.navigateParams.page);
+            return;
+          case SearchUrlParams.Companies:
+            this.getCompany(this.navigateParams.page);
+            return;
+          default:
+            this.navigationService.navigateNotFound();
+            break;
+        }
+      });
   }
 
   getMovies(page: number) {
@@ -85,6 +93,15 @@ export class Search implements OnInit {
     this.searchService.searchCasts(this.searchKey!, page).subscribe(casts => {
       this.result = casts;
       this.kind = "casts";
+      this.isLoading = false;
+    })
+  }
+
+  getCompany(page: number) {
+    this.searchService.searchCompany(this.searchKey!, page).subscribe(companies => {
+      console.log(companies)
+      this.result = companies;
+      this.kind = "companies";
       this.isLoading = false;
     })
   }

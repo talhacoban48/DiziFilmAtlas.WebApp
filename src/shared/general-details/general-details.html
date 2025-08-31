@@ -243,7 +243,7 @@
                             <span class="value">
                                 <a class="text hover-effect">
                                     <span class="text">
-                                        {{item.english_name}}
+                                        {{ item | turkishLanguage}}
                                     </span>
                                 </a>
                             </span>
@@ -276,7 +276,7 @@
                         <span class="key font-soft-pink">Yapımcı:</span>
                         <span class="values">
                             @for (item of generalDetails.production_companies; track item.id; let i = $index) {
-                            <a [routerLink]="`/company/${item.id}`" class="value hover-effect">
+                            <a [routerLink]="`/companies/${item.id}`" class="value hover-effect">
                                 <span class="company">
                                     <p class="font-light">{{item.name | truncate: 8}}</p>
                                     @if (item.logo_path) {
@@ -354,13 +354,13 @@
                     @if (isMovie(generalDetails) && generalDetails.budget) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Butçe:</span>
-                        <span class="value">{{generalDetails.budget | currency}}</span>
+                        <span class="value">{{generalDetails.budget | turkishCurrency}}</span>
                     </div>
                     }
                     @if (isMovie(generalDetails) && generalDetails.revenue) {
                     <div class="key-value font-light">
                         <span class="key font-soft-pink">Hasılat:</span>
-                        <span class="value">{{generalDetails.revenue | currency}}</span>
+                        <span class="value">{{generalDetails.revenue | turkishCurrency}}</span>
                     </div>
                     }
                     @if (isCompany(generalDetails) && generalDetails.origin_country) {

@@ -151,7 +151,7 @@ export class TvShowsService {
     }
 
     getTvShowReviews(tvShowId: number, page: number): Observable<ReviewsResponse> {
-        const url = `${this.basePath}/tv/${tvShowId}/reviews?language=en-US&page=${page}`
+        const url = `${this.basePath}/tv/${tvShowId}/reviews?language=tr-TR&page=${page}`
         return this.http.get<ReviewsResponse>(url)
             .pipe(
                 map(res => {

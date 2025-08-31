@@ -4,6 +4,7 @@ import { ListChip } from '../../core/data/list-chips';
 import { PosterSizes } from '../../core/enums/image-size';
 import { roles } from '../../core/enums/roles.enum';
 import { Cast } from '../../core/interfaces/cast.interface';
+import { Company } from '../../core/interfaces/company.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { Movie } from '../../core/interfaces/movie.interface';
 import { TvShow } from '../../core/interfaces/tvshows.interface';
@@ -20,9 +21,9 @@ import { environment } from '../../environments/environment';
 export class GeneralList {
 
   @Input() navigateParams?: { currentTitle: string, page: number };
-  @Input() generalList!: GenericResponse<Movie[] | TvShow[] | Cast[]>;
+  @Input() generalList!: GenericResponse<Movie[] | TvShow[] | Cast[] | Company[]>;
   @Input() menu: ListChip[] = [];
-  @Input() kind: "movies" | "tvshows" | "casts" | undefined;
+  @Input() kind: "movies" | "tvshows" | "casts" | "companies" | undefined;
   @Output() navigateParamsEmitter = new EventEmitter<{ currentTitle: string, page: number }>();
 
   imageUrl = environment.cdnUrl;
@@ -35,16 +36,20 @@ export class GeneralList {
     return roles.find(r => r.role == role)?.label;
   }
 
-  isMovie(item: Movie | TvShow | Cast): item is Movie {
+  isMovie(item: Movie | TvShow | Cast | Company): item is Movie {
     return (item as Movie).title !== undefined;
   }
 
-  isTvShow(item: Movie | TvShow | Cast): item is TvShow {
+  isTvShow(item: Movie | TvShow | Cast | Company): item is TvShow {
     return (item as TvShow).name !== undefined && (item as TvShow).first_air_date !== undefined;
   }
 
-  isCast(item: Movie | TvShow | Cast): item is Cast {
+  isCast(item: Movie | TvShow | Cast | Company): item is Cast {
     return (item as Cast).gender !== undefined;
+  }
+
+  isCompany(item: Movie | TvShow | Cast | Company): item is Company {
+    return (item as Company).logo_path !== undefined;
   }
 
   navigate(currentTitle: string, page: number) {

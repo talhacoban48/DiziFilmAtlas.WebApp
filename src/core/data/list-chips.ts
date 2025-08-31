@@ -28,4 +28,5 @@ export const menuForSearch: ListChip[] = [
     { name: "movies", label: "Filmler" },
     { name: "tvshows", label: "Diziler" },
     { name: "casts", label: "Oyuncular" },
+    { name: "companies", label: "Şirketler" },
 ];

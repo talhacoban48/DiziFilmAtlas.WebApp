@@ -32,6 +32,18 @@
     height: calc(12rem * 1.5);
 }
 
+.object-logo-box {
+    overflow: hidden;
+    position: relative;
+    width: 12rem;
+    height: calc(12rem * 1.5);
+    background-color: var(--light);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
 .object:hover {
     box-shadow: 2px -1px 25px -2px rgba(0, 0, 0, 0.86);
     transition: box-shadow 0.4s ease-in-out 0s;
@@ -44,9 +56,18 @@
     transition: transform 0.4s ease-in-out;
     transform-origin: center;
     background: rgba(0, 0, 0, 0.5);
-
 }
 
+.object-logo {
+    width: 96%;
+    padding: 1rem;
+    align-self: center;
+    transition: transform 0.4s ease-in-out;
+    transform-origin: center;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.object-logo-box::after,
 .object-poster-box::after {
     content: "";
     position: absolute;
@@ -54,10 +75,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.2);
     pointer-events: none;
 }
 
+.object-logo:hover,
 .object-poster:hover {
     transform: scale(1.1);
 }

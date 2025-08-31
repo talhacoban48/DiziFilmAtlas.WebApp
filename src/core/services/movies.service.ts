@@ -148,7 +148,7 @@ export class MoviesService {
     }
 
     getMovieReviews(movieId: number, page: number): Observable<ReviewsResponse> {
-        const url = `${this.basePath}/movie/${movieId}/reviews?language=en-US&page=${page}`
+        const url = `${this.basePath}/movie/${movieId}/reviews?language=tr-TR&page=${page}`
         return this.http.get<ReviewsResponse>(url)
             .pipe(
                 map(res => {

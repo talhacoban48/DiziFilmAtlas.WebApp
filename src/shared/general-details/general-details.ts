@@ -1,4 +1,3 @@
-import { CurrencyPipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BackdropSizes, LogoSizes, PosterSizes, ProfileSizes } from '../../core/enums/image-size';
@@ -18,6 +17,8 @@ import { CalculateAgePipe } from '../../core/pipes/calculate-age.pipe';
 import { DayMonthYearPipe } from '../../core/pipes/date.pipe';
 import { DurationPipe } from '../../core/pipes/time.pipe';
 import { TruncatePipe } from '../../core/pipes/truncate.pipe';
+import { TurkishCurrencyPipe } from '../../core/pipes/turkish-currency.pipe';
+import { TurkishLanguagePipe } from '../../core/pipes/turkish-language.pipe';
 import { HelperService } from '../../core/services/helper.service';
 import { environment } from '../../environments/environment';
 import { GeneralList } from '../general-list/general-list';
@@ -28,9 +29,10 @@ import { GeneralList } from '../general-list/general-list';
     RouterLink,
     DayMonthYearPipe,
     DurationPipe,
-    CurrencyPipe,
+    TurkishCurrencyPipe,
     TruncatePipe,
     CalculateAgePipe,
+    TurkishLanguagePipe,
     GeneralList,
   ],
   templateUrl: './general-details.html',
@@ -91,9 +93,7 @@ export class GeneralDetails implements OnInit {
 
   constructor(
     protected helperService: HelperService,
-  ) {
-
-  }
+  ) { }
 
   ngOnInit(): void {
 

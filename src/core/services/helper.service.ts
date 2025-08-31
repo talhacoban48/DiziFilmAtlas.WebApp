@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { Countries } from "../data/coutries";
+import { Countries } from "../data/countries";
 
 
 @Injectable({

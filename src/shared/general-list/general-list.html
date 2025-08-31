@@ -18,11 +18,15 @@
     @for (data of generalList.results; track data.id; let i = $index) {
     <div class="object">
         <a [href]="`/${kind}/${data.id}`">
-            <div class="object-poster-box">
+            <div [class.object-poster-box]="!isCompany(data)" [class.object-logo-box]="isCompany(data)">
                 @if (isMovie(data) || isTvShow(data)) {
                 <img src="{{ imageUrl }}/{{ posterSize }}/{{ data.poster_path }}" class="object-poster">
-                } @else {
+                } @else if (isCast(data)) {
                 <img src="{{ imageUrl }}/{{ posterSize }}/{{ data.profile_path }}" class="object-poster">
+                } @else if (isCompany(data)) {
+                @if (data.logo_path) {
+                <img src="{{ imageUrl }}/{{ posterSize }}/{{ data.logo_path }}" class="object-logo">
+                }
                 }
             </div>
             <div class="object-details">
