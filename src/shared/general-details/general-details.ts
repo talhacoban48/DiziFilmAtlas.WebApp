@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BackdropSizes, LogoSizes, PosterSizes, ProfileSizes } from '../../core/enums/image-size';
@@ -34,6 +35,7 @@ import { GeneralList } from '../general-list/general-list';
     CalculateAgePipe,
     TurkishLanguagePipe,
     GeneralList,
+    CommonModule
   ],
   templateUrl: './general-details.html',
   styleUrl: './general-details.scss'
@@ -101,6 +103,10 @@ export class GeneralDetails implements OnInit {
       this.selectedImage = this.images[0].file_path;
     }
 
+    if (this.videos) {
+      console.log(this.videos)
+    }
+
     if (this.collection) {
       this.collection!.parts = [...this.collection!.parts].sort((a, b) => {
         if (!a.release_date) return 1;
@@ -135,6 +141,10 @@ export class GeneralDetails implements OnInit {
       this.crewTvShowsPaged = (this.getPagedGeneral(this.crewTvShows) as GenericResponse<TvShow[]>);
     }
 
+  }
+
+  trackByVideoKey(index: number, video: any) {
+    return video.key; // Her video için unique key
   }
 
   addFavorite(id: number) {

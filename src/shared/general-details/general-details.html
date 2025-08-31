@@ -389,8 +389,7 @@
                 <div class="videos">
                     @for (video of videos; track video.key; let i = $index) {
                     <div class="video-detail">
-                        <iframe class="video-image" [src]="helperService.getSafeUrl(video.key)" title="{{ video.name }}"
-                            frameborder="0"
+                        <iframe class="video-image" [src]="video.safeUrl" title="{{ video.name }}" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
                         </iframe>

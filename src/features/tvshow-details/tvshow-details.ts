@@ -72,7 +72,7 @@ export class TvshowDetails {
               // console.log("images", images);
             })
           ),
-        this.tvShowService.getTvShowvideos(this.tvShowId)
+        this.tvShowService.getTvShowVideos(this.tvShowId)
           .pipe(
             map(videos => {
               if (videos.length > 3) videos = videos.slice(0, 3);

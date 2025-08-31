@@ -12,6 +12,7 @@ import { ReviewsResponse } from '../interfaces/reviews-response.interface';
 import { TvShowDetailsResponse } from '../interfaces/tvshow-details.interface';
 import { TvShow } from '../interfaces/tvshows.interface';
 import { Video, VideosResponse } from '../interfaces/videos-response.interface';
+import { HelperService } from './helper.service';
 
 @Injectable({
     providedIn: 'root'
@@ -24,6 +25,7 @@ export class TvShowsService {
 
     constructor(
         private http: HttpClient,
+        private helperService: HelperService,
     ) {
 
     }
@@ -135,13 +137,14 @@ export class TvShowsService {
         );
     }
 
-    getTvShowvideos(tvShowId: number): Observable<Video[]> {
+    getTvShowVideos(tvShowId: number): Observable<Video[]> {
         const url = `${this.basePath}/tv/${tvShowId}/videos?language=tr-tr`
         return this.http.get<VideosResponse>(url).pipe(
             map(videos => {
                 let videos_data: Video[] = [];
                 for (let video of videos.results) {
                     if (video.site == "YouTube") {
+                        video.safeUrl = this.helperService.getSafeUrl(video.key)
                         videos_data.push(video);
                     }
                 }
@@ -188,15 +191,12 @@ export class TvShowsService {
                 map(response => {
                     const data: TvShow[] = [];
                     for (let row_data of response.results) {
-                        const tvshow = row_data;
                         const genres: string[] = [];
-                        if (row_data.backdrop_path) {
-                            for (let genre of row_data.genre_ids) {
-                                const genreName = this.genres.find(g => g.id == genre)?.name;
-                                if (genreName) genres.push(genreName);
-                            }
-                            data.push({ ...row_data, genre_names: genres });
+                        for (let genre of row_data.genre_ids) {
+                            const genreName = this.genres.find(g => g.id == genre)?.name;
+                            if (genreName) genres.push(genreName);
                         }
+                        data.push({ ...row_data, genre_names: genres });
                     }
                     return {
                         page: response.page,

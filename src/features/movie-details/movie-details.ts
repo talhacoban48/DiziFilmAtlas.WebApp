@@ -76,7 +76,7 @@ export class MovieDetails {
               // console.log("images", images);
             })
           ),
-        this.movieService.getMovievideos(this.movieId)
+        this.movieService.getMovieVideos(this.movieId)
           .pipe(
             map(videos => {
               if (videos.length > 3) videos = videos.slice(0, 3);
