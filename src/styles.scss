@@ -157,27 +157,6 @@ a.disabled {
     transition: box-shadow 0.2s ease-in-out 0s;
 }
 
-@keyframes playing {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    25% {
-        transform: rotate(90deg);
-    }
-
-    50% {
-        transform: rotate(180deg);
-    }
-
-    75% {
-        transform: rotate(270deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
 
 .back-to-top {
     background-color: var(--pink);
@@ -200,7 +179,7 @@ a.disabled {
 }
 
 .pages {
-    margin: 1rem 0;
+    margin: 0.4rem 0;
     height: 46px;
     display: flex;
     flex-direction: row;
@@ -217,7 +196,7 @@ a.disabled {
 
 .pages a {
     cursor: pointer;
-
+    padding: 0.5rem;
 }
 
 .pages-box {

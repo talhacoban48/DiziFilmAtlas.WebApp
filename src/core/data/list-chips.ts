@@ -4,22 +4,29 @@ export interface ListChip {
 }
 
 export const menuForMovies: ListChip[] = [
-    { label: "nowplaying", name: "Vizyonda" },
-    { label: "popular", name: "Popüler" },
-    { label: "toprated", name: "En Yüksek Puan Alanlar" },
-    { label: "upcoming", name: "Yakında" },
-    { label: "discover", name: "Keşfet" },
+    { name: "nowplaying", label: "Vizyonda" },
+    { name: "popular", label: "Popüler" },
+    { name: "toprated", label: "En Yüksek Puan Alanlar" },
+    { name: "upcoming", label: "Yakında" },
+    { name: "discover", label: "Keşfet" },
 ];
 
 export const menuForTvShows: ListChip[] = [
-    { label: "airingtoday", name: "Bugün Popüler" },
-    { label: "airing", name: "Popüler" },
-    { label: "toprated", name: "En Yüksek Puan Alanlar" },
-    { label: "upcoming", name: "Yakında" },
-    { label: "discover", name: "Keşfet" },
+    { name: "airingtoday", label: "Bugün Popüler" },
+    { name: "airing", label: "Popüler" },
+    { name: "toprated", label: "En Yüksek Puan Alanlar" },
+    { name: "upcoming", label: "Yakında" },
+    { name: "discover", label: "Keşfet" },
 ];
 
 export const menuForCasts: ListChip[] = [
-    { label: "popular", name: "Popüler" },
-    { label: "trending", name: "Bu Haftanın Yükselenleri" }
+    { name: "popular", label: "Popüler" },
+    { name: "trending", label: "Bu Haftanın Yükselenleri" }
+];
+
+export const menuForSearch: ListChip[] = [
+    { name: "movies", label: "Filmler" },
+    { name: "tvshows", label: "Diziler" },
+    { name: "casts", label: "Oyuncular" },
+    { name: "companies", label: "Şirketler" },
 ];

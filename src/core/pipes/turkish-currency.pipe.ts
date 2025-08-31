@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'currency'
+    name: 'turkishCurrency'
 })
-export class CurrencyPipe implements PipeTransform {
+export class TurkishCurrencyPipe implements PipeTransform {
     transform(value: number | string): string {
         if (value === null || value === undefined) return '';
         const num = Number(value);

@@ -5,6 +5,7 @@
     z-index: 1;
     width: 96%;
     height: 12rem;
+    margin: 0 2%;
 }
 
 .navbar {
@@ -62,6 +63,10 @@
 }
 
 .search-area input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
     padding: 0.4rem 0rem;
     text-align: center;
     font-size: 1.1rem;
@@ -71,7 +76,15 @@
     outline: none;
 }
 
+.search-area input:-internal-autofill-selected {
+    background-color: transparent !important;
+}
+
 .search-area input:focus {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
     background-color: transparent;
     border: none;
     outline: none;

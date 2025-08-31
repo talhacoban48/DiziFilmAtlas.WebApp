@@ -1,29 +1,10 @@
-// #trendings,
-// #trendings2,
-// #populars,
-// #populars2 {
-//     display: block;
-//     height: 60rem;
-//     width: 100%;
-//     background: url("/assets/img/background.jpg");
-//     background-position: center;
-//     background-size: cover;
-//     background-attachment: fixed;
-//     position: relative;
-//     overflow: hidden;
-// }
-
 #trendings,
 #trendings2,
 #populars,
 #populars2 {
-    display: block;
-    height: 60rem;
+    height: 40rem;
     width: 100%;
     background-color: var(--dark);
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
     position: relative;
     overflow: hidden;
 }
@@ -98,7 +79,6 @@
 .news-informations {
     display: inline-block;
     width: 21rem;
-    height: 100%;
     vertical-align: top;
 }
 
@@ -148,21 +128,52 @@
     font-size: 3rem;
 }
 
+.slider-buttons-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.change-card-poster-box {
+    background-color: var(--pink);
+    width: 3rem;
+    height: 3rem;
+    border: 1.5px solid var(--dark-pink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+        font-size: 1.6rem;
+    }
+}
+
+.change-card-poster-box:hover {
+    background-color: var(--soft-pink);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+
 .change-card-poster-first,
 .change-card-poster-second {
     position: relative;
-    top: 50%;
-    font-size: 1.8rem;
+    z-index: 5;
 }
 
 .change-card-poster-first {
-    left: calc(50% - 22rem - 1.5rem);
-    z-index: 5;
+    top: -20rem;
+    left: calc(-22rem - 1rem);
+    z-index: 500;
 }
 
 .change-card-poster-second {
-    left: calc(50% + 22rem);
-    z-index: 5;
+    top: -20rem;
+    left: calc(22rem + 1rem);
+    z-index: 500;
 }
 
 .change-card-poster:hover {
@@ -206,21 +217,6 @@
 
 @media (max-width: 685px) {
 
-    .change-card-poster-first,
-    .change-card-poster-second {
-        position: relative;
-        top: 50%;
-        font-size: 1.8rem;
-    }
-
-    .change-card-poster-first {
-        left: calc(50% - 13rem - 2.5rem);
-    }
-
-    .change-card-poster-second {
-        left: calc(50% + 13rem - 1.5rem);
-    }
-
     #trendings,
     #trendings2,
     #populars,
@@ -233,6 +229,16 @@
         margin: 0 0;
         width: 26rem;
         height: 53rem;
+    }
+
+    .change-card-poster-first {
+        top: -32rem;
+        left: calc(-13rem + 1rem);
+    }
+
+    .change-card-poster-second {
+        top: -32rem;
+        left: calc(13rem - 1rem);
     }
 
     .left-card {
@@ -277,7 +283,6 @@
     .news-informations {
         display: inline-block;
         width: 90%;
-        height: 100%;
         vertical-align: top;
         margin: 0.5rem 1rem;
     }
@@ -371,21 +376,15 @@
         padding-left: 1rem;
     }
 
-    .change-card-poster-first,
-    .change-card-poster-second {
-        position: relative;
-        font-size: 1.8rem;
-        top: 55%;
-    }
-
     .change-card-poster-first {
-        left: calc(50% - 22rem - 2.5rem);
+        top: -19rem;
+        left: calc(-22rem);
     }
 
     .change-card-poster-second {
-        left: calc(50% + 22rem - 1.5rem);
+        top: -19rem;
+        left: calc(22rem);
     }
-
 }
 
 @media (min-width: 992px) and (max-width: 1120px) {
@@ -401,19 +400,12 @@
         top: 27%;
     }
 
-    .change-card-poster-first,
-    .change-card-poster-second {
-        position: relative;
-        font-size: 2rem;
-        top: 54%;
-    }
-
     .change-card-poster-first {
-        left: calc(50% - 22rem - 2.5rem);
+        top: -22rem;
     }
 
     .change-card-poster-second {
-        left: calc(50% + 22rem - 1.5rem);
+        top: -22rem;
     }
 }
 
@@ -430,47 +422,13 @@
         top: 25%;
     }
 
-    .change-card-poster-first,
-    .change-card-poster-second {
-        position: relative;
-        font-size: 2rem;
-        top: 55%;
-    }
-
     .change-card-poster-first {
-        left: calc(50% - 22rem - 2.5rem);
+        top: -18rem;
     }
 
     .change-card-poster-second {
-        left: calc(50% + 22rem - 0.5rem);
+        top: -18rem;
     }
 }
 
-@media (min-width: 1400px) {
-
-    #trendings,
-    #trendings2,
-    #populars,
-    #populars2 {
-        height: 40rem;
-    }
-
-    .card {
-        top: 25%;
-    }
-
-    .change-card-poster-first,
-    .change-card-poster-second {
-        position: relative;
-        font-size: 2rem;
-        top: 55%;
-    }
-
-    .change-card-poster-first {
-        left: calc(50% - 22rem - 2.5rem);
-    }
-
-    .change-card-poster-second {
-        left: calc(50% + 22rem - 0.5rem);
-    }
-}
+@media (min-width: 1400px) {}

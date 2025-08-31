@@ -69,29 +69,29 @@ export class TvshowDetails {
           .pipe(
             map(images => {
               this.images = images;
-              console.log("images", images);
+              // console.log("images", images);
             })
           ),
-        this.tvShowService.getTvShowvideos(this.tvShowId)
+        this.tvShowService.getTvShowVideos(this.tvShowId)
           .pipe(
             map(videos => {
               if (videos.length > 3) videos = videos.slice(0, 3);
               this.videos = videos;
-              console.log("videos", videos);
+              // console.log("videos", videos);
             })
           ),
         this.tvShowService.getTvShowReviews(this.tvShowId, 1)
           .pipe(
             map(reviews => {
               this.reviews = reviews;
-              console.log("reviews", reviews);
+              // console.log("reviews", reviews);
             })
           ),
         this.tvShowService.getProviders(this.tvShowId)
           .pipe(
             map(providers => {
               this.providers = providers;
-              console.log("providers", providers);
+              // console.log("providers", providers);
             })
           ),
       ];

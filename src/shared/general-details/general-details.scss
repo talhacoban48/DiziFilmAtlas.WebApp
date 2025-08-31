@@ -31,6 +31,12 @@
     padding: 0.3rem;
 }
 
+.backdrop-image-cast {
+    width: 50%;
+    position: relative;
+    transform: translate(50%, 0);
+}
+
 .title {
     font-size: 1.8rem;
     margin-top: 1rem;
@@ -61,6 +67,8 @@
 
         .poster-image {
             width: 100%;
+            aspect-ratio: 0.667;
+            background-color: var(--gray);
         }
     }
 
@@ -82,12 +90,11 @@
             justify-content: center;
 
             .logo-image {
+                padding: 0.7rem;
                 width: 100%;
             }
         }
     }
-
-
 
     .extra-details-box {
         display: inline-block;
@@ -164,13 +171,14 @@
             }
         }
     }
-
 }
 
 .casts-crews {
     width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 1rem;
 
     .casts {
@@ -182,9 +190,6 @@
         gap: 0.5rem;
         width: 100%;
         transition: all 1s ease;
-        overflow: hidden;
-        height: 13rem;
-        overflow: hidden;
 
         .cast-detail {
             display: flex;
@@ -192,21 +197,21 @@
             align-items: flex-start;
             justify-content: flex-start;
             gap: 0.5rem;
-            margin-bottom: 5rem;
 
             .cast-image-box {
-                width: 6rem;
-                height: 9rem;
+                width: 6.3rem;
+                aspect-ratio: 0.667;
                 overflow: hidden;
-            }
 
-            .cast-image {
-                width: 7rem;
-                height: 10rem;
-            }
+                .cast-image {
+                    width: 6.3rem;
+                    aspect-ratio: 0.667;
+                }
 
-            .cast-image:hover {
-                transform: scale(1.1);
+                .cast-image:hover {
+                    transform: scale(1.1);
+                    transition: transform 0.2s ease-in-out;
+                }
             }
 
             .cast-character {
@@ -395,7 +400,7 @@
             flex-direction: row;
             align-items: center;
             justify-content: flex-start;
-            gap: 1rem;
+            gap: 2rem;
 
             .reviewer-image-box {
                 width: 5rem;
@@ -410,20 +415,28 @@
                 }
             }
 
-            i {
-                padding-right: 0.3rem;
-            }
+            .reviewer-details {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+                gap: 0.4rem;
 
-            .reviewer-name {
-                font-size: 1.2rem;
-            }
+                i {
+                    padding-right: 0.3rem;
+                }
 
-            .review-date {
-                font-size: 1rem;
-            }
+                .reviewer-name {
+                    font-size: 1.1rem;
+                }
 
-            .review-average {
-                font-size: 1rem;
+                .review-date {
+                    font-size: 0.8rem;
+                }
+
+                .review-average {
+                    font-size: 0.8rem;
+                }
             }
 
         }
@@ -526,7 +539,7 @@
         flex-direction: row;
         align-items: flex-start;
         justify-content: flex-start;
-        min-width: 310px;
+        min-width: 290px;
         padding: 0.5rem;
 
         .season-poster-image-box {
@@ -534,8 +547,9 @@
 
             .season-poster-image {
                 width: 100%;
+                aspect-ratio: 0.667;
+                background-color: var(--gray);
             }
-
         }
 
         .season-details {
@@ -572,6 +586,7 @@
 
                 .value {
                     width: 65%;
+                    padding-left: 0.5rem;
                 }
             }
 
@@ -579,7 +594,81 @@
     }
 }
 
-.cast-crew-generals {
+
+.episodes {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    .episode {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        min-width: 290px;
+        padding: 0.5rem;
+        margin-bottom: 1.4rem;
+
+
+        .episode-still-image-box {
+            width: 100%;
+            aspect-ratio: 1.6;
+            background-color: var(--gray);
+
+            .episode-still-image {
+                width: 100%;
+                height: 100%;
+            }
+
+        }
+
+        .episode-details {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            gap: 0.5rem;
+
+            .episode-name {
+                width: 100%;
+                font-size: 1.3rem;
+            }
+
+            .episode-detail {
+                width: 100%;
+                font-size: 1rem;
+                font-weight: 300;
+                line-height: 1.5rem;
+            }
+
+            .key-value {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+                justify-content: flex-start;
+
+                .key {
+                    width: 35%;
+                }
+
+                .value {
+                    width: 65%;
+                    padding-left: 0.5rem;
+                }
+            }
+
+        }
+    }
+}
+
+.movies-tvshows-generals {
     width: 100%;
 }
 
@@ -632,19 +721,101 @@
             .key-value {
 
                 .key {
-                    width: 40%;
+                    width: 45%;
                     min-width: 100px;
                 }
 
                 .values {
-                    width: 60%;
+                    width: 55%;
 
                 }
             }
         }
-
     }
 
+    .seasons {
+
+        .season {
+
+            .season-details {
+                gap: 0.3rem;
+
+                .season-detail {
+                    font-size: 0.9rem;
+                    line-height: 1.1rem;
+                }
+
+                .key-value {
+
+                    .key {
+                        width: 45%;
+                    }
+
+                    .value {
+                        width: 55%;
+                        padding-left: 0.5rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .episodes {
+
+        .episode {
+            width: 100%;
+            gap: 1.2rem;
+
+            .episode-details {
+                width: 100%;
+            }
+        }
+    }
+
+    .casts-crews {
+
+        .casts {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+
+            .cast {
+                flex-grow: 1;
+                max-width: 17%;
+
+                .cast-detail {
+                    width: 100%;
+
+                    .cast-image-box {
+                        width: 100%;
+
+                        .cast-image {
+                            width: 100%;
+                            aspect-ratio: 0.667;
+                        }
+                    }
+
+
+                    .cast-character {
+                        font-size: 0.6rem;
+                    }
+
+                    .cast-name {
+                        font-size: 0.6rem;
+                    }
+
+                }
+            }
+        }
+    }
+
+    .backdrop-image-cast {
+        width: 100%;
+        transform: translate(0, 0);
+    }
 }
 
 /* landscape */
@@ -682,8 +853,62 @@
                 }
             }
         }
-
     }
+
+    .seasons {
+
+        .season {
+
+            .season-details {
+
+                .key-value {
+
+                    .key {
+                        width: 40%;
+                    }
+
+                    .value {
+                        width: 60%;
+                        padding-left: 0.5rem;
+                    }
+                }
+
+            }
+        }
+    }
+
+    .episodes {
+
+        .episode {
+            width: 100%;
+            gap: 1.2rem;
+
+            .episode-details {
+                width: 100%;
+            }
+        }
+    }
+
+    .casts-crews {
+
+        .casts {
+
+            .cast-detail {
+
+                .cast-image-box {
+                    width: 7.1rem;
+                    aspect-ratio: 0.667;
+                    overflow: hidden;
+
+                    .cast-image {
+                        width: 7.1rem;
+                        aspect-ratio: 0.667;
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 @media (min-width: 800px) and (max-width: 992px) {
@@ -705,6 +930,56 @@
             }
         }
     }
+
+    .seasons {
+
+        .season {
+
+            .season-details {
+
+                .key-value {
+
+                    .key {
+                        width: 40%;
+                    }
+
+                    .value {
+                        width: 60%;
+                        padding-left: 0.5rem;
+                    }
+                }
+
+            }
+        }
+    }
+
+    .casts-crews {
+
+        .casts {
+
+            .cast-detail {
+
+                .cast-image-box {
+                    width: 4.8rem;
+                    aspect-ratio: 0.667;
+                    overflow: hidden;
+
+                    .cast-image {
+                        width: 4.8rem;
+                        aspect-ratio: 0.667;
+                    }
+                }
+
+                .cast-character {
+                    font-size: 0.75rem;
+                }
+
+                .cast-name {
+                    font-size: 0.75rem;
+                }
+            }
+        }
+    }
 }
 
 /* desktop */
@@ -721,17 +996,88 @@
                 }
 
                 .values {
-                    width: 80%;
-
+                    width: 70%;
                 }
             }
         }
+    }
 
+    .seasons {
+
+        .season {
+
+            .season-details {
+
+                .key-value {
+
+                    .key {
+                        width: 40%;
+                    }
+
+                    .value {
+                        width: 60%;
+                        padding-left: 0.5rem;
+                    }
+                }
+
+            }
+        }
+    }
+
+    .casts-crews {
+
+        .casts {
+
+            .cast-detail {
+
+                .cast-image-box {
+                    width: 4.6rem;
+                    aspect-ratio: 0.667;
+                    overflow: hidden;
+
+                    .cast-image {
+                        width: 4.6rem;
+                        aspect-ratio: 0.667;
+                    }
+                }
+
+                .cast-character {
+                    font-size: 0.75rem;
+                }
+
+                .cast-name {
+                    font-size: 0.75rem;
+                }
+            }
+        }
     }
 }
 
 /* desktop */
-@media (min-width: 1120px) and (max-width: 1400px) {}
+@media (min-width: 1120px) and (max-width: 1400px) {
+
+    .casts-crews {
+
+        .casts {
+
+            .cast-detail {
+
+                .cast-image-box {
+                    width: 6rem;
+                    aspect-ratio: 0.667;
+                    overflow: hidden;
+
+                    .cast-image {
+                        width: 6rem;
+                        aspect-ratio: 0.667;
+                    }
+                }
+            }
+        }
+    }
+
+
+}
 
 /* xlarge desktop */
 @media (min-width: 1400px) {}

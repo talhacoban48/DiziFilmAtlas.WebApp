@@ -9,13 +9,9 @@
             <div class="search-and-links">
                 <div class="search-area">
                     <form>
-                        <select name="search_in" id="search-in" required>
-                            <option value="movie">Filmler</option>
-                            <option value="tv">Diziler</option>
-                            <option value="person">Kişiler</option>
-                        </select>
-                        <input class="font-white" type="text" name="search_key" id="search-key">
-                        <button type="submit">
+                        <input [formControl]="searchKey" class="font-white" type="text" autocomplete="off"
+                            name="search_key" id="search-key">
+                        <button (click)="search()" type="submit">
                             <i class="fa-solid fa-magnifying-glass font-white"></i>
                         </button>
                     </form>

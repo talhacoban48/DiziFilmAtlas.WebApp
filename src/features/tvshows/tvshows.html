@@ -5,10 +5,10 @@
 <div style="height: 12rem;"></div>
 <section class="general-list">
     <div class="container">
-        <app-general-list [currentTitle]="currentTitle" [currentPage]="page" [generalList]="tvShows"></app-general-list>
+        <app-general-list [navigateParams]="navigateParams" [menu]="menuForTvShows" [kind]="'tvshows'"
+            (navigateParamsEmitter)="navigateByParams($event)" [generalList]="tvShows"></app-general-list>
     </div>
 </section>
 <div style="height: 5rem;"></div>
-
 }
 }

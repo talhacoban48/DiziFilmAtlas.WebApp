@@ -1,8 +1,8 @@
-import { CurrencyPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { BackdropSizes, LogoSizes, PosterSizes, ProfileSizes } from '../../core/enums/image-size';
-import { CastsCrews } from '../../core/interfaces/cast-crews.interface';
+import { Cast, CastsCrews, Crew } from '../../core/interfaces/cast-crews.interface';
 import { CastDetailResponse } from '../../core/interfaces/cast-details.interface';
 import { CompanyDetailsResponse } from '../../core/interfaces/company-details.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
@@ -11,6 +11,7 @@ import { CollectionDetailsResponse, MovieDetailsResponse } from '../../core/inte
 import { Movie } from '../../core/interfaces/movie.interface';
 import { Provider } from '../../core/interfaces/providers.interface';
 import { ReviewsResponse } from '../../core/interfaces/reviews-response.interface';
+import { SeasonDetailsResponse } from '../../core/interfaces/seson-details.interface';
 import { TvShowDetailsResponse } from '../../core/interfaces/tvshow-details.interface';
 import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { Video } from '../../core/interfaces/videos-response.interface';
@@ -18,6 +19,8 @@ import { CalculateAgePipe } from '../../core/pipes/calculate-age.pipe';
 import { DayMonthYearPipe } from '../../core/pipes/date.pipe';
 import { DurationPipe } from '../../core/pipes/time.pipe';
 import { TruncatePipe } from '../../core/pipes/truncate.pipe';
+import { TurkishCurrencyPipe } from '../../core/pipes/turkish-currency.pipe';
+import { TurkishLanguagePipe } from '../../core/pipes/turkish-language.pipe';
 import { HelperService } from '../../core/services/helper.service';
 import { environment } from '../../environments/environment';
 import { GeneralList } from '../general-list/general-list';
@@ -28,10 +31,12 @@ import { GeneralList } from '../general-list/general-list';
     RouterLink,
     DayMonthYearPipe,
     DurationPipe,
-    CurrencyPipe,
+    TurkishCurrencyPipe,
     TruncatePipe,
     CalculateAgePipe,
+    TurkishLanguagePipe,
     GeneralList,
+    CommonModule
   ],
   templateUrl: './general-details.html',
   styleUrl: './general-details.scss'
@@ -41,15 +46,17 @@ export class GeneralDetails implements OnInit {
   basePath: string = environment.basePath;
   imageUrl: string = environment.cdnUrl;
   backdropSize = BackdropSizes.w300;
-  backdropSizeTarget = BackdropSizes.w1280;
+  backdropSizeTarget = BackdropSizes.w780;
   posterSize = PosterSizes.w500;
   logoSizeBigger = LogoSizes.w300;
   logoSize = LogoSizes.w45;
   avatarSize = ProfileSizes.w45;
+  selectedImage?: string;
+  selectedImagePath: string = `${this.imageUrl}/${this.backdropSizeTarget}/`;
 
   @Input() generalName!: string;
   @Input() generalId!: number;
-  @Input() generalDetails!: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse;
+  @Input() generalDetails!: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse;
   @Input() castsCrews?: CastsCrews;
   @Input() images?: Image[];
   @Input() videos?: Video[];
@@ -65,12 +72,25 @@ export class GeneralDetails implements OnInit {
   @Output() currentMoviesPageOutput = new EventEmitter();
   @Output() currentTvShowsPageOutput = new EventEmitter();
 
+  castsPaged?: GenericResponse<Cast[]> = {
+    page: 1,
+    results: [],
+    total_pages: 1,
+    total_results: 0,
+  };
+  crewsPaged?: GenericResponse<Crew[]> = {
+    page: 1,
+    results: [],
+    total_pages: 1,
+    total_results: 0,
+  };
   castMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
   crewMoviesPaged?: GenericResponse<Movie[] | TvShow[]>;
   castTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
   crewTvShowsPaged?: GenericResponse<Movie[] | TvShow[]>;
 
   totalItemsPerPage: number = 10;
+  totalCastsCrewsPerPage: number = 10;
   isInUserFavorite = false;
   openedReviewIds: string[] = [];
 
@@ -79,6 +99,11 @@ export class GeneralDetails implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    if ((this.isMovie(this.generalDetails) || this.isTvShow(this.generalDetails) || this.isCast(this.generalDetails)) && this.images && this.images.length > 0) {
+      this.selectedImage = this.images[0].file_path;
+    }
+
     if (this.collection) {
       this.collection!.parts = [...this.collection!.parts].sort((a, b) => {
         if (!a.release_date) return 1;
@@ -86,6 +111,20 @@ export class GeneralDetails implements OnInit {
         return new Date(a.release_date).getTime() - new Date(b.release_date).getTime();
       });
     };
+    if (this.castsCrews) {
+      this.castsPaged = {
+        page: 1,
+        results: this.castsCrews.casts.slice(0, this.totalCastsCrewsPerPage),
+        total_pages: Math.ceil(this.castsCrews.casts.length / this.totalCastsCrewsPerPage),
+        total_results: this.castsCrews.casts.length,
+      };
+      this.crewsPaged = {
+        page: 1,
+        results: this.castsCrews.crews.slice(0, this.totalCastsCrewsPerPage),
+        total_pages: Math.ceil(this.castsCrews.crews.length / this.totalCastsCrewsPerPage),
+        total_results: this.castsCrews.crews.length,
+      };
+    }
     if (this.castMovies) {
       this.castMoviesPaged = (this.getPagedGeneral(this.castMovies) as GenericResponse<Movie[]>);
     }
@@ -98,6 +137,11 @@ export class GeneralDetails implements OnInit {
     if (this.crewTvShows) {
       this.crewTvShowsPaged = (this.getPagedGeneral(this.crewTvShows) as GenericResponse<TvShow[]>);
     }
+
+  }
+
+  trackByVideoKey(index: number, video: any) {
+    return video.key; // Her video için unique key
   }
 
   addFavorite(id: number) {
@@ -106,34 +150,6 @@ export class GeneralDetails implements OnInit {
 
   RemoveFavorite(id: number) {
 
-  }
-
-  toCastLeft() {
-    const cast = this.castsCrews?.casts.shift();
-    if (cast) {
-      this.castsCrews?.casts.push(cast);
-    }
-  }
-
-  toCastRight() {
-    const cast = this.castsCrews?.casts.pop();
-    if (cast) {
-      this.castsCrews?.casts.unshift(cast);
-    }
-  }
-
-  toCrewLeft() {
-    const crew = this.castsCrews?.crews.shift();
-    if (crew) {
-      this.castsCrews?.crews.push(crew);
-    }
-  }
-
-  toCrewRight() {
-    const crew = this.castsCrews?.crews.pop();
-    if (crew) {
-      this.castsCrews?.crews.unshift(crew);
-    }
   }
 
   toImageLeft() {
@@ -158,21 +174,26 @@ export class GeneralDetails implements OnInit {
     }
   }
 
-  isMovie(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is MovieDetailsResponse {
+  isMovie(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse): item is MovieDetailsResponse {
     return (item as MovieDetailsResponse).title !== undefined;
   }
 
-  isTvShow(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is TvShowDetailsResponse {
+  isTvShow(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse): item is TvShowDetailsResponse {
     return (item as TvShowDetailsResponse).name !== undefined && (item as TvShowDetailsResponse).first_air_date !== undefined;
   }
 
-  isCast(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is CastDetailResponse {
+  isCast(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse): item is CastDetailResponse {
     return (item as CastDetailResponse).gender !== undefined;
   }
 
-  isCompany(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse): item is CompanyDetailsResponse {
+  isCompany(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse): item is CompanyDetailsResponse {
     return (item as CompanyDetailsResponse).headquarters !== undefined;
   }
+
+  isSeason(item: TvShowDetailsResponse | MovieDetailsResponse | CastDetailResponse | CompanyDetailsResponse | SeasonDetailsResponse): item is SeasonDetailsResponse {
+    return (item as SeasonDetailsResponse).season_number !== undefined;
+  }
+
 
   getMoviesByPage(page: number) {
     this.currentMoviesPageOutput.emit(page);
@@ -202,6 +223,24 @@ export class GeneralDetails implements OnInit {
     this.crewTvShowsPaged = this.getPagedGeneral(this.crewTvShows!);
   }
 
+  getCastsByPage(page: number) {
+    this.castsPaged = {
+      page: page,
+      results: this.castsCrews!.casts.slice((page - 1) * this.totalCastsCrewsPerPage, (page - 1) * this.totalCastsCrewsPerPage + this.totalCastsCrewsPerPage),
+      total_pages: Math.ceil(this.castsCrews!.casts.length / this.totalCastsCrewsPerPage),
+      total_results: this.castsCrews!.casts.length,
+    };
+  }
+
+  getCrewsByPage(page: number) {
+    this.crewsPaged = {
+      page: page,
+      results: this.castsCrews!.crews.slice((page - 1) * this.totalCastsCrewsPerPage, (page - 1) * this.totalCastsCrewsPerPage + this.totalCastsCrewsPerPage),
+      total_pages: Math.ceil(this.castsCrews!.crews.length / this.totalCastsCrewsPerPage),
+      total_results: this.castsCrews!.crews.length,
+    };
+  }
+
   private getPagedGeneral(data: GenericResponse<Movie[] | TvShow[]>) {
     return {
       page: data.page,
@@ -210,6 +249,5 @@ export class GeneralDetails implements OnInit {
       total_results: data.total_results,
     };
   }
-
 
 }

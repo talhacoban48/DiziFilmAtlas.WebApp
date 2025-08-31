@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { genres } from '../data/genres';
+import { movieGenres } from '../data/genres';
 import { CastsCrews, CastsCrewsResponse, Crew } from '../interfaces/cast-crews.interface';
 import { GenericResponse } from '../interfaces/generic-response.interface';
 import { Image, ImagesResponse } from '../interfaces/images-response.interface';
@@ -12,18 +12,20 @@ import { Movie } from '../interfaces/movie.interface';
 import { Provider, ProviderResponse } from '../interfaces/providers.interface';
 import { ReviewsResponse } from '../interfaces/reviews-response.interface';
 import { Video, VideosResponse } from '../interfaces/videos-response.interface';
+import { HelperService } from './helper.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MoviesService {
 
-    private genres = genres;
+    private genres = movieGenres;
     private basePath = environment.apiBasePath;
     private countryUrl = environment.restCountriesPath;
 
     constructor(
         private http: HttpClient,
+        private helperService: HelperService,
     ) {
 
     }
@@ -132,13 +134,14 @@ export class MoviesService {
         );
     }
 
-    getMovievideos(movieId: number): Observable<Video[]> {
+    getMovieVideos(movieId: number): Observable<Video[]> {
         const url = `${this.basePath}/movie/${movieId}/videos?language=tr-tr`
         return this.http.get<VideosResponse>(url).pipe(
             map(videos => {
                 let videos_data: Video[] = [];
                 for (let video of videos.results) {
                     if (video.site == "YouTube") {
+                        video.safeUrl = this.helperService.getSafeUrl(video.key)
                         videos_data.push(video);
                     }
                 }
@@ -148,7 +151,7 @@ export class MoviesService {
     }
 
     getMovieReviews(movieId: number, page: number): Observable<ReviewsResponse> {
-        const url = `${this.basePath}/movie/${movieId}/reviews?language=en-US&page=${page}`
+        const url = `${this.basePath}/movie/${movieId}/reviews?language=tr-TR&page=${page}`
         return this.http.get<ReviewsResponse>(url)
             .pipe(
                 map(res => {
@@ -190,15 +193,12 @@ export class MoviesService {
                 map(response => {
                     const data: Movie[] = [];
                     for (let row_data of response.results) {
-                        const movie = row_data;
                         const genres: string[] = [];
-                        if (row_data.backdrop_path) {
-                            for (let genre of row_data.genre_ids) {
-                                const genreName = this.genres.find(g => g.id == genre)?.name;
-                                if (genreName) genres.push(genreName);
-                            }
-                            data.push({ ...row_data, genre_names: genres });
+                        for (let genre of row_data.genre_ids) {
+                            const genreName = this.genres.find(g => g.id == genre)?.name;
+                            if (genreName) genres.push(genreName);
                         }
+                        data.push({ ...row_data, genre_names: genres });
                     }
                     return {
                         page: response.page,

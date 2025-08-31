@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
-import { Countries } from "../data/coutries";
+import { Countries } from "../data/countries";
 
 
 @Injectable({
@@ -29,7 +29,8 @@ export class HelperService {
         return result;
     }
 
-    getFloor(average: number): number {
+    getFloor(average: number | string): number {
+        average = Number(average);
         return Number(average.toFixed(1));
     }
 
@@ -42,5 +43,6 @@ export class HelperService {
         const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(videoUrl);
         return safeUrl;
     }
+
 
 }
