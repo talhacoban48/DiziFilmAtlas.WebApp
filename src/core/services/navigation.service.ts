@@ -6,8 +6,8 @@ import { Router } from "@angular/router";
 })
 export class NavigationService {
     constructor(private router: Router) { }
-    navigateTo(commands: any[], queryParams?: any): void {
-        this.router.navigate(commands, { queryParams });
+    navigateTo(commands: any[], options?: { queryParams?: any; state?: any }): void {
+        this.router.navigate(commands, options);
     }
     navigateLogin(url = '/auth') {
         return this.router.navigate([url]);

@@ -19,10 +19,15 @@ export class Navbar {
 
   search() {
     if (this.searchKey.value) {
-      this.navigationService.navigateTo(["search", "movies"], {
-        searchKey: this.searchKey.value,
-        page: 1,
-      })
+      this.navigationService.navigateTo(
+        ["search", "movies"],
+        {
+          queryParams: {
+            searchKey: this.searchKey.value,
+            page: 1
+          }
+        }
+      );
     }
   }
 

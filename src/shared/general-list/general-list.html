@@ -1,19 +1,3 @@
-@if (navigateParams) {
-<div class="object-menu">
-    <ul class="object-kind">
-        @for (item of menu; track item.name; let i = $index) {
-        <li class="object-kind-item">
-            <a [class.btnify]="navigateParams.currentTitle==item.name"
-                [class.btn-primary]="navigateParams.currentTitle==item.name" class="font-white"
-                (click)="navigate(item.name, 1)">
-                <i class="fa-solid fa-glasses font-yellow"></i>
-                {{item.label}}
-            </a>
-        </li>
-        }
-    </ul>
-</div>
-}
 <div class="objects">
     @for (data of generalList.results; track data.id; let i = $index) {
     <div class="object">

@@ -7,18 +7,20 @@ import { GenericResponse } from '../../core/interfaces/generic-response.interfac
 import { Movie } from '../../core/interfaces/movie.interface';
 import { MoviesService } from '../../core/services/movies.service';
 import { NavigationService } from '../../core/services/navigation.service';
+import { Footer } from '../../shared/footer/footer';
 import { GeneralList } from '../../shared/general-list/general-list';
+import { Navbar } from '../../shared/navbar/navbar';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-movies',
-  imports: [Spinner, GeneralList],
+  imports: [Spinner, GeneralList, Navbar, Footer],
   templateUrl: './movies.html',
   styleUrl: './movies.scss'
 })
 export class Movies {
 
-  movies!: GenericResponse<Movie[]>;
+  movies?: GenericResponse<Movie[]>;
   navigateParams: { currentTitle: MovieSearchUrlParams, page: number } = { currentTitle: MovieSearchUrlParams.NowPlaying, page: 1 };
   isLoading: boolean = true;
   menuForMovies: ListChip[] = menuForMovies;
@@ -70,13 +72,15 @@ export class Movies {
           .subscribe();
       }
     }
-
     )
   }
 
   navigateByParams(params: { currentTitle: string, page: number }) {
-    console.log("params", params)
-    return this.navigationService.navigateTo(["movies", params.currentTitle, params.page])
+    if (params.currentTitle != "discover") {
+      return this.navigationService.navigateTo(["movies", params.currentTitle, params.page])
+    } else {
+      return this.navigationService.navigateTo(["movies", params.currentTitle])
+    }
   }
 
 }

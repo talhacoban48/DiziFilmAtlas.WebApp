@@ -127,39 +127,3 @@
     gap: 0.5rem;
     font-size: 0.7rem;
 }
-
-.object-menu {
-    padding-bottom: 0.6rem;
-}
-
-.object-kind {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-right: 1rem;
-}
-
-.object-kind-item a {
-    display: inline-block;
-    font-size: 14px;
-    height: 36px;
-    padding: 8px 10px 3px 10px;
-    pointer-events: all;
-}
-
-.btnify {
-    border-radius: 1rem;
-    border: 1px solid var(--dark-pink);
-}
-
-.object-kind-item a:hover {
-    cursor: pointer;
-    color: var(--pink);
-}
-
-.object-known-with a:hover {
-    cursor: pointer;
-    color: var(--pink);
-}

@@ -7,12 +7,14 @@ import { GenericResponse } from '../../core/interfaces/generic-response.interfac
 import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { NavigationService } from '../../core/services/navigation.service';
 import { TvShowsService } from '../../core/services/tvshows.service';
+import { Footer } from '../../shared/footer/footer';
 import { GeneralList } from '../../shared/general-list/general-list';
+import { Navbar } from '../../shared/navbar/navbar';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-tvshows',
-  imports: [Spinner, GeneralList],
+  imports: [Spinner, GeneralList, Navbar, Footer],
   templateUrl: './tvshows.html',
   styleUrl: './tvshows.scss'
 })
@@ -75,6 +77,10 @@ export class Tvshows {
   }
 
   navigateByParams(params: { currentTitle: string, page: number }) {
-    return this.navigationService.navigateTo(["tvshows", params.currentTitle, params.page])
+    if (params.currentTitle != "discover") {
+      return this.navigationService.navigateTo(["tvshows", params.currentTitle, params.page])
+    } else {
+      return this.navigationService.navigateTo(["tvshows", params.currentTitle,])
+    }
   }
 }

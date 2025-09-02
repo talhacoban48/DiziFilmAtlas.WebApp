@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 @if (isLoading) {
 <app-spinner></app-spinner>
 } @else {
@@ -5,6 +6,20 @@
 <div style="height: 12rem;"></div>
 <section class="general-list">
     <div class="container">
+        <div class="object-menu">
+            <ul class="object-kind">
+                @for (item of menuForSearch; track item.name; let i = $index) {
+                <li class="object-kind-item">
+                    <a [class.btnify]="navigateParams.currentTitle==item.name"
+                        [class.btn-primary]="navigateParams.currentTitle==item.name" class="font-white"
+                        (click)="navigateByParams({currentTitle: item.name, page:1})">
+                        <i class="fa-solid fa-glasses font-yellow"></i>
+                        {{item.label}}
+                    </a>
+                </li>
+                }
+            </ul>
+        </div>
         <app-general-list [navigateParams]="navigateParams" [menu]="menuForSearch" [kind]="kind"
             (navigateParamsEmitter)="navigateByParams($event)" [generalList]="result"></app-general-list>
     </div>
@@ -12,3 +27,4 @@
 <div style="height: 5rem;"></div>
 }
 }
+<app-footer></app-footer>

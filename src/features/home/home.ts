@@ -8,11 +8,13 @@ import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { MoviesService } from '../../core/services/movies.service';
 import { TvShowsService } from '../../core/services/tvshows.service';
 import { environment } from '../../environments/environment';
+import { Footer } from '../../shared/footer/footer';
+import { Navbar } from '../../shared/navbar/navbar';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-home',
-  imports: [Spinner, DatePipe],
+  imports: [Spinner, DatePipe, Navbar, Footer],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 

@@ -18,7 +18,7 @@ export const movieGenres: Genre[] = [
     { id: 10402, name: "Müzik" },
     { id: 9648, name: "Gizem" },
     { id: 10749, name: "Romantik" },
-    { id: 878, name: "Bilim-Kurgu" },
+    { id: 878, name: "Bilim Kurgu" },
     { id: 10770, name: "TV film" },
     { id: 53, name: "Gerilim" },
     { id: 10752, name: "Savaş" },

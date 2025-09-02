@@ -8,12 +8,14 @@ import { Movie } from '../../core/interfaces/movie.interface';
 import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { CastService } from '../../core/services/casts.service';
 import { NavigationService } from '../../core/services/navigation.service';
+import { Footer } from '../../shared/footer/footer';
 import { GeneralDetails } from '../../shared/general-details/general-details';
+import { Navbar } from '../../shared/navbar/navbar';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-cast-details',
-  imports: [Spinner, GeneralDetails],
+  imports: [Spinner, GeneralDetails, Navbar, Footer],
   templateUrl: './cast-details.html',
   styleUrl: './cast-details.scss'
 })

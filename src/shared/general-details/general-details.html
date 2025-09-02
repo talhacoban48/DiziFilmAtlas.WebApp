@@ -309,7 +309,7 @@
                     }
                     @if (isMovie(generalDetails) || isTvShow(generalDetails) || isCast(generalDetails)) {
                     <div class="key-value font-light">
-                        <span class="key font-soft-pink">Populerlik:</span>
+                        <span class="key font-soft-pink">Popülerlik:</span>
                         <span class="value">{{generalDetails.popularity}}</span>
                     </div>
                     }
@@ -370,7 +370,7 @@
                     }
                     @if (isMovie(generalDetails) && generalDetails.budget) {
                     <div class="key-value font-light">
-                        <span class="key font-soft-pink">Butçe:</span>
+                        <span class="key font-soft-pink">Bütçe:</span>
                         <span class="value">{{generalDetails.budget | turkishCurrency}}</span>
                     </div>
                     }
@@ -621,7 +621,7 @@
                             </div>
                             <div class="value font-yellow">
                                 <i class="fa-solid fa-star"></i>
-                                {{ episode.vote_average}}/10
+                                {{ helperService.getFloor(episode.vote_average)}}/10
                             </div>
                         </div>
                         }

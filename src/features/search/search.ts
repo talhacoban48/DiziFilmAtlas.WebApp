@@ -10,12 +10,14 @@ import { Movie } from '../../core/interfaces/movie.interface';
 import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { NavigationService } from '../../core/services/navigation.service';
 import { SearchService } from '../../core/services/search.service';
+import { Footer } from '../../shared/footer/footer';
 import { GeneralList } from '../../shared/general-list/general-list';
+import { Navbar } from '../../shared/navbar/navbar';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-search',
-  imports: [Spinner, GeneralList],
+  imports: [Spinner, GeneralList, Navbar, Footer],
   templateUrl: './search.html',
   styleUrl: './search.scss',
   providers: [SearchService]
@@ -108,8 +110,10 @@ export class Search implements OnInit {
 
   navigateByParams(params: { currentTitle: string, page: number }) {
     return this.navigationService.navigateTo(["search", params.currentTitle], {
-      searchKey: this.searchKey,
-      page: params.page,
+      queryParams: {
+        searchKey: this.searchKey,
+        page: params.page
+      }
     })
   }
 }

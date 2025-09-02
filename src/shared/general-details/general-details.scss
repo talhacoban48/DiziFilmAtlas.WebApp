@@ -614,7 +614,6 @@
         padding: 0.5rem;
         margin-bottom: 1.4rem;
 
-
         .episode-still-image-box {
             width: 100%;
             aspect-ratio: 1.6;
@@ -622,9 +621,8 @@
 
             .episode-still-image {
                 width: 100%;
-                height: 100%;
+                aspect-ratio: 1.6;
             }
-
         }
 
         .episode-details {
@@ -663,7 +661,6 @@
                     padding-left: 0.5rem;
                 }
             }
-
         }
     }
 }

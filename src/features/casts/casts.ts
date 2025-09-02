@@ -7,12 +7,14 @@ import { Cast } from '../../core/interfaces/cast.interface';
 import { GenericResponse } from '../../core/interfaces/generic-response.interface';
 import { CastService } from '../../core/services/casts.service';
 import { NavigationService } from '../../core/services/navigation.service';
+import { Footer } from '../../shared/footer/footer';
 import { GeneralList } from '../../shared/general-list/general-list';
+import { Navbar } from '../../shared/navbar/navbar';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-casts',
-  imports: [Spinner, GeneralList],
+  imports: [Spinner, GeneralList, Navbar, Footer],
   templateUrl: './casts.html',
   styleUrl: './casts.scss'
 })

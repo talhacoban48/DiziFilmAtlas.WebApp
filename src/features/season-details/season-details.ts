@@ -4,12 +4,14 @@ import { finalize, map } from 'rxjs';
 import { SeasonDetailsResponse } from '../../core/interfaces/seson-details.interface';
 import { NavigationService } from '../../core/services/navigation.service';
 import { SeasonService } from '../../core/services/season.service';
+import { Footer } from '../../shared/footer/footer';
 import { GeneralDetails } from '../../shared/general-details/general-details';
+import { Navbar } from '../../shared/navbar/navbar';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-season-details',
-  imports: [Spinner, GeneralDetails],
+  imports: [Spinner, GeneralDetails, Navbar, Footer],
   templateUrl: './season-details.html',
   styleUrl: './season-details.scss'
 })

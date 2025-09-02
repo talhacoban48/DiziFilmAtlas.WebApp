@@ -11,14 +11,18 @@ import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { Video } from '../../core/interfaces/videos-response.interface';
 import { NavigationService } from '../../core/services/navigation.service';
 import { TvShowsService } from '../../core/services/tvshows.service';
+import { Footer } from '../../shared/footer/footer';
 import { GeneralDetails } from '../../shared/general-details/general-details';
+import { Navbar } from '../../shared/navbar/navbar';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-tvshow-details',
   imports: [
     Spinner,
-    GeneralDetails
+    GeneralDetails,
+    Navbar,
+    Footer
   ],
   templateUrl: './tvshow-details.html',
   styleUrl: './tvshow-details.scss'

@@ -12,14 +12,18 @@ import { Video } from '../../core/interfaces/videos-response.interface';
 import { HelperService } from '../../core/services/helper.service';
 import { MoviesService } from '../../core/services/movies.service';
 import { NavigationService } from '../../core/services/navigation.service';
+import { Footer } from '../../shared/footer/footer';
 import { GeneralDetails } from '../../shared/general-details/general-details';
+import { Navbar } from '../../shared/navbar/navbar';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-movie-details',
   imports: [
     Spinner,
-    GeneralDetails
+    GeneralDetails,
+    Navbar,
+    Footer
   ],
   templateUrl: './movie-details.html',
   styleUrl: './movie-details.scss'

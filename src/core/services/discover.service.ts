@@ -6,6 +6,7 @@ import { DiscoverMoviesDto } from "../interfaces/dtos/discover-movies.dto";
 import { DiscoverTvShowsDto } from "../interfaces/dtos/discover-tvshows.dto";
 import { GenericResponse } from "../interfaces/generic-response.interface";
 import { Movie } from "../interfaces/movie.interface";
+import { ProvidersResponse } from "../interfaces/providers.interface";
 import { TvShow } from "../interfaces/tvshows.interface";
 
 @Injectable({
@@ -22,17 +23,27 @@ export class DiscoverService {
     discoverMovies(payload: DiscoverMoviesDto): Observable<GenericResponse<Movie[]>> {
         const query = payload.toQueryParams();
         const url = `${this.basePath}/discover/movie?${query}`
-        console.log(url);
-
         return this.http.get<GenericResponse<Movie[]>>(url)
     }
 
     discoverTvshows(payload: DiscoverTvShowsDto): Observable<GenericResponse<TvShow[]>> {
         const query = payload.toQueryParams();
         const url = `${this.basePath}/discover/tv?${query}`
-        console.log(url);
-
         return this.http.get<GenericResponse<TvShow[]>>(url)
+    }
+
+    getProviders(kind: "movie" | "tvshow"): Observable<ProvidersResponse> {
+        const url = `${this.basePath}/watch/providers/${kind}?language=tr-tr&watch_region=tr`
+        return this.http.get<ProvidersResponse>(url)
+    }
+
+    getYears() {
+        const years: number[] = [];
+        const date = (new Date()).getFullYear();
+        for (let i = 0; i < 50; i++) {
+            years?.push(date - i);
+        }
+        return years;
     }
 
 }

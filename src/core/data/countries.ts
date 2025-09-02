@@ -1,6 +1,5 @@
 export const Countries: { iso_3166_1: string, english_name: string, native_name: string }[] = [
     { iso_3166_1: "AE", english_name: "United Arab Emirates", native_name: "Birleşik Arap Emirlikleri" },
-    { iso_3166_1: "AF", english_name: "Afghanistan", native_name: "Afganistan" },
     { iso_3166_1: "AL", english_name: "Albania", native_name: "Arnavutluk" },
     { iso_3166_1: "AR", english_name: "Argentina", native_name: "Arjantin" },
     { iso_3166_1: "AT", english_name: "Austria", native_name: "Avusturya" },
@@ -21,9 +20,7 @@ export const Countries: { iso_3166_1: string, english_name: string, native_name:
     { iso_3166_1: "FR", english_name: "France", native_name: "Fransa" },
     { iso_3166_1: "GB", english_name: "United Kingdom", native_name: "Birleşik Krallık" },
     { iso_3166_1: "US", english_name: "United States of America", native_name: "Amerika Birleşik Devletleri" },
-    { iso_3166_1: "GE", english_name: "Georgia", native_name: "Gürcistan" },
     { iso_3166_1: "GR", english_name: "Greece", native_name: "Yunanistan" },
-    { iso_3166_1: "HU", english_name: "Hungary", native_name: "Macaristan" },
     { iso_3166_1: "ID", english_name: "Indonesia", native_name: "Endonezya" },
     { iso_3166_1: "IN", english_name: "India", native_name: "Hindistan" },
     { iso_3166_1: "IR", english_name: "Iran", native_name: "İran" },
@@ -36,12 +33,10 @@ export const Countries: { iso_3166_1: string, english_name: string, native_name:
     { iso_3166_1: "PK", english_name: "Pakistan", native_name: "Pakistan" },
     { iso_3166_1: "PL", english_name: "Poland", native_name: "Polonya" },
     { iso_3166_1: "PT", english_name: "Portugal", native_name: "Portekiz" },
-    { iso_3166_1: "QA", english_name: "Qatar", native_name: "Katar" },
     { iso_3166_1: "RS", english_name: "Serbia", native_name: "Sırbistan" },
     { iso_3166_1: "RU", english_name: "Russia", native_name: "Rusya" },
     { iso_3166_1: "SA", english_name: "Saudi Arabia", native_name: "Suudi Arabistan" },
     { iso_3166_1: "SE", english_name: "Sweden", native_name: "İsveç" },
-    { iso_3166_1: "SG", english_name: "Singapore", native_name: "Singapur" },
     { iso_3166_1: "TM", english_name: "Turkmenistan", native_name: "Türkmenistan" },
     { iso_3166_1: "TR", english_name: "Turkey", native_name: "Türkiye" }
 ]

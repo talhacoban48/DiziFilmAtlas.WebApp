@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { CastDetails } from '../features/cast-details/cast-details';
 import { Casts } from '../features/casts/casts';
 import { CompanyDetails } from '../features/company-details/company-details';
+import { DiscoverMovies } from '../features/discover-movies/discover-movies';
+import { DiscoverTvshows } from '../features/discover-tvshows/discover-tvshows';
 import { Home } from '../features/home/home';
 import { MovieDetails } from '../features/movie-details/movie-details';
 import { Movies } from '../features/movies/movies';
@@ -24,7 +26,7 @@ export const routes: Routes = [
         path: 'movies',
         children: [
             { path: '', component: Movies },
-            { path: 'discover', component: Movies },
+            { path: 'discover', component: DiscoverMovies },
             { path: ':category/:page', component: Movies },
             { path: ':movieId', component: MovieDetails },
         ],
@@ -33,7 +35,7 @@ export const routes: Routes = [
         path: 'tvshows',
         children: [
             { path: '', component: Tvshows },
-            { path: 'discover', component: Tvshows },
+            { path: 'discover', component: DiscoverTvshows },
             { path: ':category/:page', component: Tvshows },
             { path: ':tvShowId', component: TvshowDetails },
         ],

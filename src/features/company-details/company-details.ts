@@ -11,12 +11,14 @@ import { TvShow } from '../../core/interfaces/tvshows.interface';
 import { CompanyService } from '../../core/services/company.service';
 import { DiscoverService } from '../../core/services/discover.service';
 import { NavigationService } from '../../core/services/navigation.service';
+import { Footer } from '../../shared/footer/footer';
 import { GeneralDetails } from '../../shared/general-details/general-details';
+import { Navbar } from '../../shared/navbar/navbar';
 import { Spinner } from '../../shared/spinner/spinner';
 
 @Component({
   selector: 'app-company-details',
-  imports: [Spinner, GeneralDetails],
+  imports: [Spinner, GeneralDetails, Navbar, Footer],
   templateUrl: './company-details.html',
   styleUrl: './company-details.scss'
 })
