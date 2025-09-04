@@ -3,7 +3,7 @@
 
 
 :root {
-    --turquose: rgb(36, 137, 120);
+    --turquose: #248978;
     --white: #ffffff;
     --black: rbg(0, 0, 0);
     --gray: #45474B;
@@ -16,6 +16,9 @@
     --soft-pink: #F78CA2;
     --blue: #009FBD;
     --light: #d2ccc4;
+    --green: #0a660d;
+    --soft-green: #55af63;
+    --dark-green: #179924;
 }
 
 * {
@@ -121,7 +124,6 @@ a.disabled {
     margin-top: 10rem;
 }
 
-/* buttons */
 .btn {
     display: inline-block;
     text-align: center;
@@ -131,17 +133,30 @@ a.disabled {
     width: 13rem;
     margin: .3rem 0;
     font-size: 1rem;
-    border: 1px solid var(--dark-pink);
     pointer-events: all;
 }
 
 .btn-primary {
     background-color: var(--pink);
     color: var(--white);
+    border: 2px solid var(--dark-pink);
 }
 
 .btn-primary:hover {
     background-color: var(--soft-pink);
+    color: var(--white);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.btn-success {
+    background-color: var(--green);
+    color: var(--white);
+    border: 2px solid var(--dark-green);
+}
+
+.btn-success:hover {
+    background-color: var(--soft-green);
     color: var(--white);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
@@ -278,6 +293,10 @@ a.disabled {
     .container {
         width: 98%;
         margin: 0 1%;
+    }
+
+    .btn {
+        width: 10rem;
     }
 }
 

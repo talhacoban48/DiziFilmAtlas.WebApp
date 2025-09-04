@@ -1,1 +1,140 @@
-<p>discover-tvshows works!</p>
+<app-navbar></app-navbar>
+@if (isLoading) {
+<app-spinner></app-spinner>
+} @else {
+@if (tvShows) {
+<div style="height: 12rem;"></div>
+<section class="general-list">
+    <div class="container">
+        <div class="object-menu">
+            <ul class="object-kind">
+                @for (item of menuForTvShows; track item.name; let i = $index) {
+                <li class="object-kind-item">
+                    <a [class.btnify]="navigateParams.currentTitle==item.name"
+                        [class.btn-primary]="navigateParams.currentTitle==item.name" class="font-white"
+                        (click)="navigateByParams({currentTitle: item.name, page: 1})">
+                        <i class="fa-solid fa-glasses font-yellow"></i>
+                        {{item.label}}
+                    </a>
+                </li>
+                }
+            </ul>
+        </div>
+        <div class="filters">
+            <div class="filter">
+                <label class="filter-label font-light">Ülkeye Göre:</label>
+                <div class="select-box">
+                    <select [(ngModel)]="model.with_origin_country" class="form-select">
+                        <option [value]="undefined">Ülke</option>
+                        @for (country of countries; track country.iso_3166_1; let i = $index) {
+                        <option [value]="country.iso_3166_1">
+                            {{ country.native_name }}
+                        </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="filter">
+                <label class="filter-label font-light">Kategoriye Göre:</label>
+                <div class="select-box">
+                    <select [(ngModel)]="model.with_genres" class="form-select">
+                        <option [value]="undefined">Kategori</option>
+                        @for (genre of genres; track genre.id; let i = $index) {
+                        <option [value]="genre.id">
+                            {{ genre.name }}
+                        </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="filter">
+                <label class="filter-label font-light">Dile Göre:</label>
+                <div class="select-box">
+                    <select [(ngModel)]="model.with_original_language" class="form-select">
+                        <option [value]="undefined">Dil</option>
+                        @for (language of languages; track language.iso_639_1; let i = $index) {
+                        <option [value]="language.iso_639_1">
+                            {{ language.turkish_name }}
+                        </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="filter">
+                <label class="filter-label font-light">Platforma Göre:</label>
+                <div class="select-box">
+                    <select [(ngModel)]="model.with_watch_providers" class="form-select">
+                        <option [value]="undefined">Platform</option>
+                        @for (provider of providers?.results; track provider.provider_id; let i = $index) {
+                        <option [value]="provider.provider_id">
+                            {{ provider.provider_name }}
+                        </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="filter">
+                <label class="filter-label text-label font-light">Minimum Puan:</label>
+                <input [(ngModel)]="model.vote_average_gte" type="number" min="0" max="10"
+                    class="input-text font-light">
+            </div>
+            <div class="filter">
+                <label class="filter-label text-label font-light">Maximum Puan:</label>
+                <input [(ngModel)]="model.vote_average_lte" type="number" min="0" max="10"
+                    class="input-text font-light">
+            </div>
+            <div class="filter">
+                <label class="filter-label text-label font-light">Minimum Oy Sayısı:</label>
+                <input [(ngModel)]="model.vote_count_gte" type="number" min="0" max="10" class="input-text font-light">
+            </div>
+            <div class="filter">
+                <label class="filter-label text-label font-light">Maximum Oy Sayısı:</label>
+                <input [(ngModel)]="model.vote_count_lte" type="number" min="0" max="10" class="input-text font-light">
+            </div>
+            <div class="filter">
+                <label class="filter-label font-light">Yılına Göre:</label>
+                <div class="select-box">
+                    <select [(ngModel)]="model.first_air_date_year" class="form-select">
+                        <option [value]="undefined">Yıl</option>
+                        @for (year of years; track year; let i = $index) {
+                        <option [value]="year">
+                            {{ year }}
+                        </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="filter">
+                <label class="filter-label text-label font-light">Mininum Yıl:</label>
+                <input [(ngModel)]="model.first_air_date_gte" type="date" class="input-text font-light">
+            </div>
+            <div class="filter">
+                <label class="filter-label text-label font-light">Maximum Yıl:</label>
+                <input [(ngModel)]="model.first_air_date_lte" type="date" class="input-text font-light">
+            </div>
+            <div class="filter">
+                <label class="filter-label font-light">Sırala:</label>
+                <div class="select-box">
+                    <select [(ngModel)]="model.sort_by" class="form-select">
+                        <option [value]="undefined">Varsayılan</option>
+                        @for (sortby of sortByData; track sortby.value; let i = $index) {
+                        <option [value]="sortby.value">
+                            {{ sortby.label }}
+                        </option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button (click)="filterBySearch()" type="submit" class="btn btn-success">Filtrele</button>
+            <button (click)="clear()" type="submit" class="btn btn-primary">Temizle</button>
+        </div>
+        <app-general-list [navigateParams]="navigateParams" [menu]="menuForTvShows" [kind]="'tvshows'"
+            (navigateParamsEmitter)="navigateByParams($event)" [generalList]="tvShows"></app-general-list>
+    </div>
+</section>
+<div style="height: 5rem;"></div>
+}
+}
+<app-footer></app-footer>

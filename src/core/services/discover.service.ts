@@ -32,7 +32,7 @@ export class DiscoverService {
         return this.http.get<GenericResponse<TvShow[]>>(url)
     }
 
-    getProviders(kind: "movie" | "tvshow"): Observable<ProvidersResponse> {
+    getProviders(kind: "movie" | "tv"): Observable<ProvidersResponse> {
         const url = `${this.basePath}/watch/providers/${kind}?language=tr-tr&watch_region=tr`
         return this.http.get<ProvidersResponse>(url)
     }
