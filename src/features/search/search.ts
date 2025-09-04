@@ -31,7 +31,6 @@ export class Search implements OnInit {
   isLoading: boolean = true;
   menuForSearch: ListChip[] = menuForSearch;
 
-
   constructor(
     private searchService: SearchService,
     private navigationService: NavigationService,
@@ -50,8 +49,6 @@ export class Search implements OnInit {
         this.navigateParams.currentTitle = params["category"];
         this.searchKey = queryParams.get('searchKey') ?? undefined;
         this.navigateParams.page = Number(queryParams.get('page')) || 1;
-
-        console.log(this.navigateParams.currentTitle, this.searchKey, this.navigateParams.page);
 
         if (!this.searchKey) return;
 
