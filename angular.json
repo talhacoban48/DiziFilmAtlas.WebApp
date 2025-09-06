@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DizifilmAtlas.WebApp": {
+    "dizifilmatlas-webapp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -87,13 +87,13 @@
           },
           "configurations": {
             "production": {
-              "buildTarget": "DizifilmAtlas.WebApp:build:production"
+              "buildTarget": "dizifilmatlas-webapp:build:production"
             },
             "development": {
-              "buildTarget": "DizifilmAtlas.WebApp:build:development"
+              "buildTarget": "dizifilmatlas-webapp:build:development"
             },
             "local": {
-              "buildTarget": "DizifilmAtlas.WebApp:build:local"
+              "buildTarget": "dizifilmatlas-webapp:build:local"
             }
           },
           "defaultConfiguration": "development"

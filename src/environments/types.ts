@@ -6,7 +6,16 @@ export interface IEnvironment {
     apiKey: string;
     cdnUrl: string;
     restCountriesPath: string;
-
+    firebaseConfig: {
+        apiKey: string,
+        authDomain: string,
+        databaseURL: string,
+        projectId: string,
+        storageBucket: string,
+        messagingSenderId: string,
+        appId: string,
+        measurementId: string
+    }
 }
 
 export enum Stage {
